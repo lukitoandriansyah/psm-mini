@@ -62,37 +62,42 @@ export default function RoleList() {
                 </Link>
             </div>
             <div className="card-body">
-                <table className="table">
-                    <thead>
-                    <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">Rolename</th>
-                        <th scope="col">Role Id</th>
-                        <th scope="col">Action</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {roles.map((role, index) =>
-                        <tr key={role.roleId}>
-                            <th scope="row">{index + 1}</th>
-                            <td>{role.roleName}</td>
-                            <td>{role.roleId}</td>
-                            <td>
-                                <Link to={"/roles/" + role.roleId}>
-                                    <button className="btn btn-primary">Edit</button>
-                                </Link>
-                                &nbsp;&nbsp;
-
-                                <button
-                                    className="btn btn-danger"
-                                    onClick={() => deleteRole(role.roleId)}>
-                                    Delete
-                                </button>
-                            </td>
+                <div className="table-responsive">
+                    <table className="table table-bordered"
+                           id="dataTable"
+                           width="100%"
+                           cellSpacing="0">
+                        <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Rolename</th>
+                            <th scope="col">Role Id</th>
+                            <th scope="col">Action</th>
                         </tr>
-                    )}
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                        {roles.map((role, index) =>
+                            <tr key={role.roleId}>
+                                <th scope="row">{index + 1}</th>
+                                <td>{role.roleName}</td>
+                                <td>{role.roleId}</td>
+                                <td>
+                                    <Link to={"/roles/" + role.roleId}>
+                                        <button className="btn btn-primary">Edit</button>
+                                    </Link>
+                                    &nbsp;&nbsp;
+
+                                    <button
+                                        className="btn btn-danger"
+                                        onClick={() => deleteRole(role.roleId)}>
+                                        Delete
+                                    </button>
+                                </td>
+                            </tr>
+                        )}
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </>

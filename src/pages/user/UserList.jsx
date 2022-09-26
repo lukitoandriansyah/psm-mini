@@ -50,39 +50,44 @@ export default function UserList() {
                 </Link>
             </div>
             <div className="card-body">
-                <table className="table">
-                    <thead>
-                    <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">Name</th>
-                        <th scope="col">Username</th>
-                        <th scope="col">Rolename</th>
-                        <th scope="col">Action</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {users.map((user, index) =>
-                        <tr key={user.userId}>
-                            <th scope="row">{index + 1}</th>
-                            <td>{user.name}</td>
-                            <td>{user.username}</td>
-                            <td>{user.roleName}</td>
-                            <td>
-                                <Link to={"/users/" + user.username}>
-                                    <button className="btn btn-primary">view</button>
-                                </Link>
-                                &nbsp;&nbsp;
-
-                                <button
-                                    className="btn btn-danger"
-                                    onClick={() => deleteProduct(user.userId)}>
-                                    Delete
-                                </button>
-                            </td>
+                <div className={"table-responsive"}>
+                    <table className="table table-bordered"
+                           id="dataTable"
+                           width="100%"
+                           cellSpacing="0">
+                        <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Name</th>
+                            <th scope="col">Username</th>
+                            <th scope="col">Rolename</th>
+                            <th scope="col">Action</th>
                         </tr>
-                    )}
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                        {users.map((user, index) =>
+                            <tr key={user.userId}>
+                                <th scope="row">{index + 1}</th>
+                                <td>{user.name}</td>
+                                <td>{user.username}</td>
+                                <td>{user.roleName}</td>
+                                <td>
+                                    <Link to={"/users/" + user.username}>
+                                        <button className="btn btn-primary">view</button>
+                                    </Link>
+                                    &nbsp;&nbsp;
+
+                                    <button
+                                        className="btn btn-danger"
+                                        onClick={() => deleteProduct(user.userId)}>
+                                        Delete
+                                    </button>
+                                </td>
+                            </tr>
+                        )}
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </>

@@ -49,62 +49,67 @@ export default function DetailProfileUserBooks() {
                 <h6 className="m-0 font-weight-bold text-primary">List Your Books Not returned</h6>
             </div>
             <div className="card-body">
-                <table className="table">
-                    <thead>
-                    <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">Title</th>
-                        <th scope="col">Due Date</th>
-                        <th scope="col">Time</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {userBooks.map((userBook, index) =>
-                        params.username === userBook.userName ?
-                            userBook.returnDate === null ?
-                                <>
-                                    <tr key={userBook.userBookId}>
-                                        <th scope="row">{index + 1}</th>
-                                        <td>{userBook.bookTitle}</td>
-                                        <td>{userBook.dueDate}</td>
-                                        <td className={"text-center"}>
-                                            {
-                                                new Date(userBook.dueDate).getDate() - new Date().getDate() >= 0 ?
-                                                    <h4 className={"btn-outline-success"}>
-                                                        {new Date(userBook.dueDate).getDate() - new Date().getDate() + " Days"}
-                                                    </h4>
-                                                    :
-                                                    <h5 className={"btn-outline-danger"}>
-                                                        {
-                                                            "Due Date Passed " +
-                                                            (0 - (new Date(userBook.dueDate).getDate() - new Date().getDate())) +
-                                                            " Days"
-                                                        }
-                                                    </h5>
-                                            }
-                                        </td>
-                                    </tr>
-                                </>
+                <div className={"table-responsive"}>
+                    <table className="table table-bordered"
+                           id="dataTable"
+                           width="100%"
+                           cellSpacing="0">
+                        <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Title</th>
+                            <th scope="col">Due Date</th>
+                            <th scope="col">Time</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {userBooks.map((userBook, index) =>
+                            params.username === userBook.userName ?
+                                userBook.returnDate === null ?
+                                    <>
+                                        <tr key={userBook.userBookId}>
+                                            <th scope="row">{index + 1}</th>
+                                            <td>{userBook.bookTitle}</td>
+                                            <td>{userBook.dueDate}</td>
+                                            <td className={"text-center"}>
+                                                {
+                                                    new Date(userBook.dueDate).getDate() - new Date().getDate() >= 0 ?
+                                                        <h4 className={"btn-outline-success"}>
+                                                            {new Date(userBook.dueDate).getDate() - new Date().getDate() + " Days"}
+                                                        </h4>
+                                                        :
+                                                        <h5 className={"btn-outline-danger"}>
+                                                            {
+                                                                "Due Date Passed " +
+                                                                (0 - (new Date(userBook.dueDate).getDate() - new Date().getDate())) +
+                                                                " Days"
+                                                            }
+                                                        </h5>
+                                                }
+                                            </td>
+                                        </tr>
+                                    </>
+                                    :
+                                    <>
+                                        <tr key={userBook.userBookId}>
+                                            <th scope="row text-center"></th>
+                                            <td className={"h5 text-center"}>You don't have books loaned yet</td>
+                                            <td></td>
+                                        </tr>
+                                    </>
+
                                 :
                                 <>
                                     <tr key={userBook.userBookId}>
-                                        <th scope="row text-center"></th>
+                                        <th scope="row"></th>
                                         <td className={"h5 text-center"}>You don't have books loaned yet</td>
                                         <td></td>
                                     </tr>
                                 </>
-
-                            :
-                            <>
-                                <tr key={userBook.userBookId}>
-                                    <th scope="row"></th>
-                                    <td className={"h5 text-center"}>You don't have books loaned yet</td>
-                                    <td></td>
-                                </tr>
-                            </>
-                    )}
-                    </tbody>
-                </table>
+                        )}
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </>
