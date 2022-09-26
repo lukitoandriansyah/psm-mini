@@ -1,0 +1,100 @@
+body-profile-detail{
+    margin-top:20px;
+    background:#eee;
+}
+a-profile-detail {
+    color: #f96332;
+}
+.m-t-5-profile-detail{
+    margin-top: 5px;
+}
+.card-profile-detail {
+    background: #fff;
+    margin-bottom: 30px;
+    transition: .5s;
+    border: 0;
+    border-radius: .1875rem;
+    display: inline-block;
+    position: relative;
+    width: 100%;
+    box-shadow: none;
+}
+.card-profile-detail .body-profile-detail {
+    font-size: 14px;
+    color: #424242;
+    padding: 20px;
+    font-weight: 400;
+}
+.profile-page-profile-detail .profile-header-profile-detail {
+    position: relative;
+    margin-bottom: 20px;
+    margin-top: 20px;
+}
+
+.profile-page-profile-detail .profile-header-profile-detail .profile-image-profile-detail img-profile-detail {
+    border-radius: 50%;
+    width: 140px;
+    border: 3px solid #fff;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23)
+}
+
+.profile-page-profile-detail .profile-header-profile-detail .social-icon-profile-detail a-profile-detail {
+    margin: 0 5px
+}
+
+.profile-page-profile-detail .profile-sub-header-profile-detail {
+    min-height: 60px;
+    width: 100%
+}
+
+.profile-page-profile-detail .profile-sub-header-profile-detail ul.box-list-profile-detail {
+    display: inline-table;
+    table-layout: fixed;
+    width: 100%;
+    background: #eee
+}
+
+.profile-page-profile-detail .profile-sub-header-profile-detail ul.box-list-profile-detail li {
+    border-right: 1px solid #e0e0e0;
+    display: table-cell;
+    list-style: none
+}
+
+.profile-page-profile-detail .profile-sub-header-profile-detail ul.box-list-profile-detail li:last-child {
+    border-right: none
+}
+
+.profile-page-profile-detail .profile-sub-header-profile-detail ul.box-list-profile-detail li a-profile-detail {
+    display: block;
+    padding: 15px 0;
+    color: #424242
+}
+
+.card-button-profile .card-button-outline-primary-profile h5 .h5 {
+    color: #4e73df;
+    border-color: #4e73df;
+    cursor: none;
+    border-bottom-left-radius: 20px;
+    border-top-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+    border-bottom-right-radius: 20px;
+}
+h5profile{
+    background: white;
+    color: #4e73df;
+    border-bottom-right-radius: 4px;
+    border-bottom-left-radius: 4px;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+    font-size: large;
+}
+img{
+    margin-top: 22px;
+    margin-bottom: 22px;
+}
+
+.footer-card-profile-detail .footer-body-profile-detail {
+    font-size: 20px;
+    color: #295aba;
+    background-color: #1cc88a;
+}
