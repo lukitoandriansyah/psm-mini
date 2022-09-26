@@ -13,7 +13,7 @@ export default function Home() {
             <div className={"card-header-home-2"}>
                 <div className="text-center">
                     <div className={"app"} id={"home"}>
-                        <h1>Mini Library System Management blah blah</h1>
+                        <h1>Mini Library System Management</h1>
                     </div>
                 </div>
             </div>
