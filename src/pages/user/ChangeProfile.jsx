@@ -225,9 +225,6 @@ export default function ChangeProfile() {
                         Save Changes
                     </button>
                 </form>
-                <button className="btn btn-danger" onClick={() => handleCancel()}>
-                    cancel
-                </button>
             </div>
         </div>
     </>
