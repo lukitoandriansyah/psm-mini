@@ -79,8 +79,7 @@ export default function BookList2() {
                                     <td>{books.bookStatus === true ? "Tersedia" : "Dipinjam"}</td>
                                     <td>
                                         <Link to=
-                                                  // {/* <Link to={"/book/form/" + books.bookId}> */}
-                                                  {"/book/form/" + JSON.stringify(books)}>
+                                                  {"/book/form/" + books.bookId}>
                                             <button className="btn btn-primary"> Edit </button>
                                         </Link>{" "}
                                         <button
