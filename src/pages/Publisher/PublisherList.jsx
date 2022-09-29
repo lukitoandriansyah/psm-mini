@@ -1,94 +1,104 @@
-import React from "react";
 import axios from "axios";
-import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useNavigate, useParams } from "react-router-dom";
 
-export default function PublisherList() {
+export default function PublisherForm() {
+    const navigate = useNavigate();
+    const params = useParams();
+
+    const isEditing = params.idPublisher;
+
     const [publishers, setPublishers] = useState([]);
+    const [formInput, setFormInput] = useState({
+        publisherName: "",
+        addressPublisher: "",
+    });
 
-    async function getPublisherList() {
-        try {
-            const response = await axios.get(
-                "https://be-library-mini-system.herokuapp.com/publisher/list"
-            );
-
-            console.log(response.data);
-            setPublishers(response.data);
-        } catch (err) {
-            console.log(err);
-            alert("Terjadi Masalah");
-        }
+    function handleInput(event, propName) {
+        const copyFormInput = { ...formInput };
+        copyFormInput[propName] = event.target.value;
+        setFormInput(copyFormInput);
     }
 
-    function deletePublisher(id) {
-        axios
-            .delete(
-                "https://be-library-mini-system.herokuapp.com/publisher/delete/" + id
-            )
-            .then(() => {
-                getPublisherList();
-            })
-            .catch((err) => {
-                console.log(err);
-                alert("error");
-            });
+    async function getPublishers() {
+        const res = await axios.get(
+            "https://be-library-mini-system.herokuapp.com/publisher/list"
+        );
+
+        console.log(res.data);
+        setPublishers(res.data);
+    }
+
+    async function getFormInput() {
+        const res = await axios.get(
+            "https://be-library-mini-system.herokuapp.com/publisher/" +
+            params.idPublisher
+        );
+
+        console.log(res.data);
+        setFormInput(res.data[0]);
+    }
+
+    async function handleSubmit(event) {
+        event.preventDefault();
+
+        if (isEditing) {
+            await axios.put(
+                "https://be-library-mini-system.herokuapp.com/publisher/update/" +
+                params.idPublisher,
+                formInput
+            );
+        } else {
+            await axios.post(
+                "https://be-library-mini-system.herokuapp.com/publisher/save",
+                formInput
+            );
+        }
+
+        navigate("/publisher");
     }
 
     useEffect(() => {
-        getPublisherList();
+        getPublishers();
+        if (isEditing) {
+            getFormInput();
+        }
     }, []);
 
     return (
         <>
             <div class="card shadow mb-4">
-                <div className="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                    <h6 class="m-0 font-weight-bold text-primary">Daftar Penerbit</h6>
-                    <Link to="/publisher/form">
-                        <button className="btn btn-primary"> Tambah Penerbit </button>
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-primary">Form Penerbit</h6>
+
+                    <Link to="/publisher">
+                        <button className="btn btn-secondary">Kembali</button>
                     </Link>
                 </div>
+                <div className="card-body">
+                    <form onSubmit={handleSubmit}>
+                        <div class="mb-3">
+                            <label class="form-label">Penerbit</label>
+                            <input
+                                class="form-control"
+                                type="text"
+                                value={formInput.publisherName}
+                                onChange={(event) => handleInput(event, "publisherName")}
+                            />
+                        </div>
 
-                <div class="card-body">
-                    <div class="table-responsive">
-                        <table
-                            class="table table-bordered"
-                            id="dataTable"
-                            width="100%"
-                            cellspacing="0"
-                        >
-                            <thead>
-                            <tr>
-                                <th scope="col">No</th>
-                                <th>Penerbit</th>
-                                <th>Alamat</th>
-                                <th>Action</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            {publishers.map((publisher, index) => (
-                                <tr>
-                                    <td key={publisher.publisherId} scope="row">
-                                        {index + 1}
-                                    </td>
-                                    <td>{publisher.publisherName}</td>
-                                    <td>{publisher.addressPublisher}</td>
-                                    <td>
-                                        <Link to={"/publisher/form/" + publisher.idPublisher}>
-                                            <button className="btn btn-primary"> Edit </button>
-                                        </Link>{" "}
-                                        <button
-                                            onClick={() => deletePublisher(publisher.idPublisher)}
-                                            className="btn btn-danger"
-                                        >
-                                            {" "}
-                                            Hapus{" "}
-                                        </button>
-                                    </td>
-                                </tr>
-                            ))}
-                            </tbody>
-                        </table>
-                    </div>
+                        <div class="mb-3">
+                            <label class="form-label">Alamat</label>
+                            <input
+                                class="form-control"
+                                type="text"
+                                value={formInput.addressPublisher}
+                                onChange={(event) => handleInput(event, "addressPublisher")}
+                            />
+                        </div>
+
+                        <button class="btn btn-primary">Submit</button>
+                    </form>
                 </div>
             </div>
         </>

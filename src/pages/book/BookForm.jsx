@@ -53,7 +53,7 @@ export default function BookForm() {
             params.bookId
         );
 
-        console.log(res.data)
+        console.log(res.data.data)
         setFormInput(res.data.data);
 
         // ======= data ===========
