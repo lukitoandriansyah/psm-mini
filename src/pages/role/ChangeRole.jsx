@@ -2,13 +2,11 @@ import {Link, useNavigate, useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
 
 let responses = []
-let roleArray = []
 export default function ChangeRole() {
     const navigate = useNavigate()
     const [formInput, setFormInput] = useState({
         roleName: ""
     })
-    const [roleList, setRoleList] = useState([])
     const params = useParams();
 
     function handleInput(event, inputName) {
@@ -17,25 +15,11 @@ export default function ChangeRole() {
         setFormInput(copyFormInput)
     }
 
-    async function getRoleList() {
-        const res = await fetch("https://be-library-mini-system.herokuapp.com/role/list-role",
+    async function roleById() {
+        const res = await fetch("https://be-library-mini-system.herokuapp.com/role/"+params.roleId,
             {method: "GET"})
         const data = await res.json();
-        setRoleList(data);
-    }
-
-    function getRoleById() {
-        for (let roles of roleList) {
-            if (roles.roleId.toString() === params.roleId.toString()) {
-                return roles.roleName;
-            }
-        }
-    }
-
-    function prepareUpdate(roleArray) {
-        const fillForm = {...roleArray}
-        fillForm["roleName"] = getRoleById()
-        setFormInput(fillForm)
+        setFormInput(data.data);
     }
 
     async function handleSubmit(event) {
@@ -79,7 +63,7 @@ export default function ChangeRole() {
     }
 
     useEffect(() => {
-        getRoleList()
+        roleById()
     }, [])
 
 
@@ -102,10 +86,6 @@ export default function ChangeRole() {
             </div>
 
             <div className="card-body">
-
-                <div className="form-group mb-4">
-                    <button className="btn btn-info" onClick={() => prepareUpdate(roleArray)}>Isi data</button>
-                </div>
 
                 <form className="w-50" onSubmit={event => handleSubmit(event)}>
                     <div className="form-group mb-4">

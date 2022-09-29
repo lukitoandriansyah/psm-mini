@@ -22,7 +22,7 @@ export default function PublisherForm() {
 
   async function getPublishers() {
     const res = await axios.get(
-      "https://be-library-mini-system.herokuapp.com/publisher/list"
+        "https://be-library-mini-system.herokuapp.com/publisher/list"
     );
 
     console.log(res.data);
@@ -31,7 +31,7 @@ export default function PublisherForm() {
 
   async function getFormInput() {
     const res = await axios.get(
-      "https://be-library-mini-system.herokuapp.com/publisher/" +
+        "https://be-library-mini-system.herokuapp.com/publisher/" +
         params.idPublisher
     );
 
@@ -44,14 +44,14 @@ export default function PublisherForm() {
 
     if (isEditing) {
       await axios.put(
-        "https://be-library-mini-system.herokuapp.com/publisher/update/" +
+          "https://be-library-mini-system.herokuapp.com/publisher/update/" +
           params.idPublisher,
-        formInput
+          formInput
       );
     } else {
       await axios.post(
-        "https://be-library-mini-system.herokuapp.com/publisher/save",
-        formInput
+          "https://be-library-mini-system.herokuapp.com/publisher/save",
+          formInput
       );
     }
 
@@ -66,41 +66,41 @@ export default function PublisherForm() {
   }, []);
 
   return (
-    <>
-      <div class="card shadow mb-4">
-        <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-          <h6 class="m-0 font-weight-bold text-primary">Form Penerbit</h6>
+      <>
+        <div class="card shadow mb-4">
+          <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+            <h6 class="m-0 font-weight-bold text-primary">Form Penerbit</h6>
 
-          <Link to="/publisher">
-            <button className="btn btn-secondary">Kembali</button>
-          </Link>
+            <Link to="/publisher">
+              <button className="btn btn-secondary">Kembali</button>
+            </Link>
+          </div>
+          <div className="card-body">
+            <form onSubmit={handleSubmit}>
+              <div class="mb-3">
+                <label class="form-label">Penerbit</label>
+                <input
+                    class="form-control"
+                    type="text"
+                    value={formInput.publisherName}
+                    onChange={(event) => handleInput(event, "publisherName")}
+                />
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label">Alamat</label>
+                <input
+                    class="form-control"
+                    type="text"
+                    value={formInput.addressPublisher}
+                    onChange={(event) => handleInput(event, "addressPublisher")}
+                />
+              </div>
+
+              <button class="btn btn-primary">Submit</button>
+            </form>
+          </div>
         </div>
-        <div className="card-body">
-          <form onSubmit={handleSubmit}>
-            <div class="mb-3">
-              <label class="form-label">Penerbit</label>
-              <input
-                class="form-control"
-                type="text"
-                value={formInput.publisherName}
-                onChange={(event) => handleInput(event, "publisherName")}
-              />
-            </div>
-
-            <div class="mb-3">
-              <label class="form-label">Alamat</label>
-              <input
-                class="form-control"
-                type="text"
-                value={formInput.addressPublisher}
-                onChange={(event) => handleInput(event, "addressPublisher")}
-              />
-            </div>
-
-            <button class="btn btn-primary">Submit</button>
-          </form>
-        </div>
-      </div>
-    </>
+      </>
   );
 }

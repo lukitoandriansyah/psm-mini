@@ -1,7 +1,7 @@
 import React from "react";
 import axios from "axios";
-import {useEffect, useState} from "react";
-import {Link} from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 export default function PublisherList() {
     const [publishers, setPublishers] = useState([]);
@@ -44,7 +44,7 @@ export default function PublisherList() {
                 <div className="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                     <h6 class="m-0 font-weight-bold text-primary">Daftar Penerbit</h6>
                     <Link to="/publisher/form">
-                        <button className="btn btn-primary"> Tambah Penerbit</button>
+                        <button className="btn btn-primary"> Tambah Penerbit </button>
                     </Link>
                 </div>
 
@@ -74,7 +74,7 @@ export default function PublisherList() {
                                     <td>{publisher.addressPublisher}</td>
                                     <td>
                                         <Link to={"/publisher/form/" + publisher.idPublisher}>
-                                            <button className="btn btn-primary"> Edit</button>
+                                            <button className="btn btn-primary"> Edit </button>
                                         </Link>{" "}
                                         <button
                                             onClick={() => deletePublisher(publisher.idPublisher)}

@@ -25,13 +25,6 @@ export default function ChangeProfile() {
         setFormInput(copyFormInput)
     }
 
-    async function getUsers() {
-        const res = await fetch("https://be-library-mini-system.herokuapp.com/users/profile/" + params.username,
-            {method: "GET"})
-        const data = await res.json();
-        setUser(data.data);
-    }
-
     async function getRoleList() {
         const res = await fetch("https://be-library-mini-system.herokuapp.com/role/list-role",
             {method: "GET"})
@@ -39,18 +32,12 @@ export default function ChangeProfile() {
         setRoleList(data);
     }
 
-    function getRoleById() {
-        for (let roles of roleList) {
-            if (roles.roleName === user.roleName) {
-                return roles.roleId;
-            }
-        }
-    }
-
-    function prepareUpdate(user) {
-        const fillForm = {...user}
-        fillForm["roleId"] = getRoleById()
-        setFormInput(fillForm)
+    async function getUsers() {
+        const res = await fetch("https://be-library-mini-system.herokuapp.com/users/profile/" + params.username,
+            {method: "GET"})
+        const data = await res.json();
+        setUser(data.data);
+        setFormInput(data.data)
     }
 
     async function handleSubmit(event) {
@@ -88,24 +75,16 @@ export default function ChangeProfile() {
         }
     }
 
-    function handleCancel() {
-        let text = "Your change will not save"
-        if (confirm(text) === true) {
-            navigate("/users/" + params.username)
-        }
-    }
-
     function back(event) {
         event.preventDefault()
         history.go(-1)
     }
 
     useEffect(() => {
-        getUsers()
-    }, [])
-
-    useEffect(() => {
         getRoleList()
+    }, [])
+    useEffect(() => {
+        getUsers()
     }, [])
 
 
@@ -128,10 +107,6 @@ export default function ChangeProfile() {
             </div>
 
             <div className="card-body">
-
-                <div className="form-group mb-4">
-                    <button className="btn btn-info" onClick={() => prepareUpdate(user)}>Isi data</button>
-                </div>
 
                 <form className="w-50" onSubmit={event => handleSubmit(event)}>
                     <div className="form-group mb-4">

@@ -138,15 +138,15 @@ export default function DetailsProfile() {
                                                         </strong>
                                                         :
                                                         userArr.length>1?
-                                                        <>
-                                                            <strong>
-                                                                {firstName}
-                                                            </strong>
-                                                            &nbsp;
-                                                            {midName}
-                                                            &nbsp;
-                                                            {additionalName}
-                                                        </>
+                                                            <>
+                                                                <strong>
+                                                                    {firstName}
+                                                                </strong>
+                                                                &nbsp;
+                                                                {midName}
+                                                                &nbsp;
+                                                                {additionalName}
+                                                            </>
                                                             : ""
                                                 }
                                             </h4>

@@ -21,7 +21,7 @@ const menuList = [
     {
         title: "Category List",
         icon: "fa-folder",
-        link: "",
+        link: "/category/list",
     },
     {
         title: "Author",
