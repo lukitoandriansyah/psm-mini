@@ -48,16 +48,16 @@ export default function BookForm() {
 
     async function getFormInput() {
         // ======= by Id ===========
-        // const res = await axios.get(
-        //   "https://be-library-mini-system.herokuapp.com/book/" +
-        //   params.bookId
-        // );
+        const res = await axios.get(
+            "https://be-library-mini-system.herokuapp.com/book/" +
+            params.bookId
+        );
 
-        // console.log(res.data)
-        // setFormInput(res.data);
+        console.log(res.data)
+        setFormInput(res.data.data);
 
         // ======= data ===========
-        setFormInput(JSON.parse(params.bookId));
+        //setFormInput(JSON.parse(params.bookId));
     }
 
     async function handleSubmit(event) {
