@@ -22,7 +22,7 @@ export default function UserBookList() {
     function deleteUserBook(userBookId) {
         axios
             .delete (
-                "https://be-library-mini-system.herokuapp.com/userbook/delete/" + userBookId
+                "https://be-library-mini-system.herokuapp.com/userbook/delete/" + userbookId
             )
             .then(() => {
                 getUserBookList();
