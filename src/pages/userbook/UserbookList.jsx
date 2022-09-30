@@ -67,6 +67,7 @@ export default function UserBookList() {
                                 <th>Tanggal Peminjaman</th>
                                 <th>Tanggal Akhir Peminjaman</th>
                                 <th>Tanggal Pengembalian</th>
+                                <th>Action</th>
                             </tr>
                             </thead>
                             <tbody>
