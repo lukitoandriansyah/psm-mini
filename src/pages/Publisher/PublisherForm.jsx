@@ -36,7 +36,7 @@ export default function PublisherForm() {
     );
 
     console.log(res.data);
-    setFormInput(res.data);
+    setFormInput(res.data[0]);
   }
 
   async function handleSubmit(event) {
