@@ -75,7 +75,6 @@ export default function UserBookList() {
                                     <td key={userBooks.userbookId} scope="row">
                                         {index + 1}
                                     </td>
-
                                     <td>{userBooks.userbookId}</td>
                                     <td>{userBooks.bookTitle}</td>
                                     <td>{userBooks.bookId}</td>
