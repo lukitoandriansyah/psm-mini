@@ -86,12 +86,12 @@ export default function UserBookList() {
                                     <td>{userBooks.dueDate}</td>
                                     <td>{userBooks.returnDate}</td>
                                     <td>
-                                        <Link to={"/userbook/form/" + userBooks.userBookId}>
+                                        <Link to={"/userbook/form/" + userBooks.userbookId}>
                                             <button className="btn btn-primary"> Edit </button>
                                         </Link>{" "}
                                         <button
                                             className="btn btn-danger"
-                                            onClick={() => deleteBook(userBooks.userBookId)}>
+                                            onClick={() => deleteUserBook(userBooks.userBookId)}>
                                             {" "}
                                             Hapus{" "}
                                         </button>
