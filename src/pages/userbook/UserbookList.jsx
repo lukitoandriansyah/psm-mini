@@ -88,12 +88,11 @@ export default function UserBookList() {
                                     <td>
                                         <Link to={"/userbook/form/" + userBooks.userbookId}>
                                             <button className="btn btn-primary"> Edit </button>
-                                        </Link>{" "}
+                                        </Link>
                                         <button
                                             className="btn btn-danger"
                                             onClick={() => deleteUserBook(userBooks.userBookId)}>
-                                            {" "}
-                                            Hapus{" "}
+                                            Hapus
                                         </button>
                                     </td>
                                 </tr>
