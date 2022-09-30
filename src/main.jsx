@@ -61,7 +61,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
                         <Route path={"/book/list"} element={<BookList2/>}/>
 
                         <Route path="userbook/form" element={<UserBookForm/>}/>
-                        <Route path="userbook/form/:bookId" element={<UserBookForm/>}/>
+                        <Route path="userbook/form/:userbookId" element={<UserBookForm/>}/>
                         <Route path={"/userbook/list"} element={<UserBookList/>}/>
 
                         <Route path={"/admin/dashboard"} element={<AdminDashboard/>}/>
