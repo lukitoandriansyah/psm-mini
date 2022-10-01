@@ -1,10 +1,10 @@
 import {Link, Outlet, useNavigate} from "react-router-dom";
 import {responses} from "../auth/LoginForm.jsx";
 
+export let person = []
+export let username = [];
+export let roleArr = []
 export default function UserDashboard() {
-    let person = []
-    let username = [];
-    let roleArr = []
     let userIdArr = [];
     let responsesLogout = [];
     const navigate = useNavigate();
@@ -12,7 +12,7 @@ export default function UserDashboard() {
     try {
         let message = responses[responses.length - 1].message.toString().split(" ")
         let indicator = 0;
-        if (message.indexOf("Admin") < 0) {
+        if (message.indexOf("Admin") <= 0) {
             indicator += 1;
         }
         if (indicator > 0) {
@@ -26,14 +26,14 @@ export default function UserDashboard() {
             localStorage.setItem("role", roleArr[roleArr.length - 1].toString())
         }
     } catch (error) {
-        person.push(sessionStorage.getItem("name"))
-        username.push(sessionStorage.getItem("uname"))
-        userIdArr.push(sessionStorage.getItem("uId"))
-        roleArr.push(sessionStorage.getItem("role"))
+        person.push(localStorage.getItem("name"))
+        username.push(localStorage.getItem("uname"))
+        userIdArr.push(localStorage.getItem("uId"))
+        roleArr.push(localStorage.getItem("role"))
     }
 
     async function logout(event) {
-        event.preventDefault()
+
         const targetUrl = "https://be-library-mini-system.herokuapp.com/auth/logout/" + userIdArr[userIdArr.length - 1]
         const method = "POST"
         await fetch(targetUrl, {
@@ -50,7 +50,8 @@ export default function UserDashboard() {
 
             setTimeout(() => {
                 navigate("/")
-            }, 5000, navigate("/end"))
+                location.reload()
+            }, 3000, navigate("/end"))
         } else {
             responsesLogout[responsesLogout.length - 1].message.toString()
         }
@@ -67,7 +68,11 @@ export default function UserDashboard() {
                     Profile
                 </Link>
                 &nbsp; &nbsp;
-                <button className={"btn btn-danger"} onClick={(event) => logout(event)}>
+                <button className={"btn btn-danger"} onClick={(event) => {
+                    localStorage.clear()
+                    logout(event).then(r => r)
+                }}
+                >
                     Logout
                 </button>
             </nav>

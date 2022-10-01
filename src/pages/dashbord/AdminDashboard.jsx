@@ -12,7 +12,7 @@ export default function AdminDashboard() {
     try {
         let message = responses[responses.length - 1].message.toString().split(" ") //
         let indicator = 0;
-        if (message.indexOf("Admin") >= 0) {
+        if (message.indexOf("Admin") > 0) {
             indicator += 1;
         }
         if (indicator > 0) {
@@ -33,7 +33,7 @@ export default function AdminDashboard() {
     }
 
     async function logout(event) {
-        event.preventDefault()
+
         const targetUrl = "https://be-library-mini-system.herokuapp.com/auth/logout/" + userIdArr[userIdArr.length - 1]
         const method = "POST"
         await fetch(targetUrl, {
@@ -49,7 +49,8 @@ export default function AdminDashboard() {
             )
             setTimeout(() => {
                 navigate("/")
-            }, 5000, navigate("/end"))
+                location.reload()
+            }, 3000, navigate("/end"))
         } else {
             responsesLogout[responsesLogout.length - 1].message.toString()
         }
@@ -78,7 +79,10 @@ export default function AdminDashboard() {
                     Profile
                 </Link>
                 &nbsp; &nbsp;
-                <button className={"btn btn-danger"} onClick={(event) => logout(event)}>Logout</button>
+                <button className={"btn btn-danger"} onClick={(event) => {
+                    localStorage.clear()
+                    logout(event).then(r => r)
+                }}>Logout</button>
             </nav>
             <h3>
                 Welcome in you Dashboard as {roleArr[roleArr.length - 1]}, Hai {personArr[personArr.length - 1]}

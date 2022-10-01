@@ -78,13 +78,13 @@ export default function DetailProfileUserBooks() {
                                                             {new Date(userBook.dueDate).getDate() - new Date().getDate() + " Days"}
                                                         </h4>
                                                         :
-                                                        <h5 className={"btn-outline-danger"}>
+                                                        <h4 className={"btn-outline-danger"}>
                                                             {
                                                                 "Due Date Passed " +
                                                                 (0 - (new Date(userBook.dueDate).getDate() - new Date().getDate())) +
                                                                 " Days"
                                                             }
-                                                        </h5>
+                                                        </h4>
                                                 }
                                             </td>
                                         </tr>

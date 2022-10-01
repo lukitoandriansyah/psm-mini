@@ -1,5 +1,6 @@
 import {Link, useNavigate} from "react-router-dom";
 import {responses} from "../pages/auth/LoginForm.jsx";
+import {menuList} from "./menu/MenuList.jsx";
 
 export let personArrSideBar = [];
 export let usernameArrSideBar = [];
@@ -7,61 +8,13 @@ export let userIdArrSideBar = [];
 export let roleArrSideBar = [];
 export let responsesLogoutSideBar = [];
 
-const menuList = [
-    {
-        title: "Dashboard",
-        icon: "fa-home",
-        link: "/admin/dashboard",
-    },
-    {
-        title: "Book List",
-        icon: "fa-book",
-        link: "/book/list",
-    },
-    {
-        title: "Category List",
-        icon: "fa-folder",
-        link: "/category/list",
-    },
-    {
-        title: "Author",
-        icon: "fa-tag",
-        link: "/author",
-    },
-    {
-        title: "Publisher",
-        icon: "fa-id-card",
-        link: "/publisher",
-    },
-    {
-        title: "User List",
-        icon: "fa-users",
-        link: "/users",
-    },
-    {
-        title: "Role List",
-        icon: "fa-mars-double",
-        link: "/roles",
-    },
-    {
-        title: "User Book List",
-        icon: "fa-user-edit",
-        link: "/userbook/list",
-    },
-    {
-        title: "Form Register",
-        icon: "fa-list-alt",
-        link: "/register",
-    },
-];
-
 export default function Sidebar() {
     const navigate = useNavigate();
 
     try {
         let message = responses[responses.length - 1].message.toString().split(" ");
         let indicator = 0;
-        if (message.length != 0) {
+        if (message.length !== 0) {
             indicator += 1;
         }
         if (indicator > 0) {
@@ -102,8 +55,7 @@ export default function Sidebar() {
         },
     ];
 
-    async function logout(event) {
-        event.preventDefault();
+    async function logout() {
         const targetUrl
             = "https://be-library-mini-system.herokuapp.com/auth/logout/" + userIdArrSideBar[userIdArrSideBar.length - 1];
         const method = "POST";
@@ -128,9 +80,10 @@ export default function Sidebar() {
             );
             setTimeout(
                 () => {
-                    navigate("/");
+                    navigate("/")
+                    location.reload();
                 },
-                5000,
+                3000,
                 navigate("/end")
             );
         } else {
@@ -183,7 +136,10 @@ export default function Sidebar() {
                         ))}
                         {menuLogOut.map((logOut) => (
                             <li className="nav-item" key={logOut.title}>
-                                <Link className="nav-link" onClick={(event) => logout(event)}>
+                                <Link className="nav-link" onClick={() => {
+                                    localStorage.clear()
+                                    logout().then(r => r)}}
+                                >
                                     <i className={"fas fa-fw " + logOut.icon}></i>
                                     &nbsp;
                                     <span>{logOut.title}</span>
@@ -215,7 +171,10 @@ export default function Sidebar() {
                             </Link>
                         </li>
                         <li className="nav-item" key={menuLogOut[0].title}>
-                            <Link className="nav-link" onClick={(event) => logout(event)}>
+                            <Link className="nav-link" onClick={() => {
+                                localStorage.clear()
+                                logout().then(r => r)
+                            }}>
                                 <i className={"fas fa-fw " + menuLogOut[0].icon}></i>
                                 &nbsp;
                                 <span>{menuLogOut[0].title}</span>

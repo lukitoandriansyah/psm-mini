@@ -1,64 +1,24 @@
-import {Link, useNavigate} from "react-router-dom";
-import {useState} from "react";
+/*
 
-export let responses = [];
+import {useContext, useState} from "react";
+import {AuthContext} from "../../contexts/AuthProvider.jsx";
+import {Link} from "react-router-dom";
+import axios from "axios";
 
-export default function LoginForm() {
-    const navigate = useNavigate()
-    let msg = ""
+export default function LoginFormRevise() {
+    const [username, setUsername] = useState("")
+    const [password, setPassword] = useState("")
+    let ctx = useContext(AuthContext)
 
-    const [formInput, setFormInput] = useState({
-        username: '',
-        password: '',
-    })
-
-    function handleInput(event, inputName) {
-        const copyFormInput = {...formInput}
-        copyFormInput[inputName] = event.target.value
-        setFormInput(copyFormInput)
-    }
 
     async function handleSubmit(event) {
         event.preventDefault()
-        const payload = JSON.stringify({
-            ...formInput
-        })
-        const targetUrl = "https://be-library-mini-system.herokuapp.com/auth/login"
-        const method = "POST"
-        await fetch(targetUrl, {
-            method: method,
-            body: payload,
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        }).then((re) => re.json()).then((d) => responses.push(d))
-        if (responses[responses.length - 1].status.toString() === "true") {
-            alert
-            (
-                responses[responses.length - 1].message.toString()
-                + "\n" + "name: " + responses[responses.length - 1].data.name.toString()
-                + "\n" + "username: " + responses[responses.length - 1].data.username.toString()
-                + "\n" + "role: " + responses[responses.length - 1].data.roleName.toString()
-            )
-            if (responses[responses.length - 1].data.roleName.toString() !== "Admin") {
-                navigate("/user/dashboard")
-            }
-            if (responses[responses.length - 1].data.roleName.toString() === "Admin") {
-                navigate("/admin/dashboard")
-            }
-        } else {
-            if (formInput.username !== "" && formInput.password !== "") {
-                const messageArr = responses[responses.length - 1].message.toString().split(" ");
-                if (messageArr.indexOf("Wrong") >= 0) {
-                    alert(responses[responses.length - 1].message.toString())
-                    msg = responses[responses.length - 1].message.toString();
-                } else {
-                    alert(responses[responses.length - 1].message.toString())
-                }
-            } else {
-                alert("Form must be filled fully")
-            }
-        }
+
+        const url = 'https://be-library-mini-system.herokuapp.com/auth/login'
+        const payload = {username, password}
+        const res = await axios.post(url, payload)
+        ctx.saveUserData(res.data.data)
+
     }
 
     function back(event) {
@@ -82,13 +42,13 @@ export default function LoginForm() {
                             <br/>
                             <br/>
                             <div className="h4 font-weight-bold text-center mb-4">Login to Dashboard</div>
-                            <form onSubmit={event => handleSubmit(event)} key={formInput.id}>
+                            <form onSubmit={event => handleSubmit(event)}>
                                 <div className="form-group text-center mb-4">
                                     <label>Username <br/></label>
                                     <input type={"text"}
-                                           value={formInput.username}
+                                           value={username}
                                            required
-                                           onChange={event => handleInput(event, "username")}
+                                           onChange={event => setUsername(event.target.value)}
                                            className={"form-control"}
                                     />
                                 </div>
@@ -96,9 +56,9 @@ export default function LoginForm() {
                                     <label>
                                         Password <br/></label>
                                     <input type={"password"}
-                                           value={formInput.password}
+                                           value={password}
                                            required
-                                           onChange={event => handleInput(event, "password")}
+                                           onChange={event => setPassword(event.target.value)}
                                            className={"form-control"}
                                     />
                                 </div>
@@ -128,4 +88,4 @@ export default function LoginForm() {
             </div>
         </div>
     </>
-}
+*/
