@@ -6,7 +6,7 @@ export default function UserBookForm() {
     const navigate = useNavigate();
     const params = useParams();
 
-    const isEditting = params.userBookId;
+    const isEditting = params.userbookId;
 
     const [books, setBooks] = useState([]);
     const [users, setUsers] = useState([]);
