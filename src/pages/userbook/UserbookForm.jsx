@@ -45,15 +45,11 @@ export default function UserBookForm() {
         setUserBooks(data);
     }
 
-    async function getUserBookById(){
+    async function getFormInput() {
         const res = await fetch("https://be-library-mini-system.herokuapp.com/userbook/"+params.userbookId,
             { method: "GET" })
         const data = await res.json();
-        setUserBookById(data.data)
-    }
-
-    async function getFormInput() {
-        setFormInput(userBookById)
+        setFormInput(data.data)
     }
 
     async function handleSubmit(event) {
@@ -78,7 +74,6 @@ export default function UserBookForm() {
         getBooks()
         getUsers()
         getUserBooks()
-        getUserBookById()
 
         if (isEditting) {
             getFormInput()
