@@ -15,7 +15,7 @@ export default function UserBookList() {
             console.log(res.data);
             setUserBooks(res.data);
         } catch (err) {
-            alert("Terjadi Kesalahan")
+            alert("There's Something Wrong")
         }
     }
 
@@ -59,13 +59,10 @@ export default function UserBookList() {
                             <thead>
                             <tr>
                                 <th scope="col">No</th>
-                                <th>Id Pengguna Buku</th>
-                                <th>Id Buku</th>
                                 <th>Judul Buku</th>
-                                <th>Id Pengguna</th>
                                 <th>Username</th>
                                 <th>Tanggal Peminjaman</th>
-                                <th>Tanggal Akhir Peminjaman</th>
+                                <th>Batas Akhir Peminjaman</th>
                                 <th>Tanggal Pengembalian</th>
                                 <th>Action</th>
                             </tr>
@@ -76,22 +73,22 @@ export default function UserBookList() {
                                     <td key={userBooks.userbookId} scope="row">
                                         {index + 1}
                                     </td>
-                                    <td>{userBooks.userbookId}</td>
-                                    <td>{userBooks.bookId}</td>
                                     <td>{userBooks.bookTitle}</td>
-                                    <td>{userBooks.userId}</td>
-                                    <td>{userBooks.username}</td>
+                                    <td>{userBooks.userName}</td>
                                     <td>{userBooks.startDate}</td>
                                     <td>{userBooks.dueDate}</td>
                                     <td>{userBooks.returnDate}</td>
                                     <td>
-                                        <Link to={"/userbook/form/" + userBooks.userbookId}>
+                                        <Link to=
+                                                  // {"/userbook/form/" + userBooks.userBookId}
+                                                  {"/userbook/form" + JSON.stringify(userBooks)}>
                                             <button className="btn btn-primary"> Edit </button>
-                                        </Link>
+                                        </Link>{" "}
                                         <button
                                             className="btn btn-danger"
-                                            onClick={() => deleteUserBook(userBooks.userBookId)}>
-                                            Hapus
+                                            onClick={() => deleteBook(userBooks.userbookId)}>
+                                            {" "}
+                                            Hapus{" "}
                                         </button>
                                     </td>
                                 </tr>
