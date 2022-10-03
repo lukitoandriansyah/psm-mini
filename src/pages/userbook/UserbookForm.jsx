@@ -49,6 +49,8 @@ export default function UserBookForm() {
         const res = await fetch("https://be-library-mini-system.herokuapp.com/userbook/"+params.userbookId,
             { method: "GET" })
         const data = await res.json();
+        console.log(data)
+
         setFormInput(data.data)
     }
 
