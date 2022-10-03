@@ -80,9 +80,7 @@ export default function UserBookList() {
                                     <td>{userBooks.returnDate}</td>
                                     <td>
                                         <Link to=
-                                                   {"/userbook/form/" + userBooks.userbookId}
-                                                  //{"/userbook/form" + JSON.stringify(userBooks)}
-                                            >
+                                                  {"/userbook/form/" + userBooks.userbookId}>
                                             <button className="btn btn-primary"> Edit </button>
                                         </Link>{" "}
                                         <button

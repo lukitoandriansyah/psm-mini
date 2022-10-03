@@ -11,6 +11,7 @@ export default function UserBookForm() {
     const [books, setBooks] = useState([]);
     const [users, setUsers] = useState([]);
     const [userBooks, setUserBooks] = useState([]);
+    const [userBookDetail, setUserBookDetail] = useState([]);
     const [formInput, setFormInput] = useState({
         startDate: "",
         dueDate: "",
@@ -44,13 +45,21 @@ export default function UserBookForm() {
         setUserBooks(data);
     }
 
-    async function getFormInput() {
+    async function getUserBookDetail() {
         const res = await fetch("https://be-library-mini-system.herokuapp.com/userbook/"+params.userbookId,
             { method: "GET" })
         const data = await res.json();
-        console.log(data)
+        setUserBookDetail(data);
+    }
 
-        setFormInput(data.data)
+
+    async function getFormInput() {
+        const res = await axios.get(
+            "https://be-library-mini-system.herokuapp.com/userbook/" +
+            params.userbookId
+        );
+        console.log(res.data)
+        setFormInput(res.data.data);
     }
 
     async function handleSubmit(event) {
@@ -58,9 +67,10 @@ export default function UserBookForm() {
 
         if (isEditting) {
             await axios.put(
-                "https://be-library-mini-system.herokuapp.com/userbook/update/" +
+                "https://be-library-mini-system.herokuapp.com/userbook/update-userbook/" +
                 params.userbookId,
                 formInput
+
             );
         } else {
             await axios.post(
@@ -75,7 +85,7 @@ export default function UserBookForm() {
         getBooks()
         getUsers()
         getUserBooks()
-
+        getUserBookDetail()
         if (isEditting) {
             getFormInput()
         }
@@ -99,6 +109,7 @@ export default function UserBookForm() {
                             <select
                                 className="form-control"
                                 value={formInput.bookId}
+                                required
                                 onChange={(event) => handleInput(event, "bookId")}
                             >
                                 {books.map(book =>
@@ -115,6 +126,7 @@ export default function UserBookForm() {
                             <select
                                 className="form-control"
                                 value={formInput.userId}
+                                required
                                 onChange={(event) => handleInput(event, "userId")}
                             >
                                 {users.map(user =>
@@ -131,6 +143,7 @@ export default function UserBookForm() {
                             <input
                                 className="form-control"
                                 type="text"
+                                required
                                 value={formInput.startDate}
                                 onChange={(event) => handleInput(event, "startDate")}
                             />
@@ -141,6 +154,7 @@ export default function UserBookForm() {
                             <input
                                 className="form-control"
                                 type="text"
+                                required
                                 value={formInput.dueDate}
                                 onChange={(event) => handleInput(event, "dueDate")}
                             />
@@ -155,9 +169,6 @@ export default function UserBookForm() {
                                 onChange={(event) => handleInput(event, "returnDate")}
                             />
                         </div>
-
-                        <br /> <br />
-
                         <div>
                             <button className="btn btn-primary">Submit</button>
                         </div>
