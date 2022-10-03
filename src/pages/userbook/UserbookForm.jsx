@@ -11,6 +11,7 @@ export default function UserBookForm() {
     const [books, setBooks] = useState([]);
     const [users, setUsers] = useState([]);
     const [userBooks, setUserBooks] = useState([]);
+    const [userBookById, setUserBookById] = useState([])
     const [formInput, setFormInput] = useState({
         startDate: "",
         dueDate: "",
@@ -20,7 +21,7 @@ export default function UserBookForm() {
     function handleInput(event, propName) {
         const copyFormInput = { ...formInput };
         copyFormInput[propName] = event.target.value;
-        setFormInput
+        setFormInput(copyFormInput)
     }
 
     async function getBooks() {
@@ -44,8 +45,15 @@ export default function UserBookForm() {
         setUserBooks(data);
     }
 
+    async function getUserBookById(){
+        const res = await fetch("https://be-library-mini-system.herokuapp.com/userbook/"+params.userbookId,
+            { method: "GET" })
+        const data = await res.json();
+        setUserBookById(data.data)
+    }
+
     async function getFormInput() {
-        setFormInput(JSON.parse(params.userbookId))
+        setFormInput(userBookById)
     }
 
     async function handleSubmit(event) {
@@ -70,6 +78,7 @@ export default function UserBookForm() {
         getBooks()
         getUsers()
         getUserBooks()
+        getUserBookById()
 
         if (isEditting) {
             getFormInput()
@@ -125,7 +134,7 @@ export default function UserBookForm() {
                             <label className="form-label">Tanggal Peminjaman</label>
                             <input
                                 className="form-control"
-                                type="date"
+                                type="text"
                                 value={formInput.startDate}
                                 onChange={(event) => handleInput(event, "startDate")}
                             />
@@ -135,7 +144,7 @@ export default function UserBookForm() {
                             <label className="form-label">Batas Peminjaman</label>
                             <input
                                 className="form-control"
-                                type="date"
+                                type="text"
                                 value={formInput.dueDate}
                                 onChange={(event) => handleInput(event, "dueDate")}
                             />
@@ -145,7 +154,7 @@ export default function UserBookForm() {
                             <label className="form-label">Tanggal Pengembalian</label>
                             <input
                                 className="form-control"
-                                type="date"
+                                type="text"
                                 value={formInput.returnDate}
                                 onChange={(event) => handleInput(event, "returnDate")}
                             />
