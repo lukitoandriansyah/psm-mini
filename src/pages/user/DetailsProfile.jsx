@@ -71,7 +71,7 @@ export default function DetailsProfile() {
                     }
                 }if(userBooks[i].returnDate === null){
                     userBooksDetailsArr.push(userBooks[i])
-                    totalBooks = totalBooks+1
+                    totalBooks = totalBooks+(i+1)
                     if(dueDates.getDate() - new Date().getDate() < 0){
                         isPassDueDate = true
                     }else {
