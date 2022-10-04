@@ -62,19 +62,21 @@ export default function DetailsProfile() {
             dueDates = new Date(userBooks[i].dueDate)
             returnDates = new Date(userBooks[i].returnDate)
             let userBooksDetailsArr = []
-            if (userBooks[i].userName === params.username && returnDates !== null) {
-                totalBooks = totalBooks - 1
-                if (totalBooks < 0) {
-                    totalBooks = 0
+            if(userBooks[i].userName === params.username ){
+                if(returnDates !== null){
+                    totalBooks = totalBooks - 1
+                    if(totalBooks < 0 ){
+                        totalBooks = 0
+                    }
+                }if(returnDates === null){
+                    userBooksDetailsArr.push(userBooks[i])
+                    totalBooks = totalBooks + userBooksDetailsArr.length
+                    if(dueDates.getDate() - new Date().getDate() < 0){
+                        isPassDueDate = true
+                    }else {
+                        isPassDueDate = false
+                    }
                 }
-            }
-            if (userBooks[i].userName === params.username && userBooks[i].returnDate === null) {
-                userBooksDetailsArr.push(userBooks[i].userName)
-                totalBooks = totalBooks + userBooksDetailsArr.length
-                dueDates.getDate() - new Date().getDate() < 0 ?
-                    isPassDueDate = true
-                    :
-                    isPassDueDate = false
             }
         }
         return totalBooks
