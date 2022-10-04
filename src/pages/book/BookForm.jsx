@@ -179,7 +179,7 @@ export default function BookForm() {
                             <label className="form-label">Tahun Terbit</label>
                             <input
                                 className="form-control"
-                                type="text"
+                                type="number"
                                 value={formInput.bookYear}
                                 onChange={(event) => handleInput(event, "bookYear")}
                             />
