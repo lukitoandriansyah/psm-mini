@@ -91,11 +91,7 @@ export default function DetailProfileUserBooks() {
                                     </>
                                     :
                                     <>
-                                        <tr key={userBook.userBookId}>
-                                            <th scope="row text-center"></th>
-                                            <td className={"h5 text-center"}>You don't have books loaned yet</td>
-                                            <td></td>
-                                        </tr>
+
                                     </>
 
                                 :

@@ -68,7 +68,7 @@ export default function DetailsProfile() {
                     if(totalBooks < 0 ){
                         totalBooks = 0
                     }
-                }if(returnDates === null){
+                }if(userBooks[i].returnDate === null){
                     userBooksDetailsArr.push(userBooks[i])
                     totalBooks = totalBooks + userBooksDetailsArr.length
                     if(dueDates.getDate() - new Date().getDate() < 0){
