@@ -62,10 +62,11 @@ export default function DetailProfileUserBooks() {
                             <th scope="col">Time</th>
                         </tr>
                         </thead>
-                        <tbody>
+
                         {userBooks.map((userBook, index) =>
                             params.username === userBook.userName ?
                                 userBook.returnDate === null ?
+                                    <tbody>
                                     <>
                                         <tr key={userBook.userBookId}>
                                             <th scope="row">{index + 1}</th>
@@ -89,6 +90,7 @@ export default function DetailProfileUserBooks() {
                                             </td>
                                         </tr>
                                     </>
+                                    </tbody>
                                     :
                                     <>
 
@@ -96,14 +98,9 @@ export default function DetailProfileUserBooks() {
 
                                 :
                                 <>
-                                    <tr key={userBook.userBookId}>
-                                        <th scope="row"></th>
-                                        <td className={"h5 text-center"}>You don't have books loaned yet</td>
-                                        <td></td>
-                                    </tr>
+
                                 </>
                         )}
-                        </tbody>
                     </table>
                 </div>
             </div>
