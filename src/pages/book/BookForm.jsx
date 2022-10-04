@@ -176,8 +176,8 @@ export default function BookForm() {
                             <label className="form-label">Book Status</label>
                             <br />
                             <select value={formInput.bookStatus} onChange={(event) => handleInput(event, "bookStatus")}>
-                                <option value={true}>Tersedia</option>
-                                <option value={false}>Tidak Tersedia</option>
+                                <option value={"true"}>Tersedia</option>
+                                <option value={"false"}>Tidak Tersedia</option>
                             </select>
                             <br />
                         </div>
