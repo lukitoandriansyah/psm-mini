@@ -64,7 +64,7 @@ export default function DetailsProfile() {
             let userBooksDetailsArr = []
             if(userBooks[i].userName === params.username ){
                 if(userBooks[i].returnDate !== null){
-                    userBooksDetailsArr.pop()
+                    //userBooksDetailsArr.pop()
                     totalBooks = totalBooks - 1
                     if(totalBooks < 0 ){
                         totalBooks = 0
