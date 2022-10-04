@@ -43,7 +43,7 @@ export default function UserList() {
                 </div>
                 <h6 className="m-0 font-weight-bold text-primary">Daftar User</h6>
 
-                <Link to="/articles/form">
+                <Link to="/register">
                     <button className="btn btn-primary">
                         Tambah Data
                     </button>
