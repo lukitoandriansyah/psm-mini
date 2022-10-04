@@ -76,7 +76,7 @@ export default function BookList2() {
                                     <td>{books.bookYear}</td>
                                     <td>{books.authorName}</td>
                                     <td>{books.publisherName}</td>
-                                    <td>{books.bookStatus === "true" ? "Tersedia" : "Dipinjam"}</td>
+                                    <td>{books.bookStatus === true ? "Tersedia" : "Dipinjam"}</td>
                                     <td>
                                         <Link to=
                                                   {"/book/form/" + books.bookId}>
