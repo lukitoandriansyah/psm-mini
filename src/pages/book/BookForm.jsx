@@ -81,7 +81,7 @@ export default function BookForm() {
                 }
             ).then((re)=>console.log(re));
         }
-        //navigate("/book/list");
+        navigate("/book/list");
     }
 
     useEffect(() => {
@@ -124,10 +124,10 @@ export default function BookForm() {
                                 value={formInput.categoryId}
                                 onChange={(event) => handleInput(event, "categoryId")}
                             >
-                                {categorys.map(categroy =>
+                                {categorys.map(category =>
                                     <option
-                                        value={categroy.categoryId}>
-                                        {categroy.categoryName}
+                                        value={category.categoryId}>
+                                        {category.categoryName}
                                     </option>
                                 )}
                             </select>
