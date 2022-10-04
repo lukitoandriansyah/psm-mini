@@ -17,6 +17,9 @@ export default function BookForm() {
         bookTitle: "",
         bookYear: "",
         bookStatus: "",
+        publisherId:"",
+        authorId:"",
+        categoryId:""
     });
 
     function handleInput(event, inputName) {
