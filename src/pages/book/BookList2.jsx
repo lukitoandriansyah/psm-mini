@@ -33,7 +33,7 @@ export default function BookList2() {
     }
 
     useEffect(() => {
-        getBookList();
+        getBookList()
     }, []);
 
     return (
