@@ -47,7 +47,6 @@ export default function BookForm() {
     }
 
     async function getFormInput() {
-        // ======= by Id ===========
         const res = await axios.get(
             "https://be-psm-mini-library-system.herokuapp.com/book/" +
             params.bookId
@@ -56,32 +55,10 @@ export default function BookForm() {
         console.log(res.data)
         setFormInput(res.data.data);
 
-        // ======= data ===========
-        //setFormInput(JSON.parse(params.bookId));
     }
 
     async function handleSubmit(event) {
         event.preventDefault();
-        //=========== fetch ===========
-        // const payload = JSON.stringify({
-        //   ...formInput,
-        //   bookStatus: Boolean(formInput.bookStatus),
-        //   authorId: parseInt(formInput.authorId),
-        //   categoryId: parseInt(formInput.categoryId),
-        //   publisherId: parseInt(formInput.publisherId),
-        // })
-        // ======================
-        // const targetUrl = "https://be-libray-mini-system.herokuapp.com/book/add-book"
-        // const method = "POST"
-        // await fetch(targetUrl, {
-        //     method: method,
-        //     body: payload,
-        //     headers: {
-        //         'Content-Type': 'application/json'
-        //     }
-        // })
-        // =============================
-
         if (isEditting) {
             await axios.put(
                 "https://be-psm-mini-library-system.herokuapp.com/book/update/" + params.bookId,
