@@ -124,6 +124,7 @@ export default function BookForm() {
                                 value={formInput.categoryId}
                                 onChange={(event) => handleInput(event, "categoryId")}
                             >
+                                <option value={""} disabled></option>
                                 {categorys.map(category =>
                                     <option
                                         value={category.categoryId}>
@@ -140,6 +141,7 @@ export default function BookForm() {
                                 value={formInput.authorId}
                                 onChange={(event) => handleInput(event, "authorId")}
                             >
+                                <option value={""} disabled></option>
                                 {authors.map(author =>
                                     <option value={author.authorId}>
                                         {author.authorName}
@@ -155,6 +157,7 @@ export default function BookForm() {
                                 value={formInput.publisherId}
                                 onChange={(event) => handleInput(event, "publisherId")}
                             >
+                                <option value={""} disabled></option>
                                 {publishers.map(publisher =>
                                     <option value={publisher.idPublisher}>
                                         {publisher.publisherName}
@@ -177,6 +180,7 @@ export default function BookForm() {
                             <label className="form-label">Book Status</label>
                             <br />
                             <select value={formInput.bookStatus} onChange={(event) => handleInput(event, "bookStatus")}>
+                                <option value={""} disabled></option>
                                 <option value={"true"}>Tersedia</option>
                                 <option value={"false"}>Tidak Tersedia</option>
                             </select>
