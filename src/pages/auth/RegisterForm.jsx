@@ -42,27 +42,32 @@ export default function RegisterForm() {
                 'Content-Type': 'application/json'
             }
         }).then((re) => re.json()).then((d) => responses.push(d))
-        if (responses[responses.length - 1].status.toString() === "true") {
-            alert
-            (
-                responses[responses.length - 1].message.toString()
-                + "\n" + "name: " + responses[responses.length - 1].data.name.toString()
-                + "\n" + "username: " + responses[responses.length - 1].data.username.toString()
-                + "\n" + "password: " + responses[responses.length - 1].data.password.toString()
-                + "\n" + "role Id: " + responses[responses.length - 1].data.roleId.toString()
-                + "\n \n" + "Please login to Continue"
-            )
-            navigate('/login')
-        } else {
-            if (formInput.name !== "" && formInput.username !== "" && formInput.password !== "" && formInput.roleId !== "") {
-                const messageArr = responses[responses.length - 1].message.toString().split(" ");
-                if (messageArr.indexOf("data") >= 0 && messageArr.indexOf("exists") >= 0) {
-                    alert(responses[responses.length - 1].message.toString())
-                } else {
-                    alert(responses[responses.length - 1].message.toString())
-                }
+
+        if(localStorage.length>0){
+            back(event);
+        }else{
+            if (responses[responses.length - 1].status.toString() === "true") {
+                alert
+                (
+                    responses[responses.length - 1].message.toString()
+                    + "\n" + "name: " + responses[responses.length - 1].data.name.toString()
+                    + "\n" + "username: " + responses[responses.length - 1].data.username.toString()
+                    + "\n" + "password: " + responses[responses.length - 1].data.password.toString()
+                    + "\n" + "role Id: " + responses[responses.length - 1].data.roleId.toString()
+                    + "\n \n" + "Please login to Continue"
+                )
+                navigate('/login')
             } else {
-                alert("Form must be filled fully")
+                if (formInput.name !== "" && formInput.username !== "" && formInput.password !== "" && formInput.roleId !== "") {
+                    const messageArr = responses[responses.length - 1].message.toString().split(" ");
+                    if (messageArr.indexOf("data") >= 0 && messageArr.indexOf("exists") >= 0) {
+                        alert(responses[responses.length - 1].message.toString())
+                    } else {
+                        alert(responses[responses.length - 1].message.toString())
+                    }
+                } else {
+                    alert("Form must be filled fully")
+                }
             }
         }
     }
