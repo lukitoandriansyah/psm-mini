@@ -16,7 +16,7 @@ export default function ChangeRole() {
     }
 
     async function roleById() {
-        const res = await fetch("https://be-library-mini-system.herokuapp.com/role/"+params.roleId,
+        const res = await fetch("https://be-psm-mini-library-system.herokuapp.com/role/"+params.roleId,
             {method: "GET"})
         const data = await res.json();
         setFormInput(data.data);
@@ -28,7 +28,7 @@ export default function ChangeRole() {
             ...formInput,
             roleId: parseInt(formInput.roleId)
         })
-        const targetUrl = "https://be-library-mini-system.herokuapp.com/role/update/" + params.roleId;
+        const targetUrl = "https://be-psm-mini-library-system.herokuapp.com/role/update/" + params.roleId;
         const method = "PUT"
         await fetch(targetUrl, {
             method: method,

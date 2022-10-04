@@ -9,7 +9,7 @@ export default function UserBookList() {
     async function getUserBookList() {
         try {
             const res = await axios.get(
-                "https://be-library-mini-system.herokuapp.com/userbook/list-userbook"
+                "https://be-psm-mini-library-system.herokuapp.com/userbook/list-userbook"
             );
 
             console.log(res.data);
@@ -22,7 +22,7 @@ export default function UserBookList() {
     function deleteUserBook(userbookId) {
         axios
             .delete (
-                "https://be-library-mini-system.herokuapp.com/userbook/delete/" + userbookId
+                "https://be-psm-mini-library-system.herokuapp.com/userbook/delete/" + userbookId
             )
             .then(() => {
                 getUserBookList();
@@ -85,7 +85,7 @@ export default function UserBookList() {
                                         </Link>{" "}
                                         <button
                                             className="btn btn-danger"
-                                            onClick={() => deleteBook(userBooks.userbookId)}>
+                                            onClick={() => deleteUserBook(userBooks.userbookId)}>
                                             {" "}
                                             Hapus{" "}
                                         </button>

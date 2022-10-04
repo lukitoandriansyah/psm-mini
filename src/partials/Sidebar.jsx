@@ -57,7 +57,7 @@ export default function Sidebar() {
 
     async function logout() {
         const targetUrl
-            = "https://be-library-mini-system.herokuapp.com/auth/logout/" + userIdArrSideBar[userIdArrSideBar.length - 1];
+            = "https://be-psm-mini-library-system.herokuapp.com/auth/logout/" + userIdArrSideBar[userIdArrSideBar.length - 1];
         const method = "POST";
         await fetch(targetUrl, {
             method: method,

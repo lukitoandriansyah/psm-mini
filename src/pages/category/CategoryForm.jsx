@@ -21,7 +21,7 @@ export default function CategoryForm() {
 
   async function getCategories() {
     const res = await axios.get(
-        "https://be-library-mini-system.herokuapp.com/category/list"
+        "https://be-psm-mini-library-system.herokuapp.com/category/list"
     );
 
     console.log(res.data);
@@ -30,7 +30,7 @@ export default function CategoryForm() {
 
   async function getFormInput() {
     const res = await axios.get(
-        "https://be-library-mini-system.herokuapp.com/category/list/" +
+        "https://be-psm-mini-library-system.herokuapp.com/category/list/" +
         params.categoryId
     );
 
@@ -43,13 +43,13 @@ export default function CategoryForm() {
 
     if (isEditing) {
       await axios.put(
-          "https://be-library-mini-system.herokuapp.com/category/update/" +
+          "https://be-psm-mini-library-system.herokuapp.com/category/update/" +
           params.categoryId,
           formInput
       );
     } else {
       await axios.post(
-          "https:/be-library-mini-system.herokuapp.com/category/add",
+          "https://be-psm-mini-library-system.herokuapp.com/category/add",
           formInput
       );
     }

@@ -6,7 +6,7 @@ export default function UserList() {
     const [users, setUsers] = useState([])
 
     async function getUsers() {
-        const res = await fetch("https://be-library-mini-system.herokuapp.com/users/list-user",
+        const res = await fetch("https://be-psm-mini-library-system.herokuapp.com/users/list-user",
             {method: "GET"})
         const data = await res.json();
         setUsers(data);
@@ -14,7 +14,7 @@ export default function UserList() {
 
     function deleteProduct(userId) {
         axios
-            .delete("https://be-library-mini-system.herokuapp.com/users/delete/" + userId)
+            .delete("https://be-psm-mini-library-system.herokuapp.com/users/delete/" + userId)
             .then(() => {
                 getUsers()
             })

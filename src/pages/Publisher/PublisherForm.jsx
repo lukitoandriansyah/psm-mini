@@ -22,7 +22,7 @@ export default function PublisherForm() {
 
   async function getPublishers() {
     const res = await axios.get(
-        "https://be-library-mini-system.herokuapp.com/publisher/list"
+        "https://be-psm-mini-library-system.herokuapp.com/publisher/list"
     );
 
     console.log(res.data);
@@ -31,7 +31,7 @@ export default function PublisherForm() {
 
   async function getFormInput() {
     const res = await axios.get(
-        "https://be-library-mini-system.herokuapp.com/publisher/" +
+        "https://be-psm-mini-library-system.herokuapp.com/publisher/" +
         params.idPublisher
     );
 
@@ -44,13 +44,13 @@ export default function PublisherForm() {
 
     if (isEditing) {
       await axios.put(
-          "https://be-library-mini-system.herokuapp.com/publisher/update/" +
+          "https://be-psm-mini-library-system.herokuapp.com/publisher/update/" +
           params.idPublisher,
           formInput
       );
     } else {
       await axios.post(
-          "https://be-library-mini-system.herokuapp.com/publisher/save",
+          "https://be-psm-mini-library-system.herokuapp.com/publisher/save",
           formInput
       );
     }

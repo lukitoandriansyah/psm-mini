@@ -9,7 +9,7 @@ export default function CategoryList() {
   async function getCategoryList() {
     try {
       const response = await axios.get(
-          "https://be-library-mini-system.herokuapp.com/category/list"
+          "https://be-psm-mini-library-system.herokuapp.com/category/list"
       );
 
       console.log(response.data);
@@ -23,7 +23,7 @@ export default function CategoryList() {
   function deleteCategory(id) {
     axios
         .delete(
-            "https://be-library-mini-system.herokuapp.com/category/delete/" + id
+            "https://be-psm-mini-library-system.herokuapp.com/category/delete/" + id
         )
         .then(() => {
           getCategoryList();

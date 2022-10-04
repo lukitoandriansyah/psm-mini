@@ -4,7 +4,7 @@ export default function BookList(){
     const [books, setBooks] = useState([])
 
     async function getBooks(){
-        const res = await fetch("https://be-library-mini-system.herokuapp.com/book/books",
+        const res = await fetch("https://be-psm-mini-library-system.herokuapp.com/book/books",
             {method:"GET"})
         const data = await res.json();
         setBooks(data);

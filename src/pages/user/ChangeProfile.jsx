@@ -26,14 +26,14 @@ export default function ChangeProfile() {
     }
 
     async function getRoleList() {
-        const res = await fetch("https://be-library-mini-system.herokuapp.com/role/list-role",
+        const res = await fetch("https://be-psm-mini-library-system.herokuapp.com/role/list-role",
             {method: "GET"})
         const data = await res.json();
         setRoleList(data);
     }
 
     async function getUsers() {
-        const res = await fetch("https://be-library-mini-system.herokuapp.com/users/profile/" + params.username,
+        const res = await fetch("https://be-psm-mini-library-system.herokuapp.com/users/profile/" + params.username,
             {method: "GET"})
         const data = await res.json();
         setUser(data.data);
@@ -46,7 +46,7 @@ export default function ChangeProfile() {
             ...formInput,
             roleId: parseInt(formInput.roleId)
         })
-        const targetUrl = "https://be-library-mini-system.herokuapp.com/users/update/" + params.userId;
+        const targetUrl = "https://be-psm-mini-library-system.herokuapp.com/users/update/" + params.userId;
         const method = "PUT"
         await fetch(targetUrl, {
             method: method,

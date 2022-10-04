@@ -9,7 +9,7 @@ export default function PublisherList() {
     async function getPublisherList() {
         try {
             const response = await axios.get(
-                "https://be-library-mini-system.herokuapp.com/publisher/list"
+                "https://be-psm-mini-library-system.herokuapp.com/publisher/list"
             );
 
             console.log(response.data);
@@ -23,7 +23,7 @@ export default function PublisherList() {
     function deletePublisher(id) {
         axios
             .delete(
-                "https://be-library-mini-system.herokuapp.com/publisher/delete/" + id
+                "https://be-psm-mini-library-system.herokuapp.com/publisher/delete/" + id
             )
             .then(() => {
                 getPublisherList();

@@ -10,7 +10,7 @@ export default function AuthorList() {
   async function getAuthorList() {
     try {
       const response = await axios.get(
-          "https://be-library-mini-system.herokuapp.com/author/all"
+          "https://be-psm-mini-library-system.herokuapp.com/author/all"
       );
 
       console.log(response.data);
@@ -23,7 +23,7 @@ export default function AuthorList() {
   function deleteAuthor(id) {
     axios
         .delete(
-            "https://be-library-mini-system.herokuapp.com/author/delete/" + id
+            "https://be-psm-mini-library-system.herokuapp.com/author/delete/" + id
         )
         .then(() => {
           getAuthorList();

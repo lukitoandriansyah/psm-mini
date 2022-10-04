@@ -34,7 +34,7 @@ export default function UserDashboard() {
 
     async function logout(event) {
 
-        const targetUrl = "https://be-library-mini-system.herokuapp.com/auth/logout/" + userIdArr[userIdArr.length - 1]
+        const targetUrl = "https://be-psm-mini-library-system.herokuapp.com/auth/logout/" + userIdArr[userIdArr.length - 1]
         const method = "POST"
         await fetch(targetUrl, {
             method: method,

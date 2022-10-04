@@ -17,7 +17,7 @@ export default function DetailsProfile() {
     let isPassDueDate = false
 
     async function getUsers() {
-        const res = await fetch("https://be-library-mini-system.herokuapp.com/users/profile/" + params.username,
+        const res = await fetch("https://be-psm-mini-library-system.herokuapp.com/users/profile/" + params.username,
             {method: "GET"})
         const data = await res.json();
         const userArrLocal = data.data.name.split(" ")
@@ -49,7 +49,7 @@ export default function DetailsProfile() {
     }
 
     async function getUserBooks() {
-        const res = await fetch("https://be-library-mini-system.herokuapp.com/userbook/list-userbook",
+        const res = await fetch("https://be-psm-mini-library-system.herokuapp.com/userbook/list-userbook",
             {method: "GET"})
         const data = await res.json();
         setUserBooks(data);

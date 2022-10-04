@@ -23,7 +23,7 @@ export default function LoginForm() {
         const payload = JSON.stringify({
             ...formInput
         })
-        const targetUrl = "https://be-library-mini-system.herokuapp.com/auth/login"
+        const targetUrl = "https://be-psm-mini-library-system.herokuapp.com/auth/login"
         const method = "POST"
         await fetch(targetUrl, {
             method: method,

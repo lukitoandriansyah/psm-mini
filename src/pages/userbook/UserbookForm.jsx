@@ -26,27 +26,27 @@ export default function UserBookForm() {
 
     async function getBooks() {
         const res = await axios.get(
-            "https://be-library-mini-system.herokuapp.com/book/books"
+            "https://be-psm-mini-library-system.herokuapp.com/book/books"
         );
         setBooks(res.data);
     }
 
     async function getUsers() {
         const res = await axios.get(
-            "https://be-library-mini-system.herokuapp.com/users/list-user"
+            "https://be-psm-mini-library-system.herokuapp.com/users/list-user"
         );
         setUsers(res.data);
     }
 
     async function getUserBooks() {
-        const res = await fetch("https://be-library-mini-system.herokuapp.com/userbook/list-userbook",
+        const res = await fetch("https://be-psm-mini-library-system.herokuapp.com/userbook/list-userbook",
             { method: "GET" })
         const data = await res.json();
         setUserBooks(data);
     }
 
     async function getUserBookDetail() {
-        const res = await fetch("https://be-library-mini-system.herokuapp.com/userbook/"+params.userbookId,
+        const res = await fetch("https://be-psm-mini-library-system.herokuapp.com/userbook/"+params.userbookId,
             { method: "GET" })
         const data = await res.json();
         setUserBookDetail(data);
@@ -55,7 +55,7 @@ export default function UserBookForm() {
 
     async function getFormInput() {
         const res = await axios.get(
-            "https://be-library-mini-system.herokuapp.com/userbook/" +
+            "https://be-psm-mini-library-system.herokuapp.com/userbook/" +
             params.userbookId
         );
         console.log(res.data)
@@ -67,14 +67,14 @@ export default function UserBookForm() {
 
         if (isEditting) {
             await axios.put(
-                "https://be-library-mini-system.herokuapp.com/userbook/update-userbook/" +
+                "https://be-psm-mini-library-system.herokuapp.com/userbook/update-userbook/" +
                 params.userbookId,
                 formInput
 
             );
         } else {
             await axios.post(
-                "https://be-library-mini-system.herokuapp.com/userbook/add-userbook",
+                "https://be-psm-mini-library-system.herokuapp.com/userbook/add-userbook",
                 formInput
             );
         }

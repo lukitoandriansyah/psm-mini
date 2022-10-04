@@ -14,7 +14,7 @@ export default function RegisterForm() {
     })
 
     async function getRoleList() {
-        const res = await fetch("https://be-library-mini-system.herokuapp.com/role/list-role",
+        const res = await fetch("https://be-psm-mini-library-system.herokuapp.com/role/list-role",
             {method: "GET"})
         const data = await res.json();
         setRoleList(data);
@@ -33,7 +33,7 @@ export default function RegisterForm() {
             ...formInput,
             roleId: parseInt(formInput.roleId)
         })
-        const targetUrl = "https://be-library-mini-system.herokuapp.com/auth/register"
+        const targetUrl = "https://be-psm-mini-library-system.herokuapp.com/auth/register"
         const method = "POST"
         await fetch(targetUrl, {
             method: method,

@@ -9,7 +9,7 @@ export default function BookList2() {
     async function getBookList() {
         try {
             const res = await axios.get(
-                "https://be-library-mini-system.herokuapp.com/book/books"
+                "https://be-psm-mini-library-system.herokuapp.com/book/books"
             );
             console.log(res.data);
             setBooks(res.data);
@@ -21,7 +21,7 @@ export default function BookList2() {
     function deleteBook(id) {
         axios
             .delete(
-                "https://be-library-mini-system.herokuapp.com/book/delete/" + id
+                "https://be-psm-mini-library-system.herokuapp.com/book/delete/" + id
             )
             .then(() => {
                 getBookList();

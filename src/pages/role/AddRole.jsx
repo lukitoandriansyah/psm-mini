@@ -20,7 +20,7 @@ export default function AddRole() {
             ...formInput,
             roleId: parseInt(formInput.roleId)
         })
-        const targetUrl = "https://be-library-mini-system.herokuapp.com/role/save-role"
+        const targetUrl = "https://be-psm-mini-library-system.herokuapp.com/role/save-role"
         const method = "POST"
         await fetch(targetUrl, {
             method: method,

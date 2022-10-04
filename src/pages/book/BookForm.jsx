@@ -27,21 +27,21 @@ export default function BookForm() {
 
     async function getAuthors() {
         const res = await axios.get(
-            "https://be-library-mini-system.herokuapp.com/author/all"
+            "https://be-psm-mini-library-system.herokuapp.com/author/all"
         );
         setAuthors(res.data);
     }
 
     async function getCategorys() {
         const res = await axios.get(
-            "https://be-library-mini-system.herokuapp.com/category/list"
+            "https://be-psm-mini-library-system.herokuapp.com/category/list"
         );
         setCategorys(res.data);
     }
 
     async function getPublishers() {
         const res = await axios.get(
-            "https://be-library-mini-system.herokuapp.com/publisher/list"
+            "https://be-psm-mini-library-system.herokuapp.com/publisher/list"
         );
         setPublishers(res.data);
     }
@@ -49,7 +49,7 @@ export default function BookForm() {
     async function getFormInput() {
         // ======= by Id ===========
         const res = await axios.get(
-            "https://be-library-mini-system.herokuapp.com/book/" +
+            "https://be-psm-mini-library-system.herokuapp.com/book/" +
             params.bookId
         );
 
@@ -84,12 +84,12 @@ export default function BookForm() {
 
         if (isEditting) {
             await axios.put(
-                "https://be-libray-mini-system.herokuapp.com/book/update/" + params.bookId,
+                "https://be-psm-mini-library-system.herokuapp.com/book/update/" + params.bookId,
                 formInput
             );
         } else {
             await axios.post(
-                "https://be-library-mini-system.herokuapp.com/book/add-book",
+                "https://be-psm-mini-library-system.herokuapp.com/book/add-book",
                 formInput
             );
         }

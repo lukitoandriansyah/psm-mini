@@ -7,7 +7,7 @@ export default function RoleList() {
     const [roles, setRoles] = useState([])
 
     async function getUsers() {
-        const res = await fetch("https://be-library-mini-system.herokuapp.com/role/list-role",
+        const res = await fetch("https://be-psm-mini-library-system.herokuapp.com/role/list-role",
             {method: "GET"})
         const data = await res.json();
         setRoles(data);
@@ -15,7 +15,7 @@ export default function RoleList() {
 
     function deleteRole(roleId) {
         axios
-            .delete("https://be-library-mini-system.herokuapp.com/role/delete/" + roleId)
+            .delete("https://be-psm-mini-library-system.herokuapp.com/role/delete/" + roleId)
             .then((re) => {
                 responses.push(re.data)
             })
