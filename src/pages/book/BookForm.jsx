@@ -70,7 +70,14 @@ export default function BookForm() {
         } else {
             await axios.post(
                 "https://be-psm-mini-library-system.herokuapp.com/book/add-book",
-                formInput
+                {
+                    bookTitle: formInput.bookTitle,
+                    bookYear: parseInt(formInput.bookYear),
+                    bookStatus: Boolean(formInput.bookStatus),
+                    publisherId:parseInt(formInput.publisherId),
+                    authorId:parseInt(formInput.authorId),
+                    categoryId:parseInt(formInput.categoryId)
+                }
             );
         }
         navigate("/book/list");
@@ -168,7 +175,7 @@ export default function BookForm() {
                         <div className="mb-3">
                             <label className="form-label">Book Status</label>
                             <br />
-                            <select onChange={(event) => handleInput(event, "bookStatus")}>
+                            <select value={formInput.bookStatus} onChange={(event) => handleInput(event, "bookStatus")}>
                                 <option value={true}>Tersedia</option>
                                 <option value={false}>Tidak Tersedia</option>
                             </select>
