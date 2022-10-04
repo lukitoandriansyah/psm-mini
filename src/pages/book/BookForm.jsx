@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
+import {responses} from "../auth/LoginForm.jsx";
 
 // let responParams = [];
 
@@ -78,9 +79,9 @@ export default function BookForm() {
                     authorId:parseInt(formInput.authorId),
                     categoryId:parseInt(formInput.categoryId)
                 }
-            );
+            ).then((re)=>console.log(re));
         }
-        navigate("/book/list");
+        //navigate("/book/list");
     }
 
     useEffect(() => {
