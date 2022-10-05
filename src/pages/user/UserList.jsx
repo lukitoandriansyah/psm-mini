@@ -4,6 +4,7 @@ import axios from "axios";
 
 export default function UserList() {
     const [users, setUsers] = useState([])
+    const [userBooks, setUserBooks] = useState([])
 
     async function getUsers() {
         const res = await fetch("https://be-psm-mini-library-system.herokuapp.com/users/list-user",
@@ -12,16 +13,32 @@ export default function UserList() {
         setUsers(data);
     }
 
+    async function getUserBooks() {
+        const res = await fetch("https://be-library-mini-system.herokuapp.com/userbook/list-userbook",
+            {method: "GET"})
+        const data = await res.json();
+        setUserBooks(data);
+    }
+
     function deleteProduct(userId) {
-        axios
-            .delete("https://be-psm-mini-library-system.herokuapp.com/users/delete/" + userId)
-            .then(() => {
-                getUsers()
-            })
-            .catch(err => {
-                console.log(err)
-                alert('Ada masalah saat memproses data')
-            })
+        let count = 0
+        for (let x = 0; x<userBooks.length;x++){
+            if(userBooks[x].userName === users.username  && userBooks[x].returnDate === null ){
+                count = count + 1
+            }
+        }
+        if(count > 0){
+            alert("Delete Failed!!! This user still have book not returned")
+        }else{
+            axios
+                .delete("https://be-psm-mini-library-system.herokuapp.com/users/delete/" + userId)
+                .then(() => {
+                    getUsers()
+                })
+                .catch(err => {
+                    alert("Delete Failed!!! This user still have book not returned")
+                })
+        }
     }
 
     function back(event) {
@@ -31,6 +48,7 @@ export default function UserList() {
 
     useEffect(() => {
         getUsers()
+        getUserBooks()
     }, [])
 
     return <>
