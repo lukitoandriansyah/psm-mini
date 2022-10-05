@@ -29,6 +29,9 @@ export default function DetailProfileUserBooks() {
         history.go(-1)
     }
 
+    function num(){
+        return 0
+    }
 
     useEffect(() => {
         getUserBooks()
@@ -63,13 +66,13 @@ export default function DetailProfileUserBooks() {
                         </tr>
                         </thead>
 
-                        {userBooks.map((userBook, index=0) =>
+                        {userBooks.map((userBook) =>
                             params.username === userBook.userName ?
                                 userBook.returnDate === null ?
                                     <tbody>
                                     <>
                                         <tr key={userBook.userBookId}>
-                                            <th scope="row">{index + 1}</th>
+                                            <th scope="row">{num()+ 1}</th>
                                             <td>{userBook.bookTitle}</td>
                                             <td>{userBook.dueDate}</td>
                                             <td className={"text-center"}>
@@ -98,7 +101,6 @@ export default function DetailProfileUserBooks() {
 
                                 :
                                 <>
-                                    You don't have book yest borrow
                                 </>
                         )}
                     </table>
