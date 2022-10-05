@@ -53,7 +53,6 @@ export default function DetailsProfile() {
             {method: "GET"})
         const data = await res.json();
         setUserBooks(data);
-        //getUserBooksById()
     }
 
     function getUserBooksById() {
@@ -72,7 +71,7 @@ export default function DetailsProfile() {
                     }
                 }if(userBooks[i].returnDate === null){
                     userBooksDetailsArr.push(userBooks[i])
-                    totalBooks = userBooksDetailsArr.length
+                    totalBooks = totalBooks + 1
                     if(dueDates.getDate() - new Date().getDate() < 0){
                         isPassDueDate = true
                     }else {
@@ -82,6 +81,7 @@ export default function DetailsProfile() {
             }
         }
         console.log(userBooksDetailsArr)
+        return totalBooks
     }
 
 
