@@ -72,6 +72,7 @@ export default function DetailsProfile() {
                     }
                 }if(userBooks[i].returnDate === null){
                     userBooksDetailsArr.push(userBooks[i])
+                    console.log(userBooksDetailsArr)
                     totalBooks = userBooksDetailsArr.length
                     if(dueDates.getDate() - new Date().getDate() < 0){
                         isPassDueDate = true
