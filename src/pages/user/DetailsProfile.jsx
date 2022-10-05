@@ -53,6 +53,7 @@ export default function DetailsProfile() {
             {method: "GET"})
         const data = await res.json();
         setUserBooks(data);
+        getUserBooksById()
     }
 
     function getUserBooksById() {
@@ -80,7 +81,6 @@ export default function DetailsProfile() {
                 }
             }
         }
-        return totalBooks
     }
 
 
@@ -200,7 +200,7 @@ export default function DetailsProfile() {
                                                     Total Books
                                                 </strong>
                                             </h4>
-                                            <h1 className={"big-text"}> {getUserBooksById()}</h1>
+                                            <h1 className={"big-text"}> {totalBooks}</h1>
                                             <div
                                                 className={"card-button-profile card-button-outline-primary-profile"}>
                                                 <h6 className={"fa"}>
