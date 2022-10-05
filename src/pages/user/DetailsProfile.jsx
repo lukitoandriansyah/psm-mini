@@ -64,14 +64,14 @@ export default function DetailsProfile() {
             let userBooksDetailsArr = []
             if(userBooks[i].userName === params.username ){
                 if(returnDates !== null){
-                    //userBooksDetailsArr.pop()
-                    totalBooks = totalBooks - 1
+                    userBooksDetailsArr.pop()
+                    totalBooks = totalBooks -1
                     if(totalBooks < 0 ){
                         totalBooks = 0
                     }
                 }if(userBooks[i].returnDate === null){
                     userBooksDetailsArr.push(userBooks[i])
-                    totalBooks = totalBooks+userBooksDetailsArr.length
+                    totalBooks = userBooksDetailsArr.length
                     if(dueDates.getDate() - new Date().getDate() < 0){
                         isPassDueDate = true
                     }else {
