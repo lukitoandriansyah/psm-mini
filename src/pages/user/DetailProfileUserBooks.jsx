@@ -63,7 +63,7 @@ export default function DetailProfileUserBooks() {
                         </tr>
                         </thead>
 
-                        {userBooks.map((userBook, index) =>
+                        {userBooks.map((userBook, index=0) =>
                             params.username === userBook.userName ?
                                 userBook.returnDate === null ?
                                     <tbody>
