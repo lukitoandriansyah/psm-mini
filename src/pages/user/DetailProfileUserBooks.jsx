@@ -98,7 +98,7 @@ export default function DetailProfileUserBooks() {
 
                                 :
                                 <>
-
+                                    You don't have book yest borrow
                                 </>
                         )}
                     </table>
