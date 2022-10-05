@@ -59,7 +59,6 @@ export default function DetailProfileUserBooks() {
                            cellSpacing="0">
                         <thead>
                         <tr>
-                            <th scope="col">#</th>
                             <th scope="col">Title</th>
                             <th scope="col">Due Date</th>
                             <th scope="col">Time</th>
@@ -72,7 +71,6 @@ export default function DetailProfileUserBooks() {
                                     <tbody>
                                     <>
                                         <tr key={userBook.userBookId}>
-                                            <th scope="row">{num()+ 1}</th>
                                             <td>{userBook.bookTitle}</td>
                                             <td>{userBook.dueDate}</td>
                                             <td className={"text-center"}>
