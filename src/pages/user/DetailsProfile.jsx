@@ -13,7 +13,6 @@ export default function DetailsProfile() {
     const role = roleArrSideBar;
     const uname = usernameArrSideBar;
     let a = "*******"
-    let totalBooks = 0;
     let isPassDueDate = false
 
     async function getUsers() {
@@ -56,21 +55,14 @@ export default function DetailsProfile() {
     }
 
     function getUserBooksById() {
+        let totalBooks = 0;
         let dueDates;
         let returnDates;
-        let userBooksDetailsArr = []
         for (let i = 0; i < userBooks.length; i++) {
             dueDates = new Date(userBooks[i].dueDate)
             returnDates = new Date(userBooks[i].returnDate)
             if(userBooks[i].userName === params.username ){
-                if(returnDates !== null){
-                    userBooksDetailsArr.pop()
-                    totalBooks = totalBooks -1
-                    if(totalBooks < 0 ){
-                        totalBooks = 0
-                    }
-                }if(userBooks[i].returnDate === null){
-                    userBooksDetailsArr.push(userBooks[i])
+                if(userBooks[i].returnDate === null){
                     totalBooks = totalBooks + 1
                     if(dueDates.getDate() - new Date().getDate() < 0){
                         isPassDueDate = true
@@ -80,7 +72,6 @@ export default function DetailsProfile() {
                 }
             }
         }
-        console.log(userBooksDetailsArr)
         return totalBooks
     }
 
