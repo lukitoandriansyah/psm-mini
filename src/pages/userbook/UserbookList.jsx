@@ -20,17 +20,21 @@ export default function UserBookList() {
     }
 
     function deleteUserBook(userbookId) {
-        axios
-            .delete (
-                "https://be-psm-mini-library-system.herokuapp.com/userbook/delete/" + userbookId
-            )
-            .then(() => {
-                getUserBookList();
-            })
-            .catch((err) => {
-                console.log(err);
-                alert("Ada Error")
-            });
+        if(userBooks.returnDate != null){
+            axios
+                .delete (
+                    "https://be-psm-mini-library-system.herokuapp.com/userbook/delete/" + userbookId
+                )
+                .then(() => {
+                    getUserBookList();
+                })
+                .catch((err) => {
+                    console.log(err);
+                    alert("Ada Error")
+                });
+        }else{
+            alert("Delete failed!!!\nThis book still borrowed yet")
+        }
     }
 
     useEffect(() => {

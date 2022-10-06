@@ -113,10 +113,11 @@ export default function UserBookForm() {
                                 onChange={(event) => handleInput(event, "bookId")}
                             >
                                 {books.map(book =>
-                                    <option
-                                        value={book.bookId}>
-                                        {book.bookTitle}
-                                    </option>
+                                    book.bookStatus === true?
+                                        <option
+                                            value={book.bookId}>
+                                            {book.bookTitle}
+                                        </option>:<></>
                                 )}
                             </select>
                         </div>
