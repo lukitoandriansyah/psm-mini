@@ -1,10 +1,10 @@
 import axios from "axios";
 import React from "react";
-import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import {useEffect, useState} from "react";
+import {Link} from "react-router-dom";
 
 export default function UserBookList() {
-    const [ userBooks, setUserBooks] = useState([]);
+    const [userBooks, setUserBooks] = useState([]);
 
     async function getUserBookList() {
         try {
@@ -20,24 +20,32 @@ export default function UserBookList() {
     }
 
     function deleteUserBook(userbookId) {
-        axios
-            .delete (
-                "https://be-psm-mini-library-system.herokuapp.com/userbook/delete/" + userbookId
-            )
-            .then(() => {
-                getUserBookList();
-            })
-            .catch((err) => {
-                console.log(err);
-                alert("Ada Error")
-            });
+        for (let x = 0; x < userBooks.length; x++) {
+            if (userBooks[x].userbookId === userbookId) {
+                if (userBooks[x].returnDate === null) {
+                    alert("Delete failed!!!\nThis book still borrowed yet")
+                } else {
+                    axios
+                        .delete(
+                            "https://be-psm-mini-library-system.herokuapp.com/userbook/delete/" + userbookId
+                        )
+                        .then(() => {
+                            getUserBookList();
+                        })
+                        .catch((err) => {
+                            console.log(err);
+                            alert("Ada Error")
+                        });
+                }
+            }
+        }
     }
 
     useEffect(() => {
         getUserBookList();
     }, []);
 
-    return(
+    return (
         <>
             <div class="card shadow mb-4">
                 <div className="card-header py-3 d-flex flex-row align-items-center justify-content-between">
@@ -81,7 +89,7 @@ export default function UserBookList() {
                                     <td>
                                         <Link to=
                                                   {"/userbook/form/" + userBooks.userbookId}>
-                                            <button className="btn btn-primary"> Edit </button>
+                                            <button className="btn btn-primary"> Edit</button>
                                         </Link>{" "}
                                         <button
                                             className="btn btn-danger"

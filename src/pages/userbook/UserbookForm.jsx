@@ -89,7 +89,7 @@ export default function UserBookForm() {
                 payload
             );
         }
-         navigate("/userbook/list");
+        navigate("/userbook/list");
     }
 
     useEffect(() => {
