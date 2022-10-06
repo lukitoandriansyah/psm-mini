@@ -21,24 +21,14 @@ export default function UserList() {
     }
 
     function deleteProduct(userId) {
-        let count = 0
-        for (let x = 0; x<userBooks.length;x++){
-            if(userBooks[x].userName === users.username  && userBooks[x].returnDate === null ){
-                count = count + 1
-            }
-        }
-        if(count > 0){
-            alert("Delete Failed!!! This user still have book not returned")
-        }else{
-            axios
-                .delete("https://be-psm-mini-library-system.herokuapp.com/users/delete/" + userId)
-                .then(() => {
-                    getUsers()
-                })
-                .catch(err => {
-                    alert("Delete Failed!!! This user still have book not returned")
-                })
-        }
+        axios
+            .delete("https://be-psm-mini-library-system.herokuapp.com/users/delete/" + userId)
+            .then(() => {
+                getUsers()
+            })
+            .catch(err => {
+                alert("Delete Failed!!! This user still have book not returned")
+            })
     }
 
     function back(event) {
