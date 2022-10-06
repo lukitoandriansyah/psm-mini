@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 
 export default function UserBookForm() {
@@ -13,6 +13,8 @@ export default function UserBookForm() {
     const [userBooks, setUserBooks] = useState([]);
     const [userBookDetail, setUserBookDetail] = useState([]);
     const [formInput, setFormInput] = useState({
+        bookId:"",
+        userId:"",
         startDate: "",
         dueDate: "",
         returnDate: ""
@@ -21,6 +23,7 @@ export default function UserBookForm() {
     function handleInput(event, propName) {
         const copyFormInput = { ...formInput };
         copyFormInput[propName] = event.target.value;
+
         setFormInput(copyFormInput)
     }
 
@@ -65,20 +68,28 @@ export default function UserBookForm() {
     async function handleSubmit(event) {
         event.preventDefault();
 
+        const payload = {
+            bookId:formInput.bookId,
+            userId:formInput.userId,
+            startDate:formInput.startDate.toString(),
+            dueDate:formInput.dueDate.toString(),
+            returnDate:formInput.returnDate.toString()
+        }
+
         if (isEditting) {
             await axios.put(
                 "https://be-psm-mini-library-system.herokuapp.com/userbook/update-userbook/" +
                 params.userbookId,
-                formInput
+                payload
 
             );
         } else {
             await axios.post(
                 "https://be-psm-mini-library-system.herokuapp.com/userbook/add-userbook",
-                formInput
+                payload
             );
         }
-        navigate("/userbook/list");
+         navigate("/userbook/list");
     }
 
     useEffect(() => {
@@ -112,6 +123,7 @@ export default function UserBookForm() {
                                 required
                                 onChange={(event) => handleInput(event, "bookId")}
                             >
+                                <option value={""} disabled></option>
                                 {books.map(book =>
                                     book.bookStatus === true?
                                         <option
@@ -130,6 +142,7 @@ export default function UserBookForm() {
                                 required
                                 onChange={(event) => handleInput(event, "userId")}
                             >
+                                <option value={""} disabled></option>
                                 {users.map(user =>
                                     <option
                                         value={user.userId}>
@@ -143,7 +156,7 @@ export default function UserBookForm() {
                             <label className="form-label">Tanggal Peminjaman</label>
                             <input
                                 className="form-control"
-                                type="text"
+                                type="date"
                                 required
                                 value={formInput.startDate}
                                 onChange={(event) => handleInput(event, "startDate")}
@@ -154,7 +167,7 @@ export default function UserBookForm() {
                             <label className="form-label">Batas Peminjaman</label>
                             <input
                                 className="form-control"
-                                type="text"
+                                type="date"
                                 required
                                 value={formInput.dueDate}
                                 onChange={(event) => handleInput(event, "dueDate")}
@@ -165,7 +178,7 @@ export default function UserBookForm() {
                             <label className="form-label">Tanggal Pengembalian</label>
                             <input
                                 className="form-control"
-                                type="text"
+                                type="date"
                                 value={formInput.returnDate}
                                 onChange={(event) => handleInput(event, "returnDate")}
                             />
