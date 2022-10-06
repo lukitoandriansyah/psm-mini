@@ -43,16 +43,22 @@ export default function PublisherForm() {
     event.preventDefault();
 
     if (isEditing) {
-      await axios.put(
-          "https://be-psm-mini-library-system.herokuapp.com/publisher/update/" +
-          params.idPublisher,
-          formInput
-      );
+      await axios
+          .put(
+              "https://be-psm-mini-library-system.herokuapp.com/publisher/update/" +
+              params.idPublisher,
+              formInput
+          )
+          .then((re) => console.log(re.data.message));
+      alert("error, data sudah tersedia");
     } else {
-      await axios.post(
-          "https://be-psm-mini-library-system.herokuapp.com/publisher/save",
-          formInput
-      );
+      await axios
+          .post(
+              "https://be-psm-mini-library-system.herokuapp.com/publisher/save",
+              formInput
+          )
+          .then((re) => console.log(re.data.message));
+      alert("error, data sudah tersedia");
     }
 
     navigate("/publisher");

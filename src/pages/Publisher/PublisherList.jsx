@@ -23,14 +23,15 @@ export default function PublisherList() {
     function deletePublisher(id) {
         axios
             .delete(
-                "https://be-psm-mini-library-system.herokuapp.com/publisher/delete/" + id
+                "https://be-psm-mini-library-system.herokuapp.com/publisher/delete/" +
+                id
             )
             .then(() => {
                 getPublisherList();
             })
             .catch((err) => {
                 console.log(err);
-                alert("error");
+                alert("Error, Data ini dirujuk oleh orang lain");
             });
     }
 

@@ -30,7 +30,7 @@ export default function AuthorList() {
         })
         .catch((err) => {
           console.log(err);
-          alert("Error woi");
+          alert("Error, Data ini dirujuk oleh orang lain");
         });
   }
 
