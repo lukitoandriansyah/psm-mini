@@ -1,6 +1,6 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import React, {useEffect, useState} from "react";
+import {Link, useNavigate, useParams} from "react-router-dom";
 
 export default function UserBookForm() {
     const navigate = useNavigate();
@@ -13,15 +13,15 @@ export default function UserBookForm() {
     const [userBooks, setUserBooks] = useState([]);
     const [userBookDetail, setUserBookDetail] = useState([]);
     const [formInput, setFormInput] = useState({
-        bookId:"",
-        userId:"",
+        bookId: "",
+        userId: "",
         startDate: "",
         dueDate: "",
         returnDate: ""
     })
 
     function handleInput(event, propName) {
-        const copyFormInput = { ...formInput };
+        const copyFormInput = {...formInput};
         copyFormInput[propName] = event.target.value;
 
         setFormInput(copyFormInput)
@@ -43,18 +43,64 @@ export default function UserBookForm() {
 
     async function getUserBooks() {
         const res = await fetch("https://be-psm-mini-library-system.herokuapp.com/userbook/list-userbook",
-            { method: "GET" })
+            {method: "GET"})
         const data = await res.json();
         setUserBooks(data);
     }
 
     async function getUserBookDetail() {
-        const res = await fetch("https://be-psm-mini-library-system.herokuapp.com/userbook/"+params.userbookId,
-            { method: "GET" })
+        const res = await fetch("https://be-psm-mini-library-system.herokuapp.com/userbook/" + params.userbookId,
+            {method: "GET"})
         const data = await res.json();
         setUserBookDetail(data);
     }
 
+    function userWhoCanBorrow() {
+        let arr = []
+        for (let x = 0; x < users.length; x++) {
+            for (let y = 0; y < userBooks.length; y++) {
+                if (users[x].username == userBooks[y].userName) {
+                    if (userBooks[y].returnDate == null) {
+                        arr.push(userBooks[y].userName)
+                    }
+                }
+            }
+        }
+        return arr
+    }
+
+    localStorage.setItem("usname", userWhoCanBorrow())
+    const dataUsBook = localStorage.getItem("usname").split(",")
+    console.log(dataUsBook)
+
+    function usBookCounter() {
+        let counter = 0
+        let arrB=[]
+        for (let x = 0; x < users.length; x++) {
+            console.log(typeof (users[x].username))
+            for (let y = 0; y< dataUsBook.length; y++){
+                if(dataUsBook[y]===users[x].username){
+                    counter = counter+1
+                    if(counter>=3){
+                        arrB.push(dataUsBook[y])
+                        counter = 0
+                    }
+                    /*else{
+                        arrB.push(dataUsBook[y])
+                    }*/
+                }
+                /*arrB=dataUsBook.filter((n) => {
+                    users[x].username
+                })*/
+            }
+        }
+        console.log(arrB)
+        return arrB
+    }
+
+    console.log(usBookCounter())
+
+    const setArrB = new Set(usBookCounter())
 
     async function getFormInput() {
         const res = await axios.get(
@@ -69,11 +115,11 @@ export default function UserBookForm() {
         event.preventDefault();
 
         const payload = {
-            bookId:formInput.bookId,
-            userId:formInput.userId,
-            startDate:formInput.startDate.toString(),
-            dueDate:formInput.dueDate.toString(),
-            returnDate:formInput.returnDate.toString()
+            bookId: formInput.bookId,
+            userId: formInput.userId,
+            startDate: formInput.startDate.toString(),
+            dueDate: formInput.dueDate.toString(),
+            returnDate: formInput.returnDate.toString()
         }
 
         if (isEditting) {
@@ -81,7 +127,6 @@ export default function UserBookForm() {
                 "https://be-psm-mini-library-system.herokuapp.com/userbook/update-userbook/" +
                 params.userbookId,
                 payload
-
             );
         } else {
             await axios.post(
@@ -125,11 +170,11 @@ export default function UserBookForm() {
                             >
                                 <option value={""} disabled></option>
                                 {books.map(book =>
-                                    book.bookStatus === true?
+                                    book.bookStatus === true ?
                                         <option
                                             value={book.bookId}>
                                             {book.bookTitle}
-                                        </option>:<></>
+                                        </option> : <></>
                                 )}
                             </select>
                         </div>
@@ -142,13 +187,33 @@ export default function UserBookForm() {
                                 required
                                 onChange={(event) => handleInput(event, "userId")}
                             >
-                                <option value={""} disabled></option>
-                                {users.map(user =>
-                                    <option
-                                        value={user.userId}>
-                                        {user.username}
-                                    </option>
-                                )}
+                                {isEditting ?
+                                    <>
+                                        <option value={""} disabled></option>
+                                        {users.map(user =>
+                                            <option
+                                                value={user.userId}>
+                                                {user.username}
+                                            </option>
+                                        )}
+                                    </>
+                                    :
+                                    <>
+                                        <option value={""} disabled></option>
+                                        {users.map(user =>
+                                            setArrB.has(user.username) ?
+                                                <></> :
+                                                <option
+                                                    value={user.userId}>
+                                                    {user.username}
+                                                </option>
+                                        )}
+                                        :
+                                        <>
+                                        </>
+                                    </>
+
+                                }
                             </select>
                         </div>
 
