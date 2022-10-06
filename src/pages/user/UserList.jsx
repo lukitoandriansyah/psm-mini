@@ -27,7 +27,7 @@ export default function UserList() {
                 getUsers()
             })
             .catch(err => {
-                alert("Delete Failed!!! This user still have book not returned")
+                alert("Delete Failed!!! This data was referenced in user book list, delete them before delete this.")
             })
     }
 
