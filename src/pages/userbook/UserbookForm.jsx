@@ -8,6 +8,7 @@ export default function UserBookForm() {
 
     const isEditting = params.userbookId;
 
+    const [bookById, setBookById] = useState([]);
     const [books, setBooks] = useState([]);
     const [users, setUsers] = useState([]);
     const [userBooks, setUserBooks] = useState([]);
@@ -70,14 +71,12 @@ export default function UserBookForm() {
     }
 
     localStorage.setItem("usname", userWhoCanBorrow())
-    const dataUsBook = localStorage.getItem("usname").split(",")
-    console.log(dataUsBook)
+    let dataUsBook = localStorage.getItem("usname").split(",")
 
     function usBookCounter() {
         let counter = 0
         let arrB=[]
         for (let x = 0; x < users.length; x++) {
-            console.log(typeof (users[x].username))
             for (let y = 0; y< dataUsBook.length; y++){
                 if(dataUsBook[y]===users[x].username){
                     counter = counter+1
@@ -85,53 +84,107 @@ export default function UserBookForm() {
                         arrB.push(dataUsBook[y])
                         counter = 0
                     }
-                    /*else{
-                        arrB.push(dataUsBook[y])
-                    }*/
                 }
-                /*arrB=dataUsBook.filter((n) => {
-                    users[x].username
-                })*/
             }
         }
-        console.log(arrB)
         return arrB
     }
-
-    console.log(usBookCounter())
-
-    const setArrB = new Set(usBookCounter())
+    let setArrB = new Set(usBookCounter())
 
     async function getFormInput() {
         const res = await axios.get(
             "https://be-psm-mini-library-system.herokuapp.com/userbook/" +
             params.userbookId
         );
-        console.log(res.data)
         setFormInput(res.data.data);
     }
 
     async function handleSubmit(event) {
         event.preventDefault();
 
-        const payload = {
-            bookId: formInput.bookId,
-            userId: formInput.userId,
-            startDate: formInput.startDate.toString(),
-            dueDate: formInput.dueDate.toString(),
-            returnDate: formInput.returnDate.toString()
-        }
-
         if (isEditting) {
-            await axios.put(
+            const payloadUpdateUserBook = {
+                bookId: formInput.bookId,
+                userId: formInput.userId,
+                startDate: formInput.startDate.toString(),
+                dueDate: formInput.dueDate.toString(),
+                returnDate: formInput.returnDate
+            }
+
+            const re = await axios.put(
                 "https://be-psm-mini-library-system.herokuapp.com/userbook/update-userbook/" +
                 params.userbookId,
-                payload
+                payloadUpdateUserBook
             );
+
+            const res = await axios.get(
+                "https://be-psm-mini-library-system.herokuapp.com/book/" +
+                payloadUpdateUserBook.bookId
+            )
+            setBookById(res.data.data)
+
+            if(re.data.data.returnDate !== null){
+                const payloadUpdateBookStatus = {
+                    bookTitle: res.data.data.bookTitle,
+                    bookYear: res.data.data.bookYear,
+                    bookStatus: true,
+                    publisherId:res.data.data.publisherId,
+                    authorId:res.data.data.authorId,
+                    categoryId:res.data.data.categoryId
+                }
+                await axios.put(
+                    "https://be-psm-mini-library-system.herokuapp.com/book/update/" + payloadUpdateUserBook.bookId,
+                    payloadUpdateBookStatus
+                );
+            }
+            else{
+
+                const payloadUpdateBookStatus = {
+                    bookTitle: res.data.data.bookTitle,
+                    bookYear: res.data.data.bookYear,
+                    bookStatus: false,
+                    publisherId:res.data.data.publisherId,
+                    authorId:res.data.data.authorId,
+                    categoryId:res.data.data.categoryId
+                }
+                await axios.put(
+                    "https://be-psm-mini-library-system.herokuapp.com/book/update/" + payloadUpdateUserBook.bookId,
+                    payloadUpdateBookStatus
+                );
+            }
+
         } else {
+            const payload = {
+                bookId: formInput.bookId,
+                userId: formInput.userId,
+                startDate: formInput.startDate.toString(),
+                dueDate: formInput.dueDate.toString(),
+                returnDate: formInput.returnDate.toString()
+            }
+
             await axios.post(
                 "https://be-psm-mini-library-system.herokuapp.com/userbook/add-userbook",
                 payload
+            );
+
+            const res = await axios.get(
+                "https://be-psm-mini-library-system.herokuapp.com/book/" +
+                payload.bookId
+            )
+            setBookById(res.data.data)
+
+            const payloadUpdateBookStatus = {
+                bookTitle: res.data.data.bookTitle,
+                bookYear: res.data.data.bookYear,
+                bookStatus: false,
+                publisherId:res.data.data.publisherId,
+                authorId:res.data.data.authorId,
+                categoryId:res.data.data.categoryId
+            }
+
+            await axios.put(
+                "https://be-psm-mini-library-system.herokuapp.com/book/update/" + payload.bookId,
+                payloadUpdateBookStatus
             );
         }
         navigate("/userbook/list");
