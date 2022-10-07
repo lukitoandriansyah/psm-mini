@@ -56,7 +56,14 @@ export default function AdminDashboard() {
         }
     }
 
-    return <>
+    function reload(){
+        if(localStorage.getItem("reload")){
+            localStorage.removeItem("reload")
+            location.reload()
+        }
+    }
+
+    return <>{reload()}
         <div className={"app"}>
             <nav>
                 <Link to={"/book/list"}>

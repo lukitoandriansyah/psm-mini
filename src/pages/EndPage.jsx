@@ -1,7 +1,7 @@
 import {Outlet} from "react-router-dom";
 
 export default function EndPage() {
-    let count = 5;
+    let count = 4;
     setInterval(
         function () {
             count--;

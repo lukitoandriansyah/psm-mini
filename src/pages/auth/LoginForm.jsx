@@ -20,6 +20,7 @@ export default function LoginForm() {
 
     async function handleSubmit(event) {
         event.preventDefault()
+        localStorage.setItem("reload", "true")
         const payload = JSON.stringify({
             ...formInput
         })

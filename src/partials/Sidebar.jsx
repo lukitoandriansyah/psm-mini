@@ -80,8 +80,7 @@ export default function Sidebar() {
             );
             setTimeout(
                 () => {
-                    navigate("/")
-                    location.reload();
+                    navigate("/");
                 },
                 3000,
                 navigate("/end")
@@ -138,7 +137,7 @@ export default function Sidebar() {
                             <li className="nav-item" key={logOut.title}>
                                 <Link className="nav-link" onClick={() => {
                                     localStorage.clear()
-                                    logout().then(r => r)}}
+                                    logout()}}
                                 >
                                     <i className={"fas fa-fw " + logOut.icon}></i>
                                     &nbsp;
@@ -173,7 +172,7 @@ export default function Sidebar() {
                         <li className="nav-item" key={menuLogOut[0].title}>
                             <Link className="nav-link" onClick={() => {
                                 localStorage.clear()
-                                logout().then(r => r)
+                                logout()
                             }}>
                                 <i className={"fas fa-fw " + menuLogOut[0].icon}></i>
                                 &nbsp;
