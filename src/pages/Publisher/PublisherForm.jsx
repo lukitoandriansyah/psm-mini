@@ -25,7 +25,6 @@ export default function PublisherForm() {
         "https://be-psm-mini-library-system.herokuapp.com/publisher/list"
     );
 
-    console.log(res.data);
     setPublishers(res.data);
   }
 
@@ -35,30 +34,33 @@ export default function PublisherForm() {
         params.idPublisher
     );
 
-    console.log(res.data);
     setFormInput(res.data[0]);
   }
 
   async function handleSubmit(event) {
     event.preventDefault();
 
+    let status = "";
+    let msg = "";
+
     if (isEditing) {
-      await axios
-          .put(
-              "https://be-psm-mini-library-system.herokuapp.com/publisher/update/" +
-              params.idPublisher,
-              formInput
-          )
-          .then((re) => console.log(re.data.message));
-      alert("error, data sudah tersedia");
+      const res = await axios.put(
+          "https://be-psm-mini-library-system.herokuapp.com/publisher/update/" +
+          params.idPublisher,
+          formInput
+      );
+      status = res.data.status;
+      msg = res.data.message;
+      status === true ? msg : alert(msg);
     } else {
-      await axios
-          .post(
-              "https://be-psm-mini-library-system.herokuapp.com/publisher/save",
-              formInput
-          )
-          .then((re) => console.log(re.data.message));
-      alert("error, data sudah tersedia");
+      const res = await axios.post(
+          "https://be-psm-mini-library-system.herokuapp.com/publisher/save",
+          formInput
+      );
+
+      status = res.data.status;
+      msg = res.data.message;
+      status === true ? msg : alert(msg);
     }
 
     navigate("/publisher");

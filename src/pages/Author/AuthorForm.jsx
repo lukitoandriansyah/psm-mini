@@ -30,10 +30,10 @@ export default function AuthorForm() {
 
   async function getFormInput() {
     const res = await axios.get(
-        "https://be-psm-mini-library-system.herokuapp.com/author/" + params.authorId
+        "https://be-psm-mini-library-system.herokuapp.com/author/" +
+        params.authorId
     );
 
-    console.log(res.data);
     setFormInput(res.data[0]);
   }
 
