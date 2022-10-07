@@ -74,7 +74,7 @@ export default function BookForm() {
                 {
                     bookTitle: formInput.bookTitle,
                     bookYear: parseInt(formInput.bookYear),
-                    bookStatus: Boolean(formInput.bookStatus),
+                    bookStatus: Boolean(true),
                     publisherId:parseInt(formInput.publisherId),
                     authorId:parseInt(formInput.authorId),
                     categoryId:parseInt(formInput.categoryId)
@@ -179,7 +179,7 @@ export default function BookForm() {
                         <div className="mb-3">
                             <label className="form-label">Book Status</label>
                             <br />
-                            <select value={formInput.bookStatus} onChange={(event) => handleInput(event, "bookStatus")}>
+                            <select value={formInput.bookStatus} onChange={(event) => handleInput(event, "bookStatus")} disabled>
                                 <option value={""} disabled></option>
                                 <option value={"true"}>Tersedia</option>
                                 <option value={"false"}>Tidak Tersedia</option>
