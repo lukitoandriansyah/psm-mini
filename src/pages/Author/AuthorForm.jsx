@@ -34,6 +34,7 @@ export default function AuthorForm() {
         params.authorId
     );
 
+    console.log(res.data);
     setFormInput(res.data[0]);
   }
 

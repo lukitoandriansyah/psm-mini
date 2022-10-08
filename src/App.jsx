@@ -3,8 +3,6 @@ import {Outlet} from 'react-router-dom'
 import Footer from "./partials/Footer"
 import Sidebar from "./partials/Sidebar"
 import Topbar from "./partials/Topbar"
-import LoginProvider from "./contexts/LoginProvider.jsx";
-import AuthProvider from "./contexts/AuthProvider.jsx";
 
 function App() {
     return<div id="wrapper">

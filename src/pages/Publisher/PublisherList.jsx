@@ -31,7 +31,9 @@ export default function PublisherList() {
             })
             .catch((err) => {
                 console.log(err);
-                alert("Error, Data ini dirujuk oleh orang lain");
+                alert(
+                    "Delete Failed!!! This data was referenced in book list, delete them before delete this"
+                );
             });
     }
 

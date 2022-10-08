@@ -1,40 +1,21 @@
 import {Link, Outlet, useNavigate} from "react-router-dom";
-import {responses} from "../auth/LoginForm.jsx";
 
-export let personArr = []
-export let usernameArr = []
-export let roleArr = []
 export default function AdminDashboard() {
-    let userIdArr = []
+
     let responsesLogout = []
     const navigate = useNavigate()
 
-    try {
-        let message = responses[responses.length - 1].message.toString().split(" ") //
-        let indicator = 0;
-        if (message.indexOf("Admin") > 0) {
-            indicator += 1;
+    function getUserData() {
+        const savedDataUser = localStorage.getItem("user")
+        if (savedDataUser) {
+            return JSON.parse(savedDataUser)
+        } else {
+            return {}
         }
-        if (indicator > 0) {
-            personArr.push(responses[responses.length - 1].data.name.toString())
-            usernameArr.push(responses[responses.length - 1].data.username.toString())
-            roleArr.push(responses[responses.length - 1].data.roleName.toString())
-            userIdArr.push(responses[responses.length - 1].data.userId.toString())
-            localStorage.setItem("name", personArr[personArr.length - 1].toString())
-            localStorage.setItem("uname", usernameArr[usernameArr.length - 1].toString())
-            localStorage.setItem("role", roleArr[roleArr.length - 1].toString())
-            localStorage.setItem("uId", userIdArr[userIdArr.length - 1].toString())
-        }
-    } catch (error) {
-        personArr.push(localStorage.getItem("name"))
-        usernameArr.push(localStorage.getItem("uname"))
-        roleArr.push(localStorage.getItem("role"))
-        userIdArr.push(localStorage.getItem("uId"))
     }
 
     async function logout(event) {
-
-        const targetUrl = "https://be-psm-mini-library-system.herokuapp.com/auth/logout/" + userIdArr[userIdArr.length - 1]
+        const targetUrl = "https://be-psm-mini-library-system.herokuapp.com/auth/logout/" + getUserData().userId
         const method = "POST"
         await fetch(targetUrl, {
             method: method,
@@ -47,23 +28,18 @@ export default function AdminDashboard() {
             (
                 responsesLogout[responsesLogout.length - 1].message.toString()
             )
+
+            localStorage.clear()
+
             setTimeout(() => {
                 navigate("/")
-                location.reload()
             }, 3000, navigate("/end"))
         } else {
             responsesLogout[responsesLogout.length - 1].message.toString()
         }
     }
 
-    function reload(){
-        if(localStorage.getItem("reload")){
-            localStorage.removeItem("reload")
-            location.reload()
-        }
-    }
-
-    return <>{reload()}
+    return <>
         <div className={"app"}>
             <nav>
                 <Link to={"/book/list"}>
@@ -82,17 +58,16 @@ export default function AdminDashboard() {
                     Role List
                 </Link>
                 &nbsp; &nbsp;
-                <Link to={"/users/" + usernameArr[usernameArr.length - 1]}>
+                <Link to={"/users/" + getUserData().username}>
                     Profile
                 </Link>
                 &nbsp; &nbsp;
                 <button className={"btn btn-danger"} onClick={(event) => {
-                    localStorage.clear()
                     logout(event).then(r => r)
                 }}>Logout</button>
             </nav>
             <h3>
-                Welcome in you Dashboard as {roleArr[roleArr.length - 1]}, Hai {personArr[personArr.length - 1]}
+                Welcome in you Dashboard as {getUserData().roleName}, Hai {getUserData().name}
             </h3>
             <br/>
             <Outlet/>

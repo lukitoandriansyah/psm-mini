@@ -10,7 +10,7 @@ export default function RoleList() {
         const res = await fetch("https://be-psm-mini-library-system.herokuapp.com/role/list-role",
             {method: "GET"})
         const data = await res.json();
-        setRoles(data);
+        setRoles(data.sort((a,b)=>a.roleId-b.roleId));
     }
 
     function deleteRole(roleId) {
@@ -69,7 +69,7 @@ export default function RoleList() {
                            cellSpacing="0">
                         <thead>
                         <tr>
-                            <th scope="col">#</th>
+                            <th scope="col">No</th>
                             <th scope="col">Rolename</th>
                             <th scope="col">Role Id</th>
                             <th scope="col">Action</th>

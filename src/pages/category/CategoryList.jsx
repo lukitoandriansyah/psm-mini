@@ -11,11 +11,8 @@ export default function CategoryList() {
       const response = await axios.get(
           "https://be-psm-mini-library-system.herokuapp.com/category/list"
       );
-
-      console.log(response.data);
-      setCategories(response.data);
+      setCategories(response.data.sort((a,b)=>a.categoryId-b.categoryId));
     } catch (err) {
-      console.log(err);
       alert("Terjadi Masalah");
     }
   }

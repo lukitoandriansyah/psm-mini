@@ -1,14 +1,10 @@
-import {Link, useParams} from "react-router-dom";
+import {useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
 
 export default function DetailProfileUserBooks() {
     const [user, setUser] = useState([])
     const [userBooks, setUserBooks] = useState([])
     const params = useParams()
-    let days = ""
-    let hours = ""
-    let minutes = ""
-    let seconds = ""
 
     async function getUser() {
         const res = await fetch("https://be-psm-mini-library-system.herokuapp.com/users/profile/" + params.username,
@@ -29,9 +25,6 @@ export default function DetailProfileUserBooks() {
         history.go(-1)
     }
 
-    function num(){
-        return 0
-    }
 
     useEffect(() => {
         getUserBooks()
@@ -59,18 +52,20 @@ export default function DetailProfileUserBooks() {
                            cellSpacing="0">
                         <thead>
                         <tr>
+                            <th scope="col">Id User Book</th>
                             <th scope="col">Title</th>
                             <th scope="col">Due Date</th>
                             <th scope="col">Time</th>
                         </tr>
                         </thead>
 
-                        {userBooks.map((userBook) =>
+                        {userBooks.map((userBook, index) =>
                             params.username === userBook.userName ?
                                 userBook.returnDate === null ?
                                     <tbody>
                                     <>
                                         <tr key={userBook.userBookId}>
+                                            <th scope="row">{userBook.returnDate===null?index:""}</th>
                                             <td>{userBook.bookTitle}</td>
                                             <td>{userBook.dueDate}</td>
                                             <td className={"text-center"}>

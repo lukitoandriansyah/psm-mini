@@ -1,6 +1,5 @@
 import {useEffect, useState} from "react";
 import {Link, useParams} from "react-router-dom";
-import {roleArrSideBar, usernameArrSideBar} from "../../partials/Sidebar.jsx";
 
 let firstName;
 let userArr = [];
@@ -10,8 +9,6 @@ export default function DetailsProfile() {
     const [user, setUser] = useState([])
     const [userBooks, setUserBooks] = useState([])
     const params = useParams()
-    const role = roleArrSideBar;
-    const uname = usernameArrSideBar;
     let a = "*******"
     let isPassDueDate = false
 
@@ -75,6 +72,16 @@ export default function DetailsProfile() {
         return totalBooks
     }
 
+    function getUserData() {
+        const savedDataUser = localStorage.getItem("user")
+        if (savedDataUser) {
+            const parsedData = JSON.parse(savedDataUser)
+            return parsedData
+        } else {
+            return {}
+        }
+    }
+
 
     function handlingButton() {
         alert("You don't have access to see this account password")
@@ -102,7 +109,7 @@ export default function DetailsProfile() {
                 </div>
                 <h6 className="m-0 font-weight-bold text-primary">
                     {
-                        uname[uname.length - 1] === user.username ?
+                        getUserData().username === user.username ?
                             "Your Profile"
                             :
                             "Profile"
@@ -163,10 +170,10 @@ export default function DetailsProfile() {
                                                 <h5 className={"fa fa-key"}>
                                                     &nbsp;
                                                     {
-                                                        uname[uname.length - 1] === user.username ?
+                                                        getUserData().username === user.username ?
                                                             user.password
                                                             :
-                                                            role[role.length - 1] === "Admin" ?
+                                                            getUserData().roleName === "Admin" ?
                                                                 <button
                                                                     className="btn btn-danger"
                                                                     onClick={handlingButton}>

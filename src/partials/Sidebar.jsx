@@ -1,50 +1,25 @@
 import {Link, useNavigate} from "react-router-dom";
-import {responses} from "../pages/auth/LoginForm.jsx";
 import {menuList} from "./menu/MenuList.jsx";
 
-export let personArrSideBar = [];
-export let usernameArrSideBar = [];
-export let userIdArrSideBar = [];
-export let roleArrSideBar = [];
-export let responsesLogoutSideBar = [];
 
 export default function Sidebar() {
+    let responsesLogoutSideBar= []
     const navigate = useNavigate();
 
-    try {
-        let message = responses[responses.length - 1].message.toString().split(" ");
-        let indicator = 0;
-        if (message.length !== 0) {
-            indicator += 1;
+    function getUserData() {
+        const savedDataUser = localStorage.getItem("user")
+        if (savedDataUser) {
+            return JSON.parse(savedDataUser)
+        } else {
+            return {}
         }
-        if (indicator > 0) {
-            personArrSideBar.push(responses[responses.length - 1].data.name.toString());
-            usernameArrSideBar.push(responses[responses.length - 1].data.username.toString());
-            roleArrSideBar.push(responses[responses.length - 1].data.roleName.toString());
-            userIdArrSideBar.push(responses[responses.length - 1].data.userId.toString());
-            localStorage.setItem("name", personArrSideBar[personArrSideBar.length - 1].toString());
-            localStorage.setItem("uname", usernameArrSideBar[usernameArrSideBar.length - 1].toString());
-            localStorage.setItem(
-                "role",
-                roleArrSideBar[roleArrSideBar.length - 1].toString()
-            );
-            localStorage.setItem(
-                "uId",
-                userIdArrSideBar[userIdArrSideBar.length - 1].toString()
-            );
-        }
-    } catch (error) {
-        personArrSideBar.push(localStorage.getItem("name"));
-        usernameArrSideBar.push(localStorage.getItem("uname"));
-        roleArrSideBar.push(localStorage.getItem("role"));
-        userIdArrSideBar.push(localStorage.getItem("uId"));
     }
 
     const menuProfile = [
         {
             title: "Profile",
             icon: "fa-user",
-            link: "/users/" + usernameArrSideBar[usernameArrSideBar.length - 1],
+            link: "/users/" + getUserData().username,
 
         },
     ];
@@ -57,7 +32,7 @@ export default function Sidebar() {
 
     async function logout() {
         const targetUrl
-            = "https://be-psm-mini-library-system.herokuapp.com/auth/logout/" + userIdArrSideBar[userIdArrSideBar.length - 1];
+            = "https://be-psm-mini-library-system.herokuapp.com/auth/logout/" + getUserData().userId;
         const method = "POST";
         await fetch(targetUrl, {
             method: method,
@@ -78,9 +53,12 @@ export default function Sidebar() {
                 responsesLogoutSideBar.length - 1
                     ].message.toString()
             );
+
+            localStorage.clear()
+
             setTimeout(
                 () => {
-                    navigate("/");
+                    navigate("/")
                 },
                 3000,
                 navigate("/end")
@@ -113,7 +91,7 @@ export default function Sidebar() {
 
                 {/* <!-- Nav Item - Dashboard --> */}
 
-                {roleArrSideBar[roleArrSideBar.length - 1] === "Admin" ? (
+                {getUserData().roleName === "Admin" ? (
                     <>
                         {menuList.map((menu) => (
                             <li className="nav-item" key={menu.title}>
@@ -136,8 +114,7 @@ export default function Sidebar() {
                         {menuLogOut.map((logOut) => (
                             <li className="nav-item" key={logOut.title}>
                                 <Link className="nav-link" onClick={() => {
-                                    localStorage.clear()
-                                    logout()}}
+                                    logout().then(r => r)}}
                                 >
                                     <i className={"fas fa-fw " + logOut.icon}></i>
                                     &nbsp;
@@ -171,8 +148,7 @@ export default function Sidebar() {
                         </li>
                         <li className="nav-item" key={menuLogOut[0].title}>
                             <Link className="nav-link" onClick={() => {
-                                localStorage.clear()
-                                logout()
+                                logout().then(r => r)
                             }}>
                                 <i className={"fas fa-fw " + menuLogOut[0].icon}></i>
                                 &nbsp;

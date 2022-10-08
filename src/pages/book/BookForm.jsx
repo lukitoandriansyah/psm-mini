@@ -1,9 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import {responses} from "../auth/LoginForm.jsx";
-
-// let responParams = [];
 
 export default function BookForm() {
     const navigate = useNavigate();
@@ -55,10 +52,7 @@ export default function BookForm() {
             "https://be-psm-mini-library-system.herokuapp.com/book/" +
             params.bookId
         );
-
-        console.log(res.data)
         setFormInput(res.data.data);
-
     }
 
     async function handleSubmit(event) {

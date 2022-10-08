@@ -33,7 +33,6 @@ export default function UserBookList() {
                             getUserBookList();
                         })
                         .catch((err) => {
-                            console.log(err);
                             alert("Ada Error")
                         });
                 }

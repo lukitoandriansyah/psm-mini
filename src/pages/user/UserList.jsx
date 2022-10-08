@@ -10,14 +10,14 @@ export default function UserList() {
         const res = await fetch("https://be-psm-mini-library-system.herokuapp.com/users/list-user",
             {method: "GET"})
         const data = await res.json();
-        setUsers(data);
+        setUsers(data.sort((a,b)=>a.userId-b.userId));
     }
 
     async function getUserBooks() {
         const res = await fetch("https://be-library-mini-system.herokuapp.com/userbook/list-userbook",
             {method: "GET"})
         const data = await res.json();
-        setUserBooks(data);
+        setUserBooks(data.sort((a,b)=>a.userbookId-b.userbookId));
     }
 
     function deleteProduct(userId) {
@@ -65,7 +65,7 @@ export default function UserList() {
                            cellSpacing="0">
                         <thead>
                         <tr>
-                            <th scope="col">#</th>
+                            <th scope="col">No</th>
                             <th scope="col">Name</th>
                             <th scope="col">Username</th>
                             <th scope="col">Rolename</th>
@@ -84,7 +84,6 @@ export default function UserList() {
                                         <button className="btn btn-primary">view</button>
                                     </Link>
                                     &nbsp;&nbsp;
-
                                     <button
                                         className="btn btn-danger"
                                         onClick={() => deleteProduct(user.userId)}>

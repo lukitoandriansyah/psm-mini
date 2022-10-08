@@ -1,6 +1,5 @@
 import {Link, useNavigate, useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
-import {roleArrSideBar, usernameArrSideBar} from "../../partials/Sidebar.jsx";
 
 let responses = []
 export default function ChangeProfile() {
@@ -14,9 +13,6 @@ export default function ChangeProfile() {
     const [user, setUser] = useState([])
     const [roleList, setRoleList] = useState([])
     const params = useParams();
-
-    const role = roleArrSideBar;
-    const uname = usernameArrSideBar;
 
 
     function handleInput(event, inputName) {
@@ -38,6 +34,15 @@ export default function ChangeProfile() {
         const data = await res.json();
         setUser(data.data);
         setFormInput(data.data)
+    }
+
+    function getUserData() {
+        const savedDataUser = localStorage.getItem("user")
+        if (savedDataUser) {
+            return JSON.parse(savedDataUser)
+        } else {
+            return {}
+        }
     }
 
     async function handleSubmit(event) {
@@ -132,7 +137,7 @@ export default function ChangeProfile() {
                     <div className="form-group mb-4">
                         <label>Password</label>
                         {
-                            uname[uname.length - 1] === user.username ?
+                            getUserData().username === user.username ?
                                 <input
                                     type={"password"}
                                     className="form-control"
@@ -141,7 +146,7 @@ export default function ChangeProfile() {
                                     onChange={event => handleInput(event, "password")}
                                 />
                                 :
-                                role[role.length - 1] === "Admin" ?
+                                getUserData().roleName === "Admin" ?
                                     <input
                                         type={"password"}
                                         className="form-control"
@@ -165,7 +170,7 @@ export default function ChangeProfile() {
                     <div className="form-group mb-4">
                         <label>Role Name</label>
                         {
-                            role[role.length - 1] === "Admin" ?
+                            getUserData().roleName === "Admin" ?
                                 <select
                                     className="form-control"
                                     required
