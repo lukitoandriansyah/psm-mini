@@ -34,9 +34,9 @@ export default function Topbar() {
         <nav className="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
 
             {/* <!-- Sidebar Toggle (Topbar) --> */}
-            <button id="sidebarToggleTop" className="btn btn-link d-md-none rounded-circle mr-3">
+            {/* <button id="sidebarToggleTop" className="btn btn-link d-md-none rounded-circle mr-3">
                 <i className="fa fa-bars"></i>
-            </button>
+            </button>*/}
 
             {/* <!-- Topbar Search --> */}
             {/*<form
@@ -56,12 +56,12 @@ export default function Topbar() {
             <ul className="navbar-nav ml-auto">
 
                 {/* <!-- Nav Item - Search Dropdown (Visible Only XS) --> */}
-                <li className="nav-item dropdown no-arrow d-sm-none">
+                {/* <li className="nav-item dropdown no-arrow d-sm-none">
                     <a className="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button"
                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <i className="fas fa-search fa-fw"></i>
                     </a>
-                    {/* <!-- Dropdown - Messages --> */}
+                     <!-- Dropdown - Messages -->
                     <div className="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in"
                          aria-labelledby="searchDropdown">
                         <form className="form-inline mr-auto w-100 navbar-search">
@@ -77,30 +77,30 @@ export default function Topbar() {
                             </div>
                         </form>
                     </div>
-                </li>
+                </li>*/}
 
                 {/* <!-- Nav Item - Alerts --> */}
-                <li className="nav-item dropdown no-arrow mx-1">
+                {/*<li className="nav-item dropdown no-arrow mx-1">
                     <a className="nav-link dropdown-toggle" id="alertsDropdown"
                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <i className="fas fa-fw"></i>
-                        {/* <!-- Counter - Alerts --> */}
+                         <!-- Counter - Alerts -->
                         <span className="badge badge-danger badge-counter"></span>
                     </a>
-                    {/* <!-- Dropdown - Alerts --> */}
+                     <!-- Dropdown - Alerts -->
                 </li>
 
-                {/* <!-- Nav Item - Messages --> */}
+                 <!-- Nav Item - Messages -->
                 <li className="nav-item dropdown no-arrow mx-1">
                     <a className="nav-link dropdown-toggle" id="messagesDropdown"
                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <i className="fas fa-fw"></i>
-                        {/* <!-- Counter - Messages --> */}
+                         <!-- Counter - Messages -->
                         <span className="badge badge-danger badge-counter"></span>
                     </a>
-                    {/* <!-- Dropdown - Messages --> */}
+                     <!-- Dropdown - Messages -->
                 </li>
-
+*/}
                 <div className="topbar-divider d-none d-sm-block"></div>
 
                 {/* <!-- Nav Item - User Information --> */}

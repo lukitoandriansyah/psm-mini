@@ -34,7 +34,6 @@ export default function AuthorForm() {
         params.authorId
     );
 
-    console.log(res.data);
     setFormInput(res.data[0]);
   }
 
@@ -68,16 +67,16 @@ export default function AuthorForm() {
       <>
         <div className="card shadow mb-4">
           <div className="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-            <h6 className="m-0 font-weight-bold text-primary">Form Penulis</h6>
+            <h6 className="m-0 font-weight-bold text-primary">Author Form</h6>
 
             <Link to="/author">
-              <button className="btn btn-secondary">Kembali</button>
+              <button className="btn btn-secondary">Back</button>
             </Link>
           </div>
           <div className="card-body">
             <form onSubmit={handleSubmit}>
               <div className="mb-3">
-                <label className="form-label">Penulis</label>
+                <label className="form-label">Author</label>
                 <input
                     className="form-control"
                     type="text"
@@ -87,7 +86,7 @@ export default function AuthorForm() {
               </div>
 
               <div className="mb-3">
-                <label className="form-label">Alamat</label>
+                <label className="form-label">Address</label>
                 <input
                     className="form-control"
                     type="text"
@@ -97,7 +96,7 @@ export default function AuthorForm() {
               </div>
 
               <div className="mb-3">
-                <label className="form-label">No Hp</label>
+                <label className="form-label">Phone Number</label>
                 <input
                     className="form-control"
                     type="text"

@@ -51,7 +51,7 @@ export default function PublisherForm() {
       );
       status = res.data.status;
       msg = res.data.message;
-      status === true ? msg : alert(msg);
+      status === true ? msg : alert("Error, Data was Exist");
     } else {
       const res = await axios.post(
           "https://be-psm-mini-library-system.herokuapp.com/publisher/save",
@@ -60,7 +60,7 @@ export default function PublisherForm() {
 
       status = res.data.status;
       msg = res.data.message;
-      status === true ? msg : alert(msg);
+      status === true ? msg : alert("Error, Data was Exist");
     }
 
     navigate("/publisher");
@@ -77,16 +77,16 @@ export default function PublisherForm() {
       <>
         <div class="card shadow mb-4">
           <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-            <h6 class="m-0 font-weight-bold text-primary">Form Penerbit</h6>
+            <h6 class="m-0 font-weight-bold text-primary">Publisher Form</h6>
 
             <Link to="/publisher">
-              <button className="btn btn-secondary">Kembali</button>
+              <button className="btn btn-secondary">Back</button>
             </Link>
           </div>
           <div className="card-body">
             <form onSubmit={handleSubmit}>
               <div class="mb-3">
-                <label class="form-label">Penerbit</label>
+                <label class="form-label">Publisher</label>
                 <input
                     class="form-control"
                     type="text"
@@ -96,7 +96,7 @@ export default function PublisherForm() {
               </div>
 
               <div class="mb-3">
-                <label class="form-label">Alamat</label>
+                <label class="form-label">Address</label>
                 <input
                     class="form-control"
                     type="text"
