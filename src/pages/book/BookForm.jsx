@@ -73,7 +73,7 @@ export default function BookForm() {
                     authorId:parseInt(formInput.authorId),
                     categoryId:parseInt(formInput.categoryId)
                 }
-            ).then((re)=>console.log(re));
+            );
         }
         navigate("/book/list");
     }
@@ -91,9 +91,9 @@ export default function BookForm() {
 
         <div className="card shadow mb-4">
             <div className="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                <h6 className="m-0 font-weight-bold text-primary">Form Buku</h6>
+                <h6 className="m-0 font-weight-bold text-primary">Add Book Form</h6>
                 <Link to="/book/list">
-                    <button className="btn btn-secondary">Kembali</button>
+                    <button className="btn btn-secondary">Back</button>
                 </Link>
             </div>
 
@@ -102,7 +102,7 @@ export default function BookForm() {
                     <form onSubmit={(event) => handleSubmit(event)}>
 
                         <div className="mb-3">
-                            <label className="form-label">Judul Buku</label>
+                            <label className="form-label">Book Title</label>
                             <input
                                 className="form-control"
                                 type="text"
@@ -112,7 +112,7 @@ export default function BookForm() {
                         </div>
 
                         <div className="mb-3">
-                            <label className="form-label">Kategori</label>
+                            <label className="form-label">Book's Category</label>
                             <select
                                 className="form-control"
                                 value={formInput.categoryId}
@@ -129,7 +129,7 @@ export default function BookForm() {
                         </div>
 
                         <div className="mb-3">
-                            <label className="form-label">Author</label>
+                            <label className="form-label">Book's Author</label>
                             <select
                                 className="form-control"
                                 value={formInput.authorId}
@@ -145,7 +145,7 @@ export default function BookForm() {
                         </div>
 
                         <div className="mb-3">
-                            <label className="form-label">Publisher</label>
+                            <label className="form-label">Book's Publisher</label>
                             <select
                                 className="form-control"
                                 value={formInput.publisherId}
@@ -161,7 +161,7 @@ export default function BookForm() {
                         </div>
 
                         <div className="mb-3">
-                            <label className="form-label">Tahun Terbit</label>
+                            <label className="form-label">Relese Date</label>
                             <input
                                 className="form-control"
                                 type="number"
@@ -175,8 +175,8 @@ export default function BookForm() {
                             <br />
                             <select value={formInput.bookStatus} onChange={(event) => handleInput(event, "bookStatus")} disabled>
                                 <option value={""} disabled></option>
-                                <option value={"true"}>Tersedia</option>
-                                <option value={"false"}>Tidak Tersedia</option>
+                                <option value={"true"}>Available</option>
+                                <option value={"false"}>Not Available</option>
                             </select>
                             <br />
                         </div>

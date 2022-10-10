@@ -203,9 +203,9 @@ export default function UserBookForm() {
     return <>
         <div className="card shadow mb-4">
             <div className="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                <h6 className="m-0 font-weight-bold text-primary">Form Pengguna Buku</h6>
+                <h6 className="m-0 font-weight-bold text-primary">Userbook Form</h6>
                 <Link to="/userbook/list">
-                    <button className="btn btn-secondary">Kembali</button>
+                    <button className="btn btn-secondary">Back</button>
                 </Link>
             </div>
 
@@ -214,7 +214,7 @@ export default function UserBookForm() {
                     <form onSubmit={(event) => handleSubmit(event)}>
 
                         <div className="mb-3">
-                            <label className="form-label">Judul Buku</label>
+                            <label className="form-label">Book Title</label>
                             <select
                                 className="form-control"
                                 value={formInput.bookId}
@@ -233,7 +233,7 @@ export default function UserBookForm() {
                         </div>
 
                         <div className="mb-3">
-                            <label className="form-label">username Pengguna</label>
+                            <label className="form-label">username</label>
                             <select
                                 className="form-control"
                                 value={formInput.userId}
@@ -271,7 +271,7 @@ export default function UserBookForm() {
                         </div>
 
                         <div className="mb-3">
-                            <label className="form-label">Tanggal Peminjaman</label>
+                            <label className="form-label">Start Date</label>
                             <input
                                 className="form-control"
                                 type="date"
@@ -282,7 +282,7 @@ export default function UserBookForm() {
                         </div>
 
                         <div className="mb-3">
-                            <label className="form-label">Batas Peminjaman</label>
+                            <label className="form-label">Due Date</label>
                             <input
                                 className="form-control"
                                 type="date"
@@ -293,7 +293,7 @@ export default function UserBookForm() {
                         </div>
 
                         <div className="mb-3">
-                            <label className="form-label">Tanggal Pengembalian</label>
+                            <label className="form-label">Return Date</label>
                             <input
                                 className="form-control"
                                 type="date"
