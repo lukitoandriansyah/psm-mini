@@ -1,23 +1,39 @@
 import {useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
+import {v4} from "uuid"
 
 export default function DetailProfileUserBooks() {
-    const [user, setUser] = useState([])
     const [userBooks, setUserBooks] = useState([])
     const params = useParams()
-
-    async function getUser() {
-        const res = await fetch("https://be-psm-mini-library-system.herokuapp.com/users/profile/" + params.username,
-            {method: "GET"})
-        const data = await res.json();
-        setUser(data.data);
-    }
 
     async function getUserBooks() {
         const res = await fetch("https://be-psm-mini-library-system.herokuapp.com/userbook/list-userbook",
             {method: "GET"})
         const data = await res.json();
         setUserBooks(data);
+    }
+
+    function dueDate(paramDueDate){
+        return<>
+            {
+                new Date(paramDueDate.dueDate).getDate() - new Date().getDate() >= 0 ? <h4 className={"btn-outline-success"}>{new Date(paramDueDate.dueDate).getDate() - new Date().getDate() + " Days"}</h4>
+                    :
+                    <h4 className={"btn-outline-danger"}>{"Due Date Passed " + (0 - (new Date(paramDueDate.dueDate).getDate() - new Date().getDate())) + " Days"}</h4>
+            }
+        </>
+    }
+
+    function listDetailsUserBook(){
+        return<>
+            {
+                userBooks.map((uBook) => params.username === uBook.userName ? uBook.returnDate === null ?
+                        <tbody><tr key={uBook.id}><td>{uBook.bookTitle}</td><td>{uBook.dueDate}</td><td className={"text-center"}>{dueDate(uBook)}</td></tr></tbody>
+                        :
+                        <></>
+                    :
+                    <></>
+                )}
+        </>
     }
 
     function back(event) {
@@ -30,9 +46,6 @@ export default function DetailProfileUserBooks() {
         getUserBooks()
     }, [])
 
-    useEffect(() => {
-        getUser()
-    }, [])
 
     return <>
         <div className="card shadow mb-4">
@@ -46,56 +59,15 @@ export default function DetailProfileUserBooks() {
             </div>
             <div className="card-body">
                 <div className={"table-responsive"}>
-                    <table className="table table-bordered"
-                           id="dataTable"
-                           width="100%"
-                           cellSpacing="0">
+                    <table className="table table-bordered" id="dataTable" width="100%" cellSpacing="0">
                         <thead>
                         <tr>
-                            <th scope="col">Id User Book</th>
                             <th scope="col">Title</th>
                             <th scope="col">Due Date</th>
                             <th scope="col">Time</th>
                         </tr>
                         </thead>
-
-                        {userBooks.map((userBook, index) =>
-                            params.username === userBook.userName ?
-                                userBook.returnDate === null ?
-                                    <tbody>
-                                    <>
-                                        <tr key={userBook.userBookId}>
-                                            <th scope="row">{userBook.returnDate===null?index:""}</th>
-                                            <td>{userBook.bookTitle}</td>
-                                            <td>{userBook.dueDate}</td>
-                                            <td className={"text-center"}>
-                                                {
-                                                    new Date(userBook.dueDate).getDate() - new Date().getDate() >= 0 ?
-                                                        <h4 className={"btn-outline-success"}>
-                                                            {new Date(userBook.dueDate).getDate() - new Date().getDate() + " Days"}
-                                                        </h4>
-                                                        :
-                                                        <h4 className={"btn-outline-danger"}>
-                                                            {
-                                                                "Due Date Passed " +
-                                                                (0 - (new Date(userBook.dueDate).getDate() - new Date().getDate())) +
-                                                                " Days"
-                                                            }
-                                                        </h4>
-                                                }
-                                            </td>
-                                        </tr>
-                                    </>
-                                    </tbody>
-                                    :
-                                    <>
-
-                                    </>
-
-                                :
-                                <>
-                                </>
-                        )}
+                        {listDetailsUserBook()}
                     </table>
                 </div>
             </div>

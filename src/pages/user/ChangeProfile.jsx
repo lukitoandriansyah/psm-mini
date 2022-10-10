@@ -38,33 +38,23 @@ export default function ChangeProfile() {
 
     function getUserData() {
         const savedDataUser = localStorage.getItem("user")
-        if (savedDataUser) {
-            return JSON.parse(savedDataUser)
-        } else {
-            return {}
-        }
+        if (savedDataUser) {return JSON.parse(savedDataUser)}
+        else {return {}}
     }
 
     async function handleSubmit(event) {
         event.preventDefault()
-        const payload = JSON.stringify({
-            ...formInput,
-            roleId: parseInt(formInput.roleId)
-        })
+        const payload = JSON.stringify({...formInput, roleId: parseInt(formInput.roleId)})
         const targetUrl = "https://be-psm-mini-library-system.herokuapp.com/users/update/" + params.userId;
         const method = "PUT"
-        await fetch(targetUrl, {
-            method: method,
-            body: payload,
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        }).then((re) => re.json()).then((d) => responses.push(d))
+        await fetch(targetUrl, {method: method, body: payload, headers: {'Content-Type': 'application/json'}})
+            .then((re) => re.json()).then((d) => responses.push(d))
+        navigation()
+    }
+
+    function navigation(){
         if (responses[responses.length - 1].status.toString() === "true") {
-            alert
-            (
-                responses[responses.length - 1].message.toString()
-            )
+            alert(responses[responses.length - 1].message.toString())
             navigate('/users/' + responses[responses.length - 1].data.username.toString())
         } else {
             if (formInput.name !== "" && formInput.username !== "" && formInput.password !== "" && formInput.roleId !== "") {
@@ -78,6 +68,35 @@ export default function ChangeProfile() {
                 alert("Form must be filled fully")
             }
         }
+    }
+
+    function passRequirement(){
+        return<>
+            {
+                getUserData().username === user.username ? <input type={"password"} className="form-control" required value={formInput.password} onChange={event => handleInput(event, "password")}/>
+                    :
+                    getUserData().roleName === "Admin" ? <input type={"password"} className="form-control" required value={formInput.password} onChange={event => handleInput(event, "password")} disabled/>
+                        :
+                        <input type={"password"} className="form-control" required value={formInput.password} onChange={event => handleInput(event, "password")}/>
+            }
+        </>
+    }
+
+    function roleRequirement(){
+        return<>
+            {
+                getUserData().roleName === "Admin" ?
+                    <select className="form-control" required value={formInput.roleId} onChange={event => handleInput(event, "roleId")}>
+                        <option value="" disabled></option>
+                        {roleList.map(listRole => <option key={listRole.roleId} value={listRole.roleId}>{listRole.roleName}</option>)}
+                    </select>
+                    :
+                    <select className="form-control" required value={formInput.roleId} onChange={event => handleInput(event, "roleId")} disabled>
+                        <option value="" disabled></option>
+                        {roleList.map(listRole => <option key={listRole.roleId} value={listRole.roleId}>{listRole.roleName}</option>)}
+                    </select>
+            }
+        </>
     }
 
     function back(event) {
@@ -96,8 +115,7 @@ export default function ChangeProfile() {
     return <>
         <div className="card shadow mb-4">
             <div className="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                <div className={"m-0 font-weight-bold text-primary fa fa-arrow-circle-left"}
-                     onClick={event => back(event)}>
+                <div className={"m-0 font-weight-bold text-primary fa fa-arrow-circle-left"} onClick={event => back(event)}>
                     &nbsp;
                     Back
                 </div>
@@ -106,7 +124,7 @@ export default function ChangeProfile() {
 
                 <Link to={"/users/" + params.username}>
                     <button className="btn btn-secondary">
-                        Kembali
+                        Back
                     </button>
                 </Link>
             </div>
@@ -116,89 +134,22 @@ export default function ChangeProfile() {
                 <form className="w-50" onSubmit={event => handleSubmit(event)}>
                     <div className="form-group mb-4">
                         <label>Your Name</label>
-                        <input
-                            type="text"
-                            className="form-control"
-                            required
-                            value={formInput.name}
-                            onChange={event => handleInput(event, "name")}/>
+                        <input type="text" className="form-control" required value={formInput.name} onChange={event => handleInput(event, "name")}/>
                     </div>
 
                     <div className="form-group mb-4">
                         <label>Username</label>
-                        <input
-                            type="text"
-                            className="form-control"
-                            required
-                            value={formInput.username}
-                            onChange={event => handleInput(event, "username")}/>
+                        <input type="text" className="form-control" required value={formInput.username} onChange={event => handleInput(event, "username")}/>
                     </div>
 
                     <div className="form-group mb-4">
                         <label>Password</label>
-                        {
-                            getUserData().username === user.username ?
-                                <input
-                                    type={"password"}
-                                    className="form-control"
-                                    required
-                                    value={formInput.password}
-                                    onChange={event => handleInput(event, "password")}
-                                />
-                                :
-                                getUserData().roleName === "Admin" ?
-                                    <input
-                                        type={"password"}
-                                        className="form-control"
-                                        required
-                                        value={formInput.password}
-                                        onChange={event => handleInput(event, "password")}
-                                        disabled
-                                    />
-
-                                    :
-                                    <input
-                                        type={"password"}
-                                        className="form-control"
-                                        required
-                                        value={formInput.password}
-                                        onChange={event => handleInput(event, "password")}
-                                    />
-                        }
+                        {passRequirement()}
                     </div>
 
                     <div className="form-group mb-4">
                         <label>Role Name</label>
-                        {
-                            getUserData().roleName === "Admin" ?
-                                <select
-                                    className="form-control"
-                                    required
-                                    value={formInput.roleId}
-                                    onChange={event => handleInput(event, "roleId")}>
-                                    <option value="" disabled></option>
-                                    {roleList.map(listRole =>
-                                        <option value={listRole.roleId}>
-                                            {listRole.roleName}
-                                        </option>
-                                    )}
-                                </select>
-                                :
-                                <select
-                                    className="form-control"
-                                    required
-                                    value={formInput.roleId}
-                                    onChange={event => handleInput(event, "roleId")}
-                                    disabled>
-                                    <option value="" disabled></option>
-                                    {roleList.map(listRole =>
-                                        <option value={listRole.roleId}>
-                                            {listRole.roleName}
-                                        </option>
-                                    )}
-                                </select>
-                        }
-
+                        {roleRequirement()}
                     </div>
 
                     <button className="btn btn-primary">

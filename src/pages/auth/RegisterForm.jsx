@@ -139,7 +139,7 @@ export default function RegisterForm() {
                                         onChange={event => handleInput(event, "roleId")}>
                                         <option value="" disabled></option>
                                         {roleList.map(listRole =>
-                                            <option value={listRole.roleId}>
+                                            <option value={listRole.roleId} key={listRole.roleId}>
                                                 {listRole.roleName}
                                             </option>
                                         )}

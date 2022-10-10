@@ -115,13 +115,6 @@ export default function LoginForm() {
         const respMessage = res.message
 
         if(respStatus===true){
-            alert
-            (
-                respMessage.toString()
-                + "\n" + "name: " + respData.name.toString()
-                + "\n" + "username: " + respData.username.toString()
-                + "\n" + "role: " + respData.roleName.toString()
-            )
             if (respData.roleName.toString() !== "Admin") {
                 navigate("/user/dashboard")
             }
@@ -138,13 +131,7 @@ export default function LoginForm() {
         if (status.toString() === "true") {
 
             if (msg.length!=0) {
-                alert
-                (
-                    msg.toString()
-                    + "\n" + "name: " + user.name.toString()
-                    + "\n" + "username: " + user.username.toString()
-                    + "\n" + "role: " + user.roleName.toString()
-                )
+
                 if (user.roleName.toString() !== "Admin") {
                     console.log(user.roleName)
                     navigate("/user/dashboard")

@@ -1,10 +1,13 @@
 export default function EndPage() {
     let count = 5;
-    setInterval(
-        function () {
-            count--;
-            count > 0 ? document.getElementById("time").innerHTML = count : " "
-        }, 1000);
+    function counter () {
+        count--;
+        if( count > 0 ){
+            document.getElementById("time").innerHTML = count.toString()
+        }
+    }
+    setInterval(counter
+        , 1000);
 
     return <>
         <div className="container-auth-end">

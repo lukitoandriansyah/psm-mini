@@ -19,6 +19,7 @@ export default function ProtectedRouteForAdmin(){
     if(getUserData().roleName === "Admin"){
         return <Outlet/>
     }else{
-        return <Navigate to={"/user/dashboard"}/>
+        alert("You no permitted to see these page")
+        return <Navigate to={history.go(-1)}/>
     }
 }

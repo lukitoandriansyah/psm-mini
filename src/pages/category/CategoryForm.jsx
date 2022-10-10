@@ -24,7 +24,6 @@ export default function CategoryForm() {
         "https://be-psm-mini-library-system.herokuapp.com/category/list"
     );
 
-    console.log(res.data);
     setCategories(res.data);
   }
 
@@ -34,7 +33,6 @@ export default function CategoryForm() {
         params.categoryId
     );
 
-    console.log(res.data.data);
     setFormInput(res.data.data);
   }
 
@@ -68,16 +66,16 @@ export default function CategoryForm() {
       <>
         <div className="card shadow mb-4">
           <div className="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-            <h6 className="m-0 font-weight-bold text-primary">Form Kategori</h6>
+            <h6 className="m-0 font-weight-bold text-primary">Form Category</h6>
 
             <Link to="/category/list">
-              <button className="btn btn-secondary">Kembali</button>
+              <button className="btn btn-secondary">Back</button>
             </Link>
           </div>
           <div className="card-body">
             <form onSubmit={handleSubmit}>
               <div className="mb-3">
-                <label className="form-label">Kategori</label>
+                <label className="form-label">Category</label>
                 <input
                     className="form-control"
                     type="text"
