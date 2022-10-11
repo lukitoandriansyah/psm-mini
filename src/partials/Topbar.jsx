@@ -95,7 +95,7 @@ export default function Topbar() {
         if (respLogout[respLogout.length - 1].status.toString() === "true") {
             alert(respLogout[respLogout.length - 1].message.toString());
             localStorage.clear()
-            setTimeout(() => {navigate("/")}, 3000, navigate("/end"));
+            setTimeout(() => {navigate("/")}, 5000, navigate("/end"));
         } else {
             respLogout[respLogout.length - 1].message.toString();
         }
