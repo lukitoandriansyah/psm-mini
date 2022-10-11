@@ -45,6 +45,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
                             <Route path={"users/:username"} element={<ProtectedRouteForNonAdmin/>}>
                                 <Route index element={<DetailsProfile/>}/>
                                 <Route path={"list-book"} element={<DetailProfileUserBooks/>}/>
+                                <Route path={":userId"} element={<ChangeProfile/>}/>
                             </Route>
                             <Route path={"/user/dashboard"} element={<UserDashboard/>}/>
                             <Route path={"/admin/dashboard"} element={<AdminDashboard/>}/>
@@ -52,7 +53,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
 
                             <Route element={<ProtectedRouteForAdmin/>}>
                                 <Route path="users" element={<UserList/>}/>
-                                <Route path={"users/:username/:userId"} element={<ChangeProfile/>}/>
+
 
                                 <Route path={"roles"} element={<RoleList/>}/>
                                 <Route path={"roles/:roleId"} element={<ChangeRole/>}/>
