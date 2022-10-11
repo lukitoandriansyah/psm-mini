@@ -191,11 +191,20 @@ export default function LoginForm() {
                             {
                                 localStorage.getItem("user")?
                                     <div className="form-group text-center mb-4">
-                                        <Link to={"/user/dashboard"}>
-                                            <button
-                                                className=" text-center mb-4 btn btn-success btn-block rounded-0">Continue to Dashboard
-                                            </button>
-                                        </Link>
+                                        {
+                                            getUserData().roleName==="Admin"?
+                                                <Link to={"/admin/dashboard"}>
+                                                    <button
+                                                        className=" text-center mb-4 btn btn-success btn-block rounded-0">Continue to Dashboard
+                                                    </button>
+                                                </Link>
+                                                :
+                                                <Link to={"/user/dashboard"}>
+                                                    <button
+                                                        className=" text-center mb-4 btn btn-success btn-block rounded-0">Continue to Dashboard
+                                                    </button>
+                                                </Link>
+                                        }
                                     </div>
                                     :
                                     <form onSubmit={event => handleSubmit(event)} key={formInput.id}>

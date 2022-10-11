@@ -28,6 +28,7 @@ import CategoryForm from "./pages/category/CategoryForm.jsx";
 import ProtectedRouteForAdmin from "./pages/protected-routes/ProtectedRouteForAdmin.jsx";
 import LoginForm from "./pages/auth/LoginForm.jsx";
 import ProtectedRouteLogin from "./pages/protected-routes/ProtectedRouteLogin.jsx";
+import ProtectedRouteForNonAdmin from "./pages/protected-routes/ProtectedRouteForNonAdmin";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
     <React.StrictMode>
@@ -41,12 +42,13 @@ ReactDOM.createRoot(document.getElementById("root")).render(
                     <Route path={"/end"} element={<EndPage/>}/>
                     <Route path={""} element={<App/>}>
                         <Route element={<ProtectedRouteLogin/>}>
-
-                            <Route path={"users/:username"} element={<DetailsProfile/>}/>
-                            <Route path={"users/:username/list-book"} element={<DetailProfileUserBooks/>}/>
+                            <Route path={"users/:username"} element={<ProtectedRouteForNonAdmin/>}>
+                                <Route index element={<DetailsProfile/>}/>
+                                <Route path={"list-book"} element={<DetailProfileUserBooks/>}/>
+                            </Route>
                             <Route path={"/user/dashboard"} element={<UserDashboard/>}/>
-                            <Route path={"/book/list"} element={<BookList2/>}/>
                             <Route path={"/admin/dashboard"} element={<AdminDashboard/>}/>
+                            <Route path={"/book/list"} element={<BookList2/>}/>
 
                             <Route element={<ProtectedRouteForAdmin/>}>
                                 <Route path="users" element={<UserList/>}/>

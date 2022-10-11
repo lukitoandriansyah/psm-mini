@@ -1,21 +1,30 @@
 import {Link, useNavigate, useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
+import Spinner from "../../components/Spinner/Spinner"
 
 let responses = []
 export default function ChangeRole() {
     let statusCheckerName = true
     const params = useParams();
     const [roles, setRoles] = useState([])
+    const [isLoading, setIsLoading] = useState(true)
     const navigate = useNavigate()
     const [formInput, setFormInput] = useState({
         roleName: ""
     })
 
     async function getUsers() {
-        const res = await fetch("https://be-psm-mini-library-system.herokuapp.com/role/list-role",
-            {method: "GET"})
-        const data = await res.json();
-        setRoles(data.sort((a,b)=>a.roleId-b.roleId));
+        try {
+            const res = await fetch("https://be-psm-mini-library-system.herokuapp.com/role/list-role",
+                {method: "GET"})
+            const data = await res.json();
+            setRoles(data.sort((a,b)=>a.roleId-b.roleId));
+        }catch (err){
+            console.log(err)
+            alert("There's something wrong. please try again")
+        }finally {
+            setIsLoading(false)
+        }
     }
 
     function roleNameChecker(paramRoleName){
@@ -34,11 +43,19 @@ export default function ChangeRole() {
     }
 
     async function roleById() {
-        const res = await fetch("https://be-psm-mini-library-system.herokuapp.com/role/"+params.roleId,
-            {method: "GET"})
-        const data = await res.json();
-        localStorage.setItem("tempRoleName", data.data.roleName)
-        setFormInput(data.data);
+        setIsLoading(true)
+        try {
+            const res = await fetch("https://be-psm-mini-library-system.herokuapp.com/role/"+params.roleId,
+                {method: "GET"})
+            const data = await res.json();
+            localStorage.setItem("tempRoleName", data.data.roleName)
+            setFormInput(data.data);
+        }catch (err){
+            console.log(err)
+            alert("There's something wrong. please try again")
+        }finally {
+            setIsLoading(false)
+        }
     }
 
     async function handleSubmit(event) {
@@ -131,17 +148,22 @@ export default function ChangeRole() {
             </div>
 
             <div className="card-body">
-
-                <form className="w-50" onSubmit={event => handleSubmit(event)}>
-                    <div className="form-group mb-4">
-                        <label>Role Name</label>
-                        <input type="text" className="form-control" required value={formInput.roleName} onChange={event => handleInput(event, "roleName")}/>
+                {isLoading?
+                    <div className="d-flex justify-content-center">
+                        <Spinner />
                     </div>
+                    :
+                    <form className="w-50" onSubmit={event => handleSubmit(event)}>
+                        <div className="form-group mb-4">
+                            <label>Role Name</label>
+                            <input type="text" className="form-control" required value={formInput.roleName} onChange={event => handleInput(event, "roleName")}/>
+                        </div>
 
-                    <button className="btn btn-primary">
-                        Save Changes
-                    </button>
-                </form>
+                        <button className="btn btn-primary">
+                            Save Changes
+                        </button>
+                    </form>
+                }
             </div>
         </div>
     </>

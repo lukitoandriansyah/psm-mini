@@ -14,12 +14,13 @@ export default function ProtectedRouteForAdmin(){
 
     if(isLogin === null){
         return <Navigate to={"/login"}/>
+    }else{
+        if(getUserData().roleName === "Admin"){
+            return <Outlet/>
+        }else{
+            alert("You no permitted to see these page")
+            return <Navigate to={history.go(-1)}/>
+        }
     }
 
-    if(getUserData().roleName === "Admin"){
-        return <Outlet/>
-    }else{
-        alert("You no permitted to see these page")
-        return <Navigate to={history.go(-1)}/>
-    }
 }

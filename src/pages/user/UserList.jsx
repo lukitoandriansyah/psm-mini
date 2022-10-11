@@ -2,12 +2,14 @@ import {useEffect, useState} from "react";
 import {Link} from "react-router-dom";
 import axios from "axios";
 import {useDebounce} from "use-debounce";
+import Spinner from "../../components/Spinner/Spinner.jsx";
 
 export default function UserList() {
     const [users, setUsers] = useState([])
     const [userBooks, setUserBooks] = useState([])
     const [searchKeyword, setSearchKeyword] = useState('')
     const [filteredUsers, setFilteredUsers] = useState([])
+    const [isLoading, setIsLoading] = useState(true)
     const [searchKeywordDebounced] = useDebounce(searchKeyword, 500)
 
 
@@ -15,28 +17,49 @@ export default function UserList() {
         const keyword = searchKeyword.length > 0
             ? '&q=' + searchKeyword
             : ''
-        const res = await fetch("https://be-psm-mini-library-system.herokuapp.com/users/list-user?_expand=user" + keyword,
-            {method: "GET"})
-        const data = await res.json();
-        setUsers(data.sort((a,b)=>a.userId-b.userId));
+        try {
+            const res = await fetch("https://be-psm-mini-library-system.herokuapp.com/users/list-user?_expand=user" + keyword,
+                {method: "GET"})
+            const data = await res.json();
+            setUsers(data.sort((a,b)=>a.userId-b.userId));
+        }catch (err){
+            console.log(err)
+            alert("There's something wrong. please try again")
+        }finally {
+            setIsLoading(false)
+        }
     }
 
     async function getUserBooks() {
-        const res = await fetch("https://be-library-mini-system.herokuapp.com/userbook/list-userbook",
-            {method: "GET"})
-        const data = await res.json();
-        setUserBooks(data.sort((a,b)=>a.userbookId-b.userbookId));
+        setIsLoading(true)
+        try {
+            const res = await fetch("https://be-library-mini-system.herokuapp.com/userbook/list-userbook",
+                {method: "GET"})
+            const data = await res.json();
+            setUserBooks(data.sort((a,b)=>a.userbookId-b.userbookId));
+        }catch (err){
+            console.log(err)
+            alert("There's something wrong. please try again")
+        }finally {
+            setIsLoading(false)
+        }
     }
 
     async function deleteData(userId) {
-        const res = await axios.delete("https://be-psm-mini-library-system.herokuapp.com/users/delete/" + userId)
-        const resp = res.data
-
-        resp.status === false ?
+        setIsLoading(true)
+        try {
+            const res = await axios.delete("https://be-psm-mini-library-system.herokuapp.com/users/delete/" + userId)
+            const resp = res.data
+            if( resp.status === false ){
+                alert("Delete Failed!!!\nThis data was referenced in user book list, delete them before delete this.")
+                getUsers()
+            }else {
+                getUsers()
+            }
+        }catch (err){
             alert("Delete Failed!!!\nThis data was referenced in user book list, delete them before delete this.")
-            :
-            ""
-        getUsers()
+            getUsers()
+        }
     }
 
     function back(event) {
@@ -50,6 +73,7 @@ export default function UserList() {
     }, [searchKeywordDebounced])
 
     useEffect(() => {
+        setIsLoading(true)
         if (searchKeyword.length > 0) {
             const filterResult = users.filter((user) => {
                 function params(){
@@ -131,43 +155,49 @@ export default function UserList() {
             </div>
 
             <div className="card-body">
-                <div className={"table-responsive"}>
-                    <table className="table table-bordered"
-                           id="dataTable"
-                           width="100%"
-                           cellSpacing="0">
-                        <thead>
-                        <tr>
-                            <th scope="col">No</th>
-                            <th scope="col">Name</th>
-                            <th scope="col">Username</th>
-                            <th scope="col">Role</th>
-                            <th scope="col">Action</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {filteredUsers.map((user, index) =>
-                            <tr key={user.userId}>
-                                <th scope="row">{index + 1}</th>
-                                <td>{user.name}</td>
-                                <td>{user.username}</td>
-                                <td>{user.roleName}</td>
-                                <td>
-                                    <Link to={"/users/" + user.username}>
-                                        <button className="btn btn-primary">view</button>
-                                    </Link>
-                                    &nbsp;&nbsp;
-                                    <button
-                                        className="btn btn-danger"
-                                        onClick={() => deleteData(user.userId)}>
-                                        Delete
-                                    </button>
-                                </td>
+                {isLoading?
+                    <div className="d-flex justify-content-center">
+                        <Spinner />
+                    </div>
+                    :
+                    <div className={"table-responsive"}>
+                        <table className="table table-bordered"
+                               id="dataTable"
+                               width="100%"
+                               cellSpacing="0">
+                            <thead>
+                            <tr>
+                                <th scope="col">No</th>
+                                <th scope="col">Name</th>
+                                <th scope="col">Username</th>
+                                <th scope="col">Role</th>
+                                <th scope="col">Action</th>
                             </tr>
-                        )}
-                        </tbody>
-                    </table>
-                </div>
+                            </thead>
+                            <tbody>
+                            {filteredUsers.map((user, index) =>
+                                <tr key={user.userId}>
+                                    <th scope="row">{index + 1}</th>
+                                    <td>{user.name}</td>
+                                    <td>{user.username}</td>
+                                    <td>{user.roleName}</td>
+                                    <td>
+                                        <Link to={"/users/" + user.username}>
+                                            <button className="btn btn-primary">view</button>
+                                        </Link>
+                                        &nbsp;&nbsp;
+                                        <button
+                                            className="btn btn-danger"
+                                            onClick={() => deleteData(user.userId)}>
+                                            Delete
+                                        </button>
+                                    </td>
+                                </tr>
+                            )}
+                            </tbody>
+                        </table>
+                    </div>
+                }
             </div>
         </div>
     </>

@@ -3,12 +3,14 @@ import React from "react";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useDebounce } from "use-debounce";
+import Spinner from "../../components/Spinner/Spinner";
 
 export default function BookList2() {
     const [books, setBooks] = useState([]);
     const [searchKeyword, setSearchKeyword] = useState("")
     const [filteredBooks, setFilteredBooks] = useState([])
     const [searchKeywordDebounced] = useDebounce(searchKeyword, 500)
+    const [isLoading, setIsLoading] = useState(true)
 
     async function getBookList() {
         // const keyword = searchKeyword.length > 0 ? "&q=" + searchKeyword : "";
@@ -18,6 +20,7 @@ export default function BookList2() {
         // setBooks(data.sort((a, b) => a.bookId - b.bookId));
 
         try {
+            setIsLoading(true)
             const keyword = searchKeyword.length > 0 ? "&q=" + searchKeyword : "";
             const res = await axios.get(
                 "https://be-psm-mini-library-system.herokuapp.com/book/books?_expand=book" + keyword,
@@ -25,6 +28,8 @@ export default function BookList2() {
             setBooks(res.data.sort((a, b) => a.bookId - b.bookId));
         } catch (err) {
             alert("There's Something Wrong When Catch The Data")
+        } finally {
+            setIsLoading(false)
         }
     }
 
@@ -38,6 +43,7 @@ export default function BookList2() {
     }
 
     function deleteBook(id) {
+        setIsLoading(true)
         axios
             .delete(
                 "https://be-psm-mini-library-system.herokuapp.com/book/delete/" + id
@@ -46,10 +52,14 @@ export default function BookList2() {
                 getBookList();
             })
             .catch(() => {
+                setIsLoading(true)
                 alert(
                     "Delete Failed!!! This Data Was Referenced In UserbookList, Delete Them Before Delete This"
                 )
-            });
+            })
+            .finally(() => {
+                setIsLoading(false)
+            })
     }
 
     useEffect(() => {
@@ -78,6 +88,7 @@ export default function BookList2() {
             setFilteredBooks(books)
         }
     }, [searchKeyword, books])
+    if (isLoading) return <Spinner />
 
     return (
         <>

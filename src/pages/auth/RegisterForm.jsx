@@ -1,11 +1,13 @@
 import {useNavigate} from "react-router-dom";
 import {useEffect, useState} from "react";
+import Spinner from "../../components/Spinner/Spinner"
 
 let responses = []
 
 export default function RegisterForm() {
     const navigate = useNavigate()
     const [roleList, setRoleList] = useState([])
+    const [isLoading, setIsLoading] = useState(true)
     const [formInput, setFormInput] = useState({
         name: '',
         username: '',
@@ -14,10 +16,17 @@ export default function RegisterForm() {
     })
 
     async function getRoleList() {
-        const res = await fetch("https://be-psm-mini-library-system.herokuapp.com/role/list-role",
-            {method: "GET"})
-        const data = await res.json();
-        setRoleList(data);
+        try {
+            const res = await fetch("https://be-psm-mini-library-system.herokuapp.com/role/list-role",
+                {method: "GET"})
+            const data = await res.json();
+            setRoleList(data);
+        }catch (err){
+            console.log(err)
+            alert("There's something wrong. please try again")
+        }finally {
+            setIsLoading(false)
+        }
     }
 
 
@@ -84,78 +93,85 @@ export default function RegisterForm() {
 
     return <>
         <div className="container-auth bg-light-auth">
-            <div className="row-2 text-center">
-                <div className="col-md-2 col-12"/>
-                <div className="col-md-8 col-12">
-                    <div
-                        className="wrapper-auth bordered-auth bg-md-white-auth d-flex-auth flex-column align-items-between">
-                        <div className="form">
-                            <div className={"m-0 font-weight-bold text-primary fa fa-arrow-circle-left"}
-                                 onClick={event => back(event)}>
-                                &nbsp;
-                                Back
+            {isLoading?
+                <div className="d-flex justify-content-center">
+                    <Spinner />
+                </div>
+                :
+                <div className="row-2 text-center">
+                    <div className="col-md-2 col-12"/>
+                    <div className="col-md-8 col-12">
+                        <div
+                            className="wrapper-auth bordered-auth bg-md-white-auth d-flex-auth flex-column align-items-between">
+                            <div className="form">
+                                <div className={"m-0 font-weight-bold text-primary fa fa-arrow-circle-left"}
+                                     onClick={event => back(event)}>
+                                    &nbsp;
+                                    Back
+                                </div>
+                                <br/>
+                                <br/>
+                                <div className="h4 font-weight-bold text-center mb-4">Register</div>
+                                <form onSubmit={event => handleSubmit(event)}>
+                                    <div className="form-group mb-4">
+                                        <label>Your Name</label>
+                                        <input
+                                            type="text"
+                                            className="form-control"
+                                            required
+                                            value={formInput.name}
+                                            onChange={event => handleInput(event, "name")}/>
+                                    </div>
+
+                                    <div className="form-group mb-4">
+                                        <label>Username</label>
+                                        <input
+                                            type="text"
+                                            className="form-control"
+                                            required
+                                            value={formInput.username}
+                                            onChange={event => handleInput(event, "username")}/>
+                                    </div>
+
+                                    <div className="form-group mb-4">
+                                        <label>Password</label>
+                                        <input
+                                            type={"password"}
+                                            className="form-control"
+                                            required
+                                            value={formInput.password}
+                                            onChange={event => handleInput(event, "password")}
+                                        />
+                                    </div>
+
+                                    <div className="form-group mb-4">
+                                        <label>Role Name</label>
+                                        <select
+                                            className="form-control"
+                                            required
+                                            value={formInput.roleId}
+                                            onChange={event => handleInput(event, "roleId")}>
+                                            <option value="" disabled></option>
+                                            {roleList.map(listRole =>
+                                                <option value={listRole.roleId} key={listRole.roleId}>
+                                                    {listRole.roleName}
+                                                </option>
+                                            )}
+                                        </select>
+
+                                    </div>
+
+                                    <button className="btn btn-primary">
+                                        Register
+                                    </button>
+                                </form>
                             </div>
-                            <br/>
-                            <br/>
-                            <div className="h4 font-weight-bold text-center mb-4">Register</div>
-                            <form onSubmit={event => handleSubmit(event)}>
-                                <div className="form-group mb-4">
-                                    <label>Your Name</label>
-                                    <input
-                                        type="text"
-                                        className="form-control"
-                                        required
-                                        value={formInput.name}
-                                        onChange={event => handleInput(event, "name")}/>
-                                </div>
-
-                                <div className="form-group mb-4">
-                                    <label>Username</label>
-                                    <input
-                                        type="text"
-                                        className="form-control"
-                                        required
-                                        value={formInput.username}
-                                        onChange={event => handleInput(event, "username")}/>
-                                </div>
-
-                                <div className="form-group mb-4">
-                                    <label>Password</label>
-                                    <input
-                                        type={"password"}
-                                        className="form-control"
-                                        required
-                                        value={formInput.password}
-                                        onChange={event => handleInput(event, "password")}
-                                    />
-                                </div>
-
-                                <div className="form-group mb-4">
-                                    <label>Role Name</label>
-                                    <select
-                                        className="form-control"
-                                        required
-                                        value={formInput.roleId}
-                                        onChange={event => handleInput(event, "roleId")}>
-                                        <option value="" disabled></option>
-                                        {roleList.map(listRole =>
-                                            <option value={listRole.roleId} key={listRole.roleId}>
-                                                {listRole.roleName}
-                                            </option>
-                                        )}
-                                    </select>
-
-                                </div>
-
-                                <button className="btn btn-primary">
-                                    Register
-                                </button>
-                            </form>
                         </div>
                     </div>
+                    <div className="col-md-2 col-12"/>
                 </div>
-                <div className="col-md-2 col-12"/>
-            </div>
+
+            }
         </div>
     </>
 }

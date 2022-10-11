@@ -1,5 +1,6 @@
 import {useEffect, useState} from "react";
-import {Link, useParams} from "react-router-dom";
+import {Link, Navigate, useNavigate, useParams} from "react-router-dom";
+import Spinner from "../../components/Spinner/Spinner.jsx";
 
 let firstName;
 let userArr = [];
@@ -8,7 +9,9 @@ let additionalName;
 export default function DetailsProfile() {
     const [user, setUser] = useState([])
     const [userBooks, setUserBooks] = useState([])
+    const [isLoading, setIsLoading] = useState(true)
     const params = useParams()
+    const navigate = useNavigate()
     let a = "*******"
     let isPassDueDate = false
 
@@ -37,18 +40,33 @@ export default function DetailsProfile() {
     }
 
     async function getUsers() {
-        const res = await fetch("https://be-psm-mini-library-system.herokuapp.com/users/profile/" + params.username,
-            {method: "GET"})
-        const data = await res.json();
-        handlingName(data)
-        setUser(data.data);
+        try {
+            const res = await fetch("https://be-psm-mini-library-system.herokuapp.com/users/profile/" + params.username,
+                {method: "GET"})
+            const data = await res.json();
+            handlingName(data)
+            setUser(data.data);
+        }catch (err){
+            console.log(err)
+            alert("There's something wrong. please try again")
+        }finally {
+            setIsLoading(false)
+        }
     }
 
     async function getUserBooks() {
-        const res = await fetch("https://be-psm-mini-library-system.herokuapp.com/userbook/list-userbook",
-            {method: "GET"})
-        const data = await res.json();
-        setUserBooks(data);
+        setIsLoading(true)
+        try {
+            const res = await fetch("https://be-psm-mini-library-system.herokuapp.com/userbook/list-userbook",
+                {method: "GET"})
+            const data = await res.json();
+            setUserBooks(data);
+        }catch (err){
+            console.log(err)
+            alert("There's something wrong. please try again")
+        }finally {
+            setIsLoading(false)
+        }
     }
 
     function getUserBooksById() {
@@ -132,9 +150,14 @@ export default function DetailsProfile() {
         alert("You don't have access to see this account password")
     }
 
-    function back(event) {
+    function backLastStep(event) {
         event.preventDefault()
         history.go(-1)
+        /*if(getUserData().username===user.username){
+            history.go(-1)
+        }else {
+            <Navigate to={"/users"}/>
+        }*/
     }
 
     useEffect(() => {
@@ -145,11 +168,23 @@ export default function DetailsProfile() {
     return <>
         <div className="card shadow mb-4">
             <div className="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                <div className={"m-0 font-weight-bold text-primary fa fa-arrow-circle-left"}
-                     onClick={event => back(event)}>
-                    &nbsp;
-                    Back
-                </div>
+
+                {
+                    getUserData().username === params.username?
+                        <div className={"m-0 font-weight-bold text-primary fa fa-arrow-circle-left"}
+                             onClick={(event) => backLastStep(event)}>
+                            &nbsp;
+                            Back
+                        </div>
+                        :
+                        <div className={"m-0 font-weight-bold text-primary fa fa-arrow-circle-left"}
+                             onClick={()=>navigate("/users")}>
+                            &nbsp;
+                            Back
+                        </div>
+
+                }
+
                 <h6 className="m-0 font-weight-bold text-primary">
                     {getUserData().username === user.username ? "Your Profile" : "Profile"}
                 </h6>
@@ -160,80 +195,86 @@ export default function DetailsProfile() {
                 </Link>
             </div>
             <div className="card-body text-center">
-                <div className="container profile-page-profile-detail">
-                    <div className="row">
-                        <div className="col-xl-6 col-lg-7 col-md-12">
-                            <div className="card-profile-detail profile-header-profile-detail">
-                                <div className="body-profile-detail">
-                                    <div className="row">
-                                        <div className="col-lg-4 col-md-4 col-12">
-                                            <div className="profile-image-profile-detail float-md-right"><img
-                                                src="https://icons.veryicon.com/png/o/miscellaneous/two-color-webpage-small-icon/user-244.png"
-                                                alt=""/></div>
-                                        </div>
-                                        <div className="col-lg-8 col-md-8 col-12">
-                                            <h4 className="m-t-0 m-b-0" key={user.id}>
-                                                {profileView()}
-                                            </h4>
-                                            <h5>{"( ID : " + user.id + " )"}</h5>
-                                            <span className="job_post">{user.roleName}</span>
-                                            <p>PSM Mini Library</p>
-                                            <div
-                                                className={"card-button-profile card-button-outline-primary-profile"}>
-                                                <h5 className={"fa fa-user-circle"}>
-                                                    &nbsp;
-                                                    {user.username}
-                                                </h5>
+                {isLoading?
+                    <div className="d-flex justify-content-center">
+                        <Spinner />
+                    </div>
+                    :
+                    <div className="container profile-page-profile-detail">
+                        <div className="row">
+                            <div className="col-xl-6 col-lg-7 col-md-12">
+                                <div className="card-profile-detail profile-header-profile-detail">
+                                    <div className="body-profile-detail">
+                                        <div className="row">
+                                            <div className="col-lg-4 col-md-4 col-12">
+                                                <div className="profile-image-profile-detail float-md-right"><img
+                                                    src="https://icons.veryicon.com/png/o/miscellaneous/two-color-webpage-small-icon/user-244.png"
+                                                    alt=""/></div>
                                             </div>
-                                            <br/>
-                                            <div
-                                                className={"card-button-profile card-button-outline-primary-profile"}>
-                                                <h5 className={"fa fa-key"}>
-                                                    &nbsp;
-                                                    {passView()}
-                                                </h5>
+                                            <div className="col-lg-8 col-md-8 col-12">
+                                                <h4 className="m-t-0 m-b-0" key={user.id}>
+                                                    {profileView()}
+                                                </h4>
+                                                <h5>{"( ID : " + user.id + " )"}</h5>
+                                                <span className="job_post">{user.roleName}</span>
+                                                <p>PSM Mini Library</p>
+                                                <div
+                                                    className={"card-button-profile card-button-outline-primary-profile"}>
+                                                    <h5 className={"fa fa-user-circle"}>
+                                                        &nbsp;
+                                                        {user.username}
+                                                    </h5>
+                                                </div>
+                                                <br/>
+                                                <div
+                                                    className={"card-button-profile card-button-outline-primary-profile"}>
+                                                    <h5 className={"fa fa-key"}>
+                                                        &nbsp;
+                                                        {passView()}
+                                                    </h5>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div className="col-xl-6 col-lg-7 col-md-12">
-                            <div className="card-profile-detail profile-header-profile-detail">
-                                <div className="body-profile-detail">
-                                    <div className="row">
-                                        <div className="col-lg-8 col-md-8 col-12">
-                                            <h4 className="m-t-0 m-b-0" key={user.id}>
-                                                <strong>
-                                                    Total Books
-                                                </strong>
-                                            </h4>
-                                            <h1 className={"big-text"}> {getUserBooksById()}</h1>
-                                            <div
-                                                className={"card-button-profile card-button-outline-primary-profile"}>
-                                                <h6 className={"fa"}>
-                                                    You're Borrowed
-                                                </h6>
-                                            </div>
-                                            <div
-                                                className={"card-button-profile card-button-outline-primary-profile"}>
-                                                <h5>
-                                                    <Link to={"/users/" + params.username + "/list-book"}>
-                                                        <button className="btn btn-outline-success">
-                                                            Detail
-                                                        </button>
-                                                    </Link>
-                                                </h5>
-                                            </div>
-                                            <div className={"footer-card-profile-detail footer-body-profile-detail"}>
-                                                <div className={"text-center"}>
-                                                    {remindLoan()}
+                            <div className="col-xl-6 col-lg-7 col-md-12">
+                                <div className="card-profile-detail profile-header-profile-detail">
+                                    <div className="body-profile-detail">
+                                        <div className="row">
+                                            <div className="col-lg-8 col-md-8 col-12">
+                                                <h4 className="m-t-0 m-b-0" key={user.id}>
+                                                    <strong>
+                                                        Total Books
+                                                    </strong>
+                                                </h4>
+                                                <h1 className={"big-text"}> {getUserBooksById()}</h1>
+                                                <div
+                                                    className={"card-button-profile card-button-outline-primary-profile"}>
+                                                    <h6 className={"fa"}>
+                                                        You're Borrowed
+                                                    </h6>
+                                                </div>
+                                                <div
+                                                    className={"card-button-profile card-button-outline-primary-profile"}>
+                                                    <h5>
+                                                        <Link to={"/users/" + params.username + "/list-book"}>
+                                                            <button className="btn btn-outline-success">
+                                                                Detail
+                                                            </button>
+                                                        </Link>
+                                                    </h5>
+                                                </div>
+                                                <div className={"footer-card-profile-detail footer-body-profile-detail"}>
+                                                    <div className={"text-center"}>
+                                                        {remindLoan()}
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div className="col-lg-4 col-md-4 col-12">
-                                            <div className="profile-image-profile-detail float-md-right">
-                                                {pictureBook()}
+                                            <div className="col-lg-4 col-md-4 col-12">
+                                                <div className="profile-image-profile-detail float-md-right">
+                                                    {pictureBook()}
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -241,7 +282,7 @@ export default function DetailsProfile() {
                             </div>
                         </div>
                     </div>
-                </div>
+                }
             </div>
         </div>
     </>

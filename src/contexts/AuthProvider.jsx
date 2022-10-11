@@ -2,27 +2,27 @@ import React, {createContext, useState} from "react";
 
 export const AuthContext = React.createContext()
 
-export default function AuthProvider(props){
+export default function AuthProvider(props) {
     const [user, setUser] = useState(getUserData)
-    const isLogin = Object.values(user).length>0
+    const isLogin = Object.values(user).length > 0
 
-    function saveUserData(loginResponse){
+    function saveUserData(loginResponse) {
         const formatted = JSON.stringify(loginResponse)
         localStorage.setItem("user", formatted)
         setUser(loginResponse)
     }
 
-    function getUserData (){
+    function getUserData() {
         const savedData = localStorage.getItem("user")
-        if (savedData){
+        if (savedData) {
             const parsedData = JSON.parse(savedData)
             return parsedData
-        }else {
+        } else {
             return {}
         }
     }
 
-    function removeUserData(){
+    function removeUserData() {
         localStorage.removeItem("user")
     }
 
@@ -33,7 +33,7 @@ export default function AuthProvider(props){
         saveUserData
     }
 
-    return<AuthContext.Provider value={contextValue}>
+    return <AuthContext.Provider value={contextValue}>
         {props.children}
     </AuthContext.Provider>
 

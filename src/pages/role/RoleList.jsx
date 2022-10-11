@@ -2,6 +2,7 @@ import {useEffect, useState} from "react";
 import {Link} from "react-router-dom";
 import axios from "axios";
 import {useDebounce} from "use-debounce";
+import Spinner from "../../components/Spinner/Spinner"
 
 let respStatusDelete = []
 let respRoleNameRest =[]
@@ -9,6 +10,8 @@ export default function RoleList() {
     const [roles, setRoles] = useState([])
     const [searchKeyword, setSearchKeyword] = useState('')
     const [filteredUsers, setFilteredUsers] = useState([])
+    const [isLoading, setIsLoading] = useState(true)
+
     const [searchKeywordDebounced] = useDebounce(searchKeyword, 500)
     const trigger = ("Rest")
 
@@ -16,30 +19,45 @@ export default function RoleList() {
         const keyword = searchKeyword.length > 0
             ? '&q=' + searchKeyword
             : ''
-        const res = await fetch("https://be-psm-mini-library-system.herokuapp.com/role/list-role?_expand=role" + keyword,
-            {method: "GET"})
-        const data = await res.json();
-        setRoles(data.sort((a,b)=>a.roleId-b.roleId));
+        try {
+            const res = await fetch("https://be-psm-mini-library-system.herokuapp.com/role/list-role?_expand=role" + keyword,
+                {method: "GET"})
+            const data = await res.json();
+            setRoles(data.sort((a,b)=>a.roleId-b.roleId));
+        }catch (err){
+            console.log(err)
+            alert("There's something wrong. please try again")
+        }finally {
+            setIsLoading(false)
+        }
     }
 
     async function deleteRole(roleId) {
+        setIsLoading(true)
         const res = await fetch("https://be-psm-mini-library-system.herokuapp.com/role/" + roleId, {method:"GET"})
         const resp = await res.json();
 
         respRoleNameRest.push(resp.data.roleName)
 
-        trigger.toLowerCase() === respRoleNameRest[respRoleNameRest.length-1].toLowerCase() ?
+        if(trigger.toLowerCase() === respRoleNameRest[respRoleNameRest.length-1].toLowerCase()){
             alert("This Role was set no be deleted")
-            :
-            axios.delete("https://be-psm-mini-library-system.herokuapp.com/role/delete/" + roleId)
-                .then((re) => {respStatusDelete.push(re.data)})
-                .then(() => {respStatusDelete[respStatusDelete.length - 1].status.toString() === "false" ?
+            getUsers()
+        }else {
+            try {
+                const res = await axios.delete("https://be-psm-mini-library-system.herokuapp.com/role/delete/" + roleId)
+                const resp = await res.data
+                respStatusDelete.push(resp)
+                if(respStatusDelete[respStatusDelete.length - 1].status === false){
                     alert("Delete Failed!!!\nThis data was referenced in user list, change them to "+trigger+" before delete this.")
-                    :
-                    ""})
-                .then(() => {getUsers()})
-                .catch(err => {alert("Delete Failed!!!\nThis data was referenced in user list, change them to "+trigger+" before delete this.")})
-
+                    getUsers()
+                }else {
+                    getUsers()
+                }
+            }catch (err){
+                alert("Delete Failed!!!\nThis data was referenced in user list, change them to "+trigger+" before delete this.")
+                getUsers()
+            }
+        }
     }
 
     function back(event) {
@@ -124,34 +142,40 @@ export default function RoleList() {
             </div>
 
             <div className="card-body">
-                <div className="table-responsive">
-                    <table className="table table-bordered" id="dataTable" width="100%" cellSpacing="0">
-                        <thead>
-                        <tr>
-                            <th scope="col">No</th>
-                            <th scope="col">Role</th>
-                            <th scope="col">Action</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {filteredUsers.map((role, index) =>
-                            <tr key={role.roleId}>
-                                <th scope="row">{index + 1}</th>
-                                <td>{role.roleName}</td>
-                                <td>{
-                                    role.roleName === trigger ?
-                                        <button className="btn btn-primary" onClick={()=>alert("This Role was set no be edited")}>Edit</button>
-                                        :
-                                        <Link to={"/roles/" + role.roleId}><button className="btn btn-primary">Edit</button></Link>
-                                }
-                                    &nbsp;&nbsp;
-                                    <button className="btn btn-danger" onClick={() => deleteRole(role.roleId)}>Delete</button>
-                                </td>
+                {isLoading?
+                    <div className="d-flex justify-content-center">
+                        <Spinner />
+                    </div>
+                    :
+                    <div className="table-responsive">
+                        <table className="table table-bordered" id="dataTable" width="100%" cellSpacing="0">
+                            <thead>
+                            <tr>
+                                <th scope="col">No</th>
+                                <th scope="col">Role</th>
+                                <th scope="col">Action</th>
                             </tr>
-                        )}
-                        </tbody>
-                    </table>
-                </div>
+                            </thead>
+                            <tbody>
+                            {filteredUsers.map((role, index) =>
+                                <tr key={role.roleId}>
+                                    <th scope="row">{index + 1}</th>
+                                    <td>{role.roleName}</td>
+                                    <td>{
+                                        role.roleName === trigger ?
+                                            <button className="btn btn-primary" onClick={()=>{setIsLoading(true); alert("This Role was set no be edited"); getUsers()}}>Edit</button>
+                                            :
+                                            <Link to={"/roles/" + role.roleId}><button className="btn btn-primary">Edit</button></Link>
+                                    }
+                                        &nbsp;&nbsp;
+                                        <button className="btn btn-danger" onClick={() => deleteRole(role.roleId)}>Delete</button>
+                                    </td>
+                                </tr>
+                            )}
+                            </tbody>
+                        </table>
+                    </div>
+                }
             </div>
         </div>
     </>

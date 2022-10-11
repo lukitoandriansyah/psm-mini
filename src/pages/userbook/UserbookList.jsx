@@ -3,16 +3,19 @@ import React from "react";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useDebounce } from "use-debounce";
+import Spinner from "../../components/Spinner/Spinner";
 
 export default function UserBookList() {
     const [userBooks, setUserBooks] = useState([]);
     const [searchKeyword, setSearchKeyword] = useState("")
     const [filteredUserbooks, setFilteredUserbooks] = useState([])
     const [searchKeywordDebounced] = useDebounce(searchKeyword, 500)
+    const [isLoading, setIsLoading] = useState(true)
 
     async function getUserBookList() {
         const keyword = searchKeyword.length > 0 ? "&q=" + searchKeyword : ""
         try {
+            setIsLoading(true)
             const res = await axios.get(
                 "https://be-psm-mini-library-system.herokuapp.com/userbook/list-userbook?_expand=userbook" + keyword,
             );
@@ -20,11 +23,15 @@ export default function UserBookList() {
             // console.log(res.data);
             setUserBooks(res.data.sort((a, b) => a.userbookId - b.userbookId));
         } catch (err) {
+            setIsLoading(true)
             alert("There's Something Wrong When Catch The Data")
+        } finally {
+            setIsLoading(false)
         }
     }
 
     function deleteUserBook(userbookId) {
+        setIsLoading(true)
         for (let x = 0; x < userBooks.length; x++) {
             if (userBooks[x].userbookId === userbookId) {
                 if (userBooks[x].returnDate === null) {
@@ -39,7 +46,10 @@ export default function UserBookList() {
                         })
                         .catch((err) => {
                             alert("Delete Failed!!! Data Not Found")
-                        });
+                        })
+                        .finally(() => {
+                            setIsLoading(false)
+                        })
                 }
             }
         }
@@ -65,6 +75,7 @@ export default function UserBookList() {
             setFilteredUserbooks(userBooks)
         }
     }, [searchKeyword, userBooks])
+    if (isLoading) return <Spinner />
 
     return (
         <>
