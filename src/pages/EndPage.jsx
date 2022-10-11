@@ -7,7 +7,7 @@ export default function EndPage() {
         }
     }
     setInterval(counter
-        , 1000);
+        , 5000);
 
     return <>
         <div className="container-auth-end">
