@@ -7,6 +7,7 @@ export default function LoginForm() {
     const [user, setUser] = useState([])
     const [status, setStatus] = useState([])
     const [msg, setMsg] = useState([])
+    let indicator = 0;
     const [formInput, setFormInput] = useState({
         username: '',
         password: '',
@@ -96,13 +97,13 @@ export default function LoginForm() {
             saveDataLoginFalse(respData, respStatus, respMessage)
     }
 
-    async function handlingStateNull(){
+    async function handlingStateNull() {
         const payload = JSON.stringify({
             ...formInput
         })
         const targetUrl = "https://be-psm-mini-library-system.herokuapp.com/auth/login"
         const method = "POST"
-        const res = await fetch (targetUrl, {
+        const res = await fetch(targetUrl, {
             method: method,
             body: payload,
             headers: {
@@ -114,23 +115,28 @@ export default function LoginForm() {
         const respStatus = res.status
         const respMessage = res.message
 
-        if(respStatus===true){
+        if (respStatus === true) {
             if (respData.roleName.toString() !== "Admin") {
                 navigate("/user/dashboard")
             }
             if (respData.roleName.toString() === "Admin") {
                 navigate("/admin/dashboard")
             }
-        }else{
+        } else {
+            indicator = indicator + 1
             alert(respMessage.toString())
+            if (indicator > 0) {
+                window.location.reload()
+                indicator = 0
+            }
         }
 
     }
 
-    function navigation(){
+    function navigation() {
         if (status.toString() === "true") {
 
-            if (msg.length!=0) {
+            if (msg.length != 0) {
 
                 if (user.roleName.toString() !== "Admin") {
                     console.log(user.roleName)
@@ -140,19 +146,30 @@ export default function LoginForm() {
                     console.log(user.roleName)
                     navigate("/admin/dashboard")
                 }
-            } else{
+            } else {
                 handlingStateNull()
             }
 
         } else {
             if (formInput.username !== "" && formInput.password !== "") {
 
-                if (msg.length!=0) {
-                    msg.toString().split(" ").indexOf("Wrong")!==-1 ?
+                if (msg.length != 0) {
+                    if (msg.toString().split(" ").indexOf("Wrong") !== -1) {
+                        indicator = indicator + 1
                         alert(msg)
-                        :
+                        if (indicator > 0) {
+                            window.location.reload()
+                            indicator = 0
+                        }
+                    } else {
+                        indicator = indicator + 1
                         alert(msg)
-                } else{
+                        if (indicator > 0) {
+                            window.location.reload()
+                            indicator = 0
+                        }
+                    }
+                } else {
                     handlingStateNull()
                 }
             } else {
@@ -166,11 +183,11 @@ export default function LoginForm() {
         history.go(-1)
     }
 
-    useEffect(()=>{
+    useEffect(() => {
         getUserData()
         getLoginStatus()
         getLoginMessage()
-    },[])
+    }, [])
 
     return <>
         <div className="container-auth bg-light-auth">
@@ -189,19 +206,21 @@ export default function LoginForm() {
                             <br/>
                             <div className="h4 font-weight-bold text-center mb-4">Login to Dashboard</div>
                             {
-                                localStorage.getItem("user")?
+                                localStorage.getItem("user") ?
                                     <div className="form-group text-center mb-4">
                                         {
-                                            getUserData().roleName==="Admin"?
+                                            getUserData().roleName === "Admin" ?
                                                 <Link to={"/admin/dashboard"}>
                                                     <button
-                                                        className=" text-center mb-4 btn btn-success btn-block rounded-0">Continue to Dashboard
+                                                        className=" text-center mb-4 btn btn-success btn-block rounded-0">Continue
+                                                        to Dashboard
                                                     </button>
                                                 </Link>
                                                 :
                                                 <Link to={"/user/dashboard"}>
                                                     <button
-                                                        className=" text-center mb-4 btn btn-success btn-block rounded-0">Continue to Dashboard
+                                                        className=" text-center mb-4 btn btn-success btn-block rounded-0">Continue
+                                                        to Dashboard
                                                     </button>
                                                 </Link>
                                         }
@@ -233,7 +252,7 @@ export default function LoginForm() {
                                     </form>
                             }
                             {
-                                localStorage.getItem("user")?
+                                localStorage.getItem("user") ?
                                     <></>
                                     :
                                     <div className="form-group text-center mb-4">
@@ -241,7 +260,7 @@ export default function LoginForm() {
                                     </div>
                             }
                             {
-                                localStorage.getItem("user")?
+                                localStorage.getItem("user") ?
                                     <></>
                                     :
                                     <div className="form-group text-center mb-4">
