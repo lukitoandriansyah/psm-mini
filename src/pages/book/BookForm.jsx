@@ -4,6 +4,10 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import Spinner from "../../components/Spinner/Spinner";
 
 export default function BookForm() {
+    const [statusUserById, setStatusUserById] = useState()
+    const [dataUserById, setDataUserById] = useState([])
+    const [userUpdated, setUserUpdated] = useState([])
+    const [statusUpdated, setStatusUpdated] = useState([])
     const navigate = useNavigate();
     const params = useParams();
     const [isLoading, setIsLoading] = useState(true)
@@ -50,7 +54,6 @@ export default function BookForm() {
     }
 
     async function getFormInput() {
-        isLoading(true)
         const res = await axios.get(
             "https://be-psm-mini-library-system.herokuapp.com/book/" +
             params.bookId
@@ -58,8 +61,79 @@ export default function BookForm() {
         setFormInput(res.data.data);
     }
 
+    function getUserData() {
+        const savedDataUser = localStorage.getItem("user")
+        if (savedDataUser) {
+            return JSON.parse(savedDataUser)
+        } else {
+            return {}
+        }
+    }
+
+    async function getUsersById() {
+        try {
+
+            const res = await fetch("https://be-psm-mini-library-system.herokuapp.com/users/profile/byid/"+getUserData().userId,
+                {method: "GET"})
+            const data = await res.json();
+            setStatusUserById(data.status)
+            setDataUserById(data.data)
+        }catch (err){
+            console.log(err)
+            alert("There's something wrong. please try again")
+        }
+    }
+
+    function saveDataTrue(dataUser, statusUser) {
+        const formattedDataUserUpdated = JSON.stringify(dataUser)
+        const formattedStatusUserUpdated = JSON.stringify(statusUser)
+
+        localStorage.removeItem("user")
+        localStorage.removeItem("statusLogin")
+
+        localStorage.setItem("user", formattedDataUserUpdated)
+        localStorage.setItem("statusLogin", formattedStatusUserUpdated)
+
+        setUserUpdated(dataUser)
+        setStatusUpdated(statusUser)
+
+    }
+
+    function saveDataFalse(dataUser, statusUser) {
+        setUserUpdated(dataUser)
+        setStatusUpdated(statusUser)
+    }
+
+    async function userDeleteScenario(){
+        if(statusUserById === true){
+            /*console.log("ya data masuk")*/
+            const payload = JSON.stringify({
+                username: dataUserById.username,
+                password: dataUserById.password
+            })
+            const targetUrl = "https://be-psm-mini-library-system.herokuapp.com/auth/login"
+            const method = "POST"
+            const res = await fetch(targetUrl, {
+                method: method,
+                body: payload,
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            }).then((re) => re.json())
+
+            const respData = res.data
+            const respStatus = res.status
+
+            respStatus === true ? saveDataTrue(respData, respStatus)  : saveDataFalse(respData, respStatus)
+        }else{
+            localStorage.clear()
+            navigate("/home")
+        }
+    }
+
     async function handleSubmit(event) {
         event.preventDefault();
+        userDeleteScenario()
         if (isEditting) {
             await axios.put(
                 "https://be-psm-mini-library-system.herokuapp.com/book/update/" + params.bookId,
@@ -85,6 +159,7 @@ export default function BookForm() {
         getCategorys()
         getAuthors()
         getPublishers()
+        getUsersById()
         if (isEditting) {
             getFormInput()
         }
@@ -96,7 +171,7 @@ export default function BookForm() {
             <div className="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                 <h6 className="m-0 font-weight-bold text-primary">Add Book Form</h6>
                 <Link to="/book/list">
-                    <button className="btn btn-secondary">Back</button>
+                    <button onClick={()=>userDeleteScenario()} className="btn btn-secondary">Back</button>
                 </Link>
             </div>
 

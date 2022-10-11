@@ -1,6 +1,12 @@
 import {Link, Outlet, useNavigate} from "react-router-dom";
+import {useEffect, useState} from "react";
 
 export default function AdminDashboard() {
+    const [statusUserById, setStatusUserById] = useState()
+    const [dataUserById, setDataUserById] = useState([])
+    const [userUpdated, setUserUpdated] = useState([])
+    const [statusUpdated, setStatusUpdated] = useState([])
+    const navigate =  useNavigate()
 
     function getUserData() {
         const savedDataUser = localStorage.getItem("user")
@@ -10,6 +16,71 @@ export default function AdminDashboard() {
             return {}
         }
     }
+
+    async function getUsersById() {
+        try {
+
+            const res = await fetch("https://be-psm-mini-library-system.herokuapp.com/users/profile/byid/"+getUserData().userId,
+                {method: "GET"})
+            const data = await res.json();
+            setStatusUserById(data.status)
+            setDataUserById(data.data)
+        }catch (err){
+            console.log(err)
+            alert("There's something wrong. please try again")
+        }
+    }
+
+    function saveDataTrue(dataUser, statusUser) {
+        const formattedDataUserUpdated = JSON.stringify(dataUser)
+        const formattedStatusUserUpdated = JSON.stringify(statusUser)
+
+        localStorage.removeItem("user")
+        localStorage.removeItem("statusLogin")
+
+        localStorage.setItem("user", formattedDataUserUpdated)
+        localStorage.setItem("statusLogin", formattedStatusUserUpdated)
+
+        setUserUpdated(dataUser)
+        setStatusUpdated(statusUser)
+
+    }
+
+    function saveDataFalse(dataUser, statusUser) {
+        setUserUpdated(dataUser)
+        setStatusUpdated(statusUser)
+    }
+
+    async function userDeleteScenario(){
+        if(statusUserById === true){
+            /*console.log("ya data masuk")*/
+            const payload = JSON.stringify({
+                username: dataUserById.username,
+                password: dataUserById.password
+            })
+            const targetUrl = "https://be-psm-mini-library-system.herokuapp.com/auth/login"
+            const method = "POST"
+            const res = await fetch(targetUrl, {
+                method: method,
+                body: payload,
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            }).then((re) => re.json())
+
+            const respData = res.data
+            const respStatus = res.status
+
+            respStatus === true ? saveDataTrue(respData, respStatus)  : saveDataFalse(respData, respStatus)
+        }else{
+            localStorage.clear()
+            navigate("/home")
+        }
+    }
+
+    useEffect(()=>{
+        getUsersById()
+    },[])
 
     return <>
         <div className={"app"}>
@@ -26,7 +97,7 @@ export default function AdminDashboard() {
                         <div className="row no-gutters align-items-center">
                             <div className="col mr-2">
                                 <div className="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                    <Link to={"/register"}>
+                                    <Link onClick={()=>userDeleteScenario()} to={"/register"}>
                                         Form Register
                                     </Link>
                                 </div>
@@ -44,7 +115,7 @@ export default function AdminDashboard() {
                         <div className="row no-gutters align-items-center">
                             <div className="col mr-2">
                                 <div className="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                    <Link to={"/userbook/list"}>
+                                    <Link onClick={()=>userDeleteScenario()} to={"/userbook/list"}>
                                         User Book List
                                     </Link>
                                 </div>
@@ -62,7 +133,7 @@ export default function AdminDashboard() {
                         <div className="row no-gutters align-items-center">
                             <div className="col mr-2">
                                 <div className="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                    <Link to={"/book/list"}>
+                                    <Link onClick={()=>userDeleteScenario()} to={"/book/list"}>
                                         Book List
                                     </Link>
                                 </div>
@@ -80,7 +151,7 @@ export default function AdminDashboard() {
                         <div className="row no-gutters align-items-center">
                             <div className="col mr-2">
                                 <div className="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                    <Link to={"/users"}>
+                                    <Link onClick={()=>userDeleteScenario()} to={"/users"}>
                                         User List
                                     </Link>
                                 </div>
@@ -100,7 +171,7 @@ export default function AdminDashboard() {
                         <div className="row no-gutters align-items-center">
                             <div className="col mr-2">
                                 <div className="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                    <Link to={"/category/list"}>
+                                    <Link onClick={()=>userDeleteScenario()} to={"/category/list"}>
                                         Category List
                                     </Link>
                                 </div>
@@ -118,7 +189,7 @@ export default function AdminDashboard() {
                         <div className="row no-gutters align-items-center">
                             <div className="col mr-2">
                                 <div className="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                    <Link to={"/author"}>
+                                    <Link onClick={()=>userDeleteScenario()} to={"/author"}>
                                         Author
                                     </Link>
                                 </div>
@@ -136,7 +207,7 @@ export default function AdminDashboard() {
                         <div className="row no-gutters align-items-center">
                             <div className="col mr-2">
                                 <div className="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                    <Link to={"/publisher"}>
+                                    <Link onClick={()=>userDeleteScenario()} to={"/publisher"}>
                                         Publisher
                                     </Link>
                                 </div>
@@ -154,7 +225,7 @@ export default function AdminDashboard() {
                         <div className="row no-gutters align-items-center">
                             <div className="col mr-2">
                                 <div className="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                    <Link to={"/roles"}>
+                                    <Link onClick={()=>userDeleteScenario()} to={"/roles"}>
                                         Role List
                                     </Link>
                                 </div>

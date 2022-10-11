@@ -1,16 +1,21 @@
 import React from "react";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import { useDebounce } from "use-debounce";
 import Spinner from "../../components/Spinner/Spinner";
 
 export default function PublisherList() {
     const [publishers, setPublishers] = useState([]);
     const [searchKeyword, setSearchKeyword] = useState("");
+    const [statusUserById, setStatusUserById] = useState()
+    const [dataUserById, setDataUserById] = useState([])
+    const [userUpdated, setUserUpdated] = useState([])
+    const [statusUpdated, setStatusUpdated] = useState([])
     const [filteredPublishers, setFilteredPublishers] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [searchKeywordDebounced] = useDebounce(searchKeyword, 500);
+    const navigate =  useNavigate()
 
     async function getPublisherList() {
         const keyword = searchKeyword.length > 0 ? "&q=" + searchKeyword : "";
@@ -44,7 +49,78 @@ export default function PublisherList() {
     //   }
     // }
 
+    function getUserData() {
+        const savedDataUser = localStorage.getItem("user")
+        if (savedDataUser) {
+            return JSON.parse(savedDataUser)
+        } else {
+            return {}
+        }
+    }
+
+    async function getUsersById() {
+        try {
+
+            const res = await fetch("https://be-psm-mini-library-system.herokuapp.com/users/profile/byid/"+getUserData().userId,
+                {method: "GET"})
+            const data = await res.json();
+            setStatusUserById(data.status)
+            setDataUserById(data.data)
+        }catch (err){
+            console.log(err)
+            alert("There's something wrong. please try again")
+        }
+    }
+
+    function saveDataTrue(dataUser, statusUser) {
+        const formattedDataUserUpdated = JSON.stringify(dataUser)
+        const formattedStatusUserUpdated = JSON.stringify(statusUser)
+
+        localStorage.removeItem("user")
+        localStorage.removeItem("statusLogin")
+
+        localStorage.setItem("user", formattedDataUserUpdated)
+        localStorage.setItem("statusLogin", formattedStatusUserUpdated)
+
+        setUserUpdated(dataUser)
+        setStatusUpdated(statusUser)
+
+    }
+
+    function saveDataFalse(dataUser, statusUser) {
+        setUserUpdated(dataUser)
+        setStatusUpdated(statusUser)
+    }
+
+    async function userDeleteScenario(){
+        if(statusUserById === true){
+            /*console.log("ya data masuk")*/
+            const payload = JSON.stringify({
+                username: dataUserById.username,
+                password: dataUserById.password
+            })
+            const targetUrl = "https://be-psm-mini-library-system.herokuapp.com/auth/login"
+            const method = "POST"
+            const res = await fetch(targetUrl, {
+                method: method,
+                body: payload,
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            }).then((re) => re.json())
+
+            const respData = res.data
+            const respStatus = res.status
+
+            respStatus === true ? saveDataTrue(respData, respStatus)  : saveDataFalse(respData, respStatus)
+        }else{
+            localStorage.clear()
+            navigate("/home")
+        }
+    }
+
     function deletePublisher(id) {
+        userDeleteScenario()
         axios
             .delete(
                 "https://be-psm-mini-library-system.herokuapp.com/publisher/delete/" +
@@ -60,6 +136,10 @@ export default function PublisherList() {
                 );
             });
     }
+
+    useEffect(()=>{
+        getUsersById()
+    },[])
 
     useEffect(() => {
         getPublisherList();
@@ -100,7 +180,7 @@ export default function PublisherList() {
                                 onChange={(evt) => setSearchKeyword(evt.target.value)}
                             />
                             <div className="input-group-append">
-                                <button className="btn btn-primary" type="button">
+                                <button className="btn btn-primary" type="button" onClick={()=>userDeleteScenario()}>
                                     <i className="fas fa-search fa-sm"></i>
                                 </button>
                             </div>
@@ -136,7 +216,7 @@ export default function PublisherList() {
                                             onChange={(evt) => setSearchKeyword(evt.target.value)}
                                         />
                                         <div className="input-group-append">
-                                            <button className="btn btn-primary" type="button">
+                                            <button className="btn btn-primary" type="button" onClick={()=>userDeleteScenario()}>
                                                 <i className="fas fa-search fa-sm"></i>
                                             </button>
                                         </div>
@@ -147,21 +227,21 @@ export default function PublisherList() {
                     </ul>
 
                     <ul className={"navbar-nav ml-auto"}>
-                        <Link
-                            to={"/publisher/form"}
-                            className="dropdown no-arrow d-sm-none"
+                        <Link onClick={()=>userDeleteScenario()}
+                              to={"/publisher/form"}
+                              className="dropdown no-arrow d-sm-none"
                         >
-                            <button className="btn btn-primary">
+                            <button onClick={()=>userDeleteScenario()} className="btn btn-primary">
                                 <strong>+</strong>
                             </button>
                         </Link>
                     </ul>
 
-                    <Link
-                        to={"/publisher/form"}
-                        className="d-none d-sm-inline-block form-inline mr-0 ml-md-3 my-2 my-md-0 mw-100"
+                    <Link onClick={()=>userDeleteScenario()}
+                          to={"/publisher/form"}
+                          className="d-none d-sm-inline-block form-inline mr-0 ml-md-3 my-2 my-md-0 mw-100"
                     >
-                        <button className="btn btn-primary">Add Publisher</button>
+                        <button onClick={()=>userDeleteScenario()} className="btn btn-primary">Add Publisher</button>
                     </Link>
                 </div>
 
@@ -195,7 +275,7 @@ export default function PublisherList() {
                                         <td>{publisher.publisherName}</td>
                                         <td>{publisher.addressPublisher}</td>
                                         <td>
-                                            <Link to={"/publisher/form/" + publisher.idPublisher}>
+                                            <Link onClick={()=> userDeleteScenario()} to={"/publisher/form/" + publisher.idPublisher}>
                                                 <button className="btn btn-primary"> Edit </button>
                                             </Link>{" "}
                                             <button

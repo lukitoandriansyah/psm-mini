@@ -94,13 +94,13 @@ export default function CategoryList() {
             </Link>
           </div>
 
-          <div className="card-body">
-            <div className="table-responsive">
+          <div class="card-body">
+            <div class="table-responsive">
               <table
-                  className="table table-bordered"
+                  class="table table-bordered"
                   id="dataTable"
                   width="100%"
-                  cellSpacing="0"
+                  cellspacing="0"
               >
                 <thead>
                 <tr>

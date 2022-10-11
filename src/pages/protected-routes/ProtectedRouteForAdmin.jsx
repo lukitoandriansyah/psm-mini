@@ -19,7 +19,7 @@ export default function ProtectedRouteForAdmin(){
             return <Outlet/>
         }else{
             alert("You no permitted to see these page")
-            return <Navigate to={history.go(-1)}/>
+            return <Navigate to={"/user/dashboard"}/>
         }
     }
 

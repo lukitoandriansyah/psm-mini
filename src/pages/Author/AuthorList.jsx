@@ -2,7 +2,7 @@ import axios from "axios";
 import React from "react";
 import { useEffect } from "react";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import { useDebounce } from "use-debounce";
 import Spinner from "../../components/Spinner/Spinner";
 
@@ -10,8 +10,13 @@ export default function AuthorList() {
   const [authors, setAuthors] = useState([]);
   const [searchKeyword, setSearchKeyword] = useState("");
   const [filteredAuthors, setFilteredAuthors] = useState([]);
+  const [statusUserById, setStatusUserById] = useState()
+  const [dataUserById, setDataUserById] = useState([])
+  const [userUpdated, setUserUpdated] = useState([])
+  const [statusUpdated, setStatusUpdated] = useState([])
   const [isLoading, setIsLoading] = useState(true);
   const [searchKeywordDebounced] = useDebounce(searchKeyword, 500);
+  const navigate =  useNavigate()
 
   async function getAuthorList() {
     try {
@@ -43,7 +48,79 @@ export default function AuthorList() {
   //   }
   // }
 
+  function getUserData() {
+    const savedDataUser = localStorage.getItem("user")
+    if (savedDataUser) {
+      return JSON.parse(savedDataUser)
+    } else {
+      return {}
+    }
+  }
+
+  async function getUsersById() {
+    try {
+
+      const res = await fetch("https://be-psm-mini-library-system.herokuapp.com/users/profile/byid/"+getUserData().userId,
+          {method: "GET"})
+      const data = await res.json();
+      setStatusUserById(data.status)
+      setDataUserById(data.data)
+    }catch (err){
+      console.log(err)
+      alert("There's something wrong. please try again")
+    }
+  }
+
+  function saveDataTrue(dataUser, statusUser) {
+    const formattedDataUserUpdated = JSON.stringify(dataUser)
+    const formattedStatusUserUpdated = JSON.stringify(statusUser)
+
+    localStorage.removeItem("user")
+    localStorage.removeItem("statusLogin")
+
+    localStorage.setItem("user", formattedDataUserUpdated)
+    localStorage.setItem("statusLogin", formattedStatusUserUpdated)
+
+    setUserUpdated(dataUser)
+    setStatusUpdated(statusUser)
+
+  }
+
+  function saveDataFalse(dataUser, statusUser) {
+    setUserUpdated(dataUser)
+    setStatusUpdated(statusUser)
+  }
+
+  async function userDeleteScenario(){
+    if(statusUserById === true){
+      /*console.log("ya data masuk")*/
+      const payload = JSON.stringify({
+        username: dataUserById.username,
+        password: dataUserById.password
+      })
+      const targetUrl = "https://be-psm-mini-library-system.herokuapp.com/auth/login"
+      const method = "POST"
+      const res = await fetch(targetUrl, {
+        method: method,
+        body: payload,
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      }).then((re) => re.json())
+
+      const respData = res.data
+      const respStatus = res.status
+
+      respStatus === true ? saveDataTrue(respData, respStatus)  : saveDataFalse(respData, respStatus)
+    }else{
+      localStorage.clear()
+      navigate("/home")
+    }
+  }
+
   function deleteAuthor(id) {
+    userDeleteScenario()
+
     axios
         .delete(
             "https://be-psm-mini-library-system.herokuapp.com/author/delete/" + id
@@ -58,6 +135,10 @@ export default function AuthorList() {
           );
         });
   }
+
+  useEffect(()=>{
+    getUsersById()
+  },[])
 
   useEffect(() => {
     getAuthorList();
@@ -96,7 +177,7 @@ export default function AuthorList() {
                     onChange={(evt) => setSearchKeyword(evt.target.value)}
                 />
                 <div className="input-group-append">
-                  <button className="btn btn-primary" type="button">
+                  <button className="btn btn-primary" type="button" onClick={()=>userDeleteScenario()}>
                     <i className="fas fa-search fa-sm"></i>
                   </button>
                 </div>
@@ -132,7 +213,7 @@ export default function AuthorList() {
                           onChange={(evt) => setSearchKeyword(evt.target.value)}
                       />
                       <div className="input-group-append">
-                        <button className="btn btn-primary" type="button">
+                        <button className="btn btn-primary" type="button" onClick={()=>userDeleteScenario()}>
                           <i className="fas fa-search fa-sm"></i>
                         </button>
                       </div>
@@ -143,7 +224,7 @@ export default function AuthorList() {
             </ul>
 
             <ul className={"navbar-nav ml-auto"}>
-              <Link to={"/author/form"} className="dropdown no-arrow d-sm-none">
+              <Link onClick={()=>userDeleteScenario()} to={"/author/form"} className="dropdown no-arrow d-sm-none">
                 <button className="btn btn-primary">
                   <strong>+</strong>
                 </button>
@@ -151,6 +232,7 @@ export default function AuthorList() {
             </ul>
 
             <Link
+                onClick={()=>userDeleteScenario()}
                 to={"/author/form"}
                 className="d-none d-sm-inline-block form-inline mr-0 ml-md-3 my-2 my-md-0 mw-100"
             >
@@ -158,18 +240,18 @@ export default function AuthorList() {
             </Link>
           </div>
 
-          <div class="card-body">
+          <div className="card-body">
             {isLoading ? (
                 <div className="d-flex justify-content-center">
                   <Spinner />
                 </div>
             ) : (
-                <div class="table-responsive">
+                <div className="table-responsive">
                   <table
-                      class="table table-bordered"
+                      className="table table-bordered"
                       id="dataTable"
                       width="100%"
-                      cellspacing="0"
+                      cellSpacing="0"
                   >
                     <thead>
                     <tr>
@@ -190,7 +272,7 @@ export default function AuthorList() {
                           <td>{author.authorAddress}</td>
                           <td>{author.noHp}</td>
                           <td>
-                            <Link to={"/author/form/" + author.authorId}>
+                            <Link onClick={()=>userDeleteScenario()} to={"/author/form/" + author.authorId}>
                               <button className="btn btn-primary"> Edit </button>
                             </Link>{" "}
                             <button

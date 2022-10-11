@@ -5,6 +5,10 @@ import Spinner from "../../components/Spinner/Spinner.jsx";
 let responses = []
 export default function ChangeProfile() {
     const [isLoading, setIsLoading] = useState(true)
+    const [statusUserById, setStatusUserById] = useState()
+    const [dataUserById, setDataUserById] = useState([])
+    const [userUpdated, setUserUpdated] = useState([])
+    const [statusUpdated, setStatusUpdated] = useState([])
     const navigate = useNavigate()
     const [formInput, setFormInput] = useState({
         name: '',
@@ -55,12 +59,77 @@ export default function ChangeProfile() {
 
     function getUserData() {
         const savedDataUser = localStorage.getItem("user")
-        if (savedDataUser) {return JSON.parse(savedDataUser)}
-        else {return {}}
+        if (savedDataUser) {
+            return JSON.parse(savedDataUser)
+        } else {
+            return {}
+        }
+    }
+
+    async function getUsersById() {
+        try {
+
+            const res = await fetch("https://be-psm-mini-library-system.herokuapp.com/users/profile/byid/"+getUserData().userId,
+                {method: "GET"})
+            const data = await res.json();
+            setStatusUserById(data.status)
+            setDataUserById(data.data)
+        }catch (err){
+            console.log(err)
+            alert("There's something wrong. please try again")
+        }
+    }
+
+    function saveDataTrue(dataUser, statusUser) {
+        const formattedDataUserUpdated = JSON.stringify(dataUser)
+        const formattedStatusUserUpdated = JSON.stringify(statusUser)
+
+        localStorage.removeItem("user")
+        localStorage.removeItem("statusLogin")
+
+        localStorage.setItem("user", formattedDataUserUpdated)
+        localStorage.setItem("statusLogin", formattedStatusUserUpdated)
+
+        setUserUpdated(dataUser)
+        setStatusUpdated(statusUser)
+
+    }
+
+    function saveDataFalse(dataUser, statusUser) {
+        setUserUpdated(dataUser)
+        setStatusUpdated(statusUser)
+    }
+
+    async function userDeleteScenario(){
+        if(statusUserById === true){
+            /*console.log("ya data masuk")*/
+            const payload = JSON.stringify({
+                username: dataUserById.username,
+                password: dataUserById.password
+            })
+            const targetUrl = "https://be-psm-mini-library-system.herokuapp.com/auth/login"
+            const method = "POST"
+            const res = await fetch(targetUrl, {
+                method: method,
+                body: payload,
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            }).then((re) => re.json())
+
+            const respData = res.data
+            const respStatus = res.status
+
+            respStatus === true ? saveDataTrue(respData, respStatus)  : saveDataFalse(respData, respStatus)
+        }else{
+            localStorage.clear()
+            navigate("/home")
+        }
     }
 
     async function handleSubmit(event) {
         event.preventDefault()
+        userDeleteScenario()
         const payload = JSON.stringify({...formInput, roleId: parseInt(formInput.roleId)})
         const targetUrl = "https://be-psm-mini-library-system.herokuapp.com/users/update/" + params.userId;
         const method = "PUT"
@@ -127,6 +196,9 @@ export default function ChangeProfile() {
     useEffect(() => {
         getUsers()
     }, [])
+    useEffect(()=>{
+        getUsersById()
+    },[])
 
 
     return <>
@@ -139,7 +211,7 @@ export default function ChangeProfile() {
 
                 <h6 className="m-0 font-weight-bold text-primary">Form Change Profile</h6>
 
-                <Link to={"/users/" + params.username}>
+                <Link onClick={()=>userDeleteScenario()} to={"/users/" + params.username}>
                     <button className="btn btn-secondary">
                         Back
                     </button>

@@ -1,5 +1,5 @@
 import {useEffect, useState} from "react";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import axios from "axios";
 import {useDebounce} from "use-debounce";
 import Spinner from "../../components/Spinner/Spinner.jsx";
@@ -9,8 +9,13 @@ export default function UserList() {
     const [userBooks, setUserBooks] = useState([])
     const [searchKeyword, setSearchKeyword] = useState('')
     const [filteredUsers, setFilteredUsers] = useState([])
+    const [statusUserById, setStatusUserById] = useState()
+    const [dataUserById, setDataUserById] = useState([])
+    const [userUpdated, setUserUpdated] = useState([])
+    const [statusUpdated, setStatusUpdated] = useState([])
     const [isLoading, setIsLoading] = useState(true)
     const [searchKeywordDebounced] = useDebounce(searchKeyword, 500)
+    const navigate =  useNavigate()
 
 
     async function getUsers() {
@@ -23,7 +28,7 @@ export default function UserList() {
             const data = await res.json();
             setUsers(data.sort((a,b)=>a.userId-b.userId));
         }catch (err){
-            console.log(err)
+            /*            console.log(err)*/
             alert("There's something wrong. please try again")
         }finally {
             setIsLoading(false)
@@ -31,7 +36,7 @@ export default function UserList() {
     }
 
     async function getUserBooks() {
-        setIsLoading(true)
+        /*        setIsLoading(true)*/
         try {
             const res = await fetch("https://be-library-mini-system.herokuapp.com/userbook/list-userbook",
                 {method: "GET"})
@@ -45,8 +50,79 @@ export default function UserList() {
         }
     }
 
+    function getUserData() {
+        const savedDataUser = localStorage.getItem("user")
+        if (savedDataUser) {
+            return JSON.parse(savedDataUser)
+        } else {
+            return {}
+        }
+    }
+
+    async function getUsersById() {
+        try {
+
+            const res = await fetch("https://be-psm-mini-library-system.herokuapp.com/users/profile/byid/"+getUserData().userId,
+                {method: "GET"})
+            const data = await res.json();
+            setStatusUserById(data.status)
+            setDataUserById(data.data)
+        }catch (err){
+            console.log(err)
+            alert("There's something wrong. please try again")
+        }
+    }
+
+    function saveDataTrue(dataUser, statusUser) {
+        const formattedDataUserUpdated = JSON.stringify(dataUser)
+        const formattedStatusUserUpdated = JSON.stringify(statusUser)
+
+        localStorage.removeItem("user")
+        localStorage.removeItem("statusLogin")
+
+        localStorage.setItem("user", formattedDataUserUpdated)
+        localStorage.setItem("statusLogin", formattedStatusUserUpdated)
+
+        setUserUpdated(dataUser)
+        setStatusUpdated(statusUser)
+
+    }
+
+    function saveDataFalse(dataUser, statusUser) {
+        setUserUpdated(dataUser)
+        setStatusUpdated(statusUser)
+    }
+
+    async function userDeleteScenario(){
+        if(statusUserById === true){
+            /*console.log("ya data masuk")*/
+            const payload = JSON.stringify({
+                username: dataUserById.username,
+                password: dataUserById.password
+            })
+            const targetUrl = "https://be-psm-mini-library-system.herokuapp.com/auth/login"
+            const method = "POST"
+            const res = await fetch(targetUrl, {
+                method: method,
+                body: payload,
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            }).then((re) => re.json())
+
+            const respData = res.data
+            const respStatus = res.status
+
+            respStatus === true ? saveDataTrue(respData, respStatus)  : saveDataFalse(respData, respStatus)
+        }else{
+            localStorage.clear()
+            navigate("/home")
+        }
+    }
+
     async function deleteData(userId) {
-        setIsLoading(true)
+        /*        setIsLoading(true)*/
+        userDeleteScenario()
         try {
             const res = await axios.delete("https://be-psm-mini-library-system.herokuapp.com/users/delete/" + userId)
             const resp = res.data
@@ -67,13 +143,17 @@ export default function UserList() {
         history.go(-1)
     }
 
+    useEffect(()=>{
+        getUsersById()
+    },[])
+
     useEffect(() => {
         getUsers()
         getUserBooks()
     }, [searchKeywordDebounced])
 
     useEffect(() => {
-        setIsLoading(true)
+        /*        setIsLoading(true)*/
         if (searchKeyword.length > 0) {
             const filterResult = users.filter((user) => {
                 function params(){
@@ -106,7 +186,7 @@ export default function UserList() {
                                aria-label="Search" aria-describedby="basic-addon2" value={searchKeyword}
                                onChange={evt => setSearchKeyword(evt.target.value)}/>
                         <div className="input-group-append">
-                            <button className="btn btn-primary" type="button">
+                            <button className="btn btn-primary" type="button" onClick={()=>userDeleteScenario()}>
                                 <i className="fas fa-search fa-sm"></i>
                             </button>
                         </div>
@@ -128,7 +208,7 @@ export default function UserList() {
                                            aria-describedby="basic-addon2" value={searchKeyword}
                                            onChange={evt => setSearchKeyword(evt.target.value)}/>
                                     <div className="input-group-append">
-                                        <button className="btn btn-primary" type="button">
+                                        <button className="btn btn-primary" type="button" onClick={()=>userDeleteScenario()}>
                                             <i className="fas fa-search fa-sm"></i>
                                         </button>
                                     </div>
@@ -139,14 +219,14 @@ export default function UserList() {
                 </ul>
 
                 <ul className={"navbar-nav ml-auto"}>
-                    <Link to="/register" className="dropdown no-arrow d-sm-none">
+                    <Link onClick={()=>userDeleteScenario()} to="/register" className="dropdown no-arrow d-sm-none">
                         <button className="btn btn-primary">
                             <strong>+</strong>
                         </button>
                     </Link>
                 </ul>
 
-                <Link to="/register" className="d-none d-sm-inline-block form-inline mr-0 ml-md-3 my-2 my-md-0 mw-100">
+                <Link onClick={()=>userDeleteScenario()} to="/register" className="d-none d-sm-inline-block form-inline mr-0 ml-md-3 my-2 my-md-0 mw-100">
                     <button className="btn btn-primary">
                         Add User
                     </button>
@@ -182,7 +262,7 @@ export default function UserList() {
                                     <td>{user.username}</td>
                                     <td>{user.roleName}</td>
                                     <td>
-                                        <Link to={"/users/" + user.username}>
+                                        <Link onClick={()=>userDeleteScenario()} to={"/users/" + user.username}>
                                             <button className="btn btn-primary">view</button>
                                         </Link>
                                         &nbsp;&nbsp;
