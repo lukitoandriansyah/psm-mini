@@ -1,5 +1,6 @@
 import {useNavigate} from "react-router-dom";
 import {useEffect, useState} from "react";
+import {Url} from "./url-BE/Url.jsx";
 
 export default function Topbar() {
     let respLogout= []
@@ -21,7 +22,7 @@ export default function Topbar() {
     async function getUsersById() {
         try {
 
-            const res = await fetch("https://be-psm-mini-library-system.herokuapp.com/users/profile/byid/"+getUserData().userId,
+            const res = await fetch(Url+"/users/profile/byid/"+getUserData().userId,
                 {method: "GET"})
             const data = await res.json();
             setStatusUserById(data.status)
@@ -59,7 +60,7 @@ export default function Topbar() {
                 username: dataUserById.username,
                 password: dataUserById.password
             })
-            const targetUrl = "https://be-psm-mini-library-system.herokuapp.com/auth/login"
+            const targetUrl = Url+"/auth/login"
             const method = "POST"
             const res = await fetch(targetUrl, {
                 method: method,
@@ -85,7 +86,7 @@ export default function Topbar() {
     async function logout() {
         userDeleteScenario()
 
-        const targetUrl = "https://be-psm-mini-library-system.herokuapp.com/auth/logout/" + getUserData().userId;
+        const targetUrl = Url+"/auth/logout/" + getUserData().userId;
         const method = "POST";
 
         await fetch(targetUrl, {method: method, headers: {"Content-Type": "application/json",},})
