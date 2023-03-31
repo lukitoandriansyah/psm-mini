@@ -3,6 +3,7 @@ import {Link, useNavigate} from "react-router-dom";
 import axios from "axios";
 import {useDebounce} from "use-debounce";
 import Spinner from "../../components/Spinner/Spinner.jsx";
+import {Url} from "../../partials/url-BE/Url.jsx";
 
 export default function UserList() {
     const [users, setUsers] = useState([])
@@ -23,12 +24,11 @@ export default function UserList() {
             ? '&q=' + searchKeyword
             : ''
         try {
-            const res = await fetch("https://be-psm-mini-library-system.herokuapp.com/users/list-user?_expand=user" + keyword,
+            const res = await fetch(Url+"/users/list-user?_expand=user" + keyword,
                 {method: "GET"})
             const data = await res.json();
             setUsers(data.sort((a,b)=>a.userId-b.userId));
         }catch (err){
-            /*            console.log(err)*/
             alert("There's something wrong. please try again")
         }finally {
             setIsLoading(false)
@@ -38,7 +38,7 @@ export default function UserList() {
     async function getUserBooks() {
         /*        setIsLoading(true)*/
         try {
-            const res = await fetch("https://be-library-mini-system.herokuapp.com/userbook/list-userbook",
+            const res = await fetch(Url+"/userbook/list-userbook",
                 {method: "GET"})
             const data = await res.json();
             setUserBooks(data.sort((a,b)=>a.userbookId-b.userbookId));
@@ -62,7 +62,7 @@ export default function UserList() {
     async function getUsersById() {
         try {
 
-            const res = await fetch("https://be-psm-mini-library-system.herokuapp.com/users/profile/byid/"+getUserData().userId,
+            const res = await fetch(Url+"/users/profile/byid/"+getUserData().userId,
                 {method: "GET"})
             const data = await res.json();
             setStatusUserById(data.status)
@@ -100,7 +100,7 @@ export default function UserList() {
                 username: dataUserById.username,
                 password: dataUserById.password
             })
-            const targetUrl = "https://be-psm-mini-library-system.herokuapp.com/auth/login"
+            const targetUrl = Url+"/auth/login"
             const method = "POST"
             const res = await fetch(targetUrl, {
                 method: method,
@@ -124,7 +124,7 @@ export default function UserList() {
         /*        setIsLoading(true)*/
         userDeleteScenario()
         try {
-            const res = await axios.delete("https://be-psm-mini-library-system.herokuapp.com/users/delete/" + userId)
+            const res = await axios.delete(Url+"/users/delete/" + userId)
             const resp = res.data
             if( resp.status === false ){
                 alert("Delete Failed!!!\nThis data was referenced in user book list, delete them before delete this.")

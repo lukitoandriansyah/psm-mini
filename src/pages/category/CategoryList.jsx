@@ -3,6 +3,7 @@ import axios from "axios";
 import {useEffect, useState} from "react";
 import {Link} from "react-router-dom";
 import {useDebounce} from "use-debounce";
+import {Url} from "../../partials/url-BE/Url.jsx";
 
 export default function CategoryList() {
   const [categories, setCategories] = useState([]);
@@ -13,7 +14,7 @@ export default function CategoryList() {
   async function getCategoryList() {
     const keyword = searchKeyword.length > 0 ? "&q=" + searchKeyword : "";
     const res = await fetch(
-        "https://be-psm-mini-library-system.herokuapp.com/category/list?_expand=category" +
+        Url+"/category/list?_expand=category" +
         keyword,
         {method: "GET"}
     );
@@ -21,20 +22,9 @@ export default function CategoryList() {
     setCategories(data.sort((a, b) => a.categoryId - b.categoryId));
   }
 
-//   async function getCategoryList() {
-//     try {
-//       const response = await axios.get(
-//         "https://be-psm-mini-library-system.herokuapp.com/category/list"
-//       );
-//       setCategories(response.data.sort((a, b) => a.categoryId - b.categoryId));
-//     } catch (err) {
-//       alert("There's error, try again");
-//     }
-//   }
-
   async function deleteCategory(id) {
     try {
-      const res = await axios.delete("https://be-psm-mini-library-system.herokuapp.com/category/delete/" + id)
+      const res = await axios.delete(Url+"/category/delete/" + id)
       const resp =await res.data
       resp.status === false?
           alert("Delete Failed!!! This data was referenced in book list, delete them before delete this"):""
@@ -137,56 +127,4 @@ export default function CategoryList() {
         </div>
       </>
   );
-
-//   return (
-//     <>
-//       <div className="card shadow mb-4">
-//         <div className="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-//           <h6 className="m-0 font-weight-bold text-primary">List Category</h6>
-//           <Link to="/category/form">
-//             <button className="btn btn-primary"> Add Category</button>
-//           </Link>
-//         </div>
-
-//         <div className="card-body">
-//           <div className="table-responsive">
-//             <table
-//               className="table table-bordered"
-//               id="dataTable"
-//               width="100%"
-//               cellSpacing="0"
-//             >
-//               <thead>
-//                 <tr>
-//                   <th scope="col">No</th>
-//                   <th>Category</th>
-//                   <th>Action</th>
-//                 </tr>
-//               </thead>
-//               <tbody>
-//                 {categories.map((category, index) => (
-//                   <tr key={category.categoryId}>
-//                     <td scope="row">{index + 1}</td>
-//                     <td>{category.categoryName}</td>
-//                     <td>
-//                       <Link to={"/category/form/" + category.categoryId}>
-//                         <button className="btn btn-primary"> Edit</button>
-//                       </Link>{" "}
-//                       <button
-//                         onClick={() => deleteCategory(category.categoryId)}
-//                         className="btn btn-danger"
-//                       >
-//                         {" "}
-//                         Delete{" "}
-//                       </button>
-//                     </td>
-//                   </tr>
-//                 ))}
-//               </tbody>
-//             </table>
-//           </div>
-//         </div>
-//       </div>
-//     </>
-//   );
 }

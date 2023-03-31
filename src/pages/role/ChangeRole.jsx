@@ -1,6 +1,7 @@
 import {Link, useNavigate, useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
 import Spinner from "../../components/Spinner/Spinner"
+import {Url} from "../../partials/url-BE/Url.jsx";
 
 let responses = []
 export default function ChangeRole() {
@@ -19,7 +20,7 @@ export default function ChangeRole() {
 
     async function getUsers() {
         try {
-            const res = await fetch("https://be-psm-mini-library-system.herokuapp.com/role/list-role",
+            const res = await fetch(Url+"/role/list-role",
                 {method: "GET"})
             const data = await res.json();
             setRoles(data.sort((a,b)=>a.roleId-b.roleId));
@@ -49,7 +50,7 @@ export default function ChangeRole() {
     async function roleById() {
         setIsLoading(true)
         try {
-            const res = await fetch("https://be-psm-mini-library-system.herokuapp.com/role/"+params.roleId,
+            const res = await fetch(Url+"/role/"+params.roleId,
                 {method: "GET"})
             const data = await res.json();
             localStorage.setItem("tempRoleName", data.data.roleName)
@@ -74,7 +75,7 @@ export default function ChangeRole() {
     async function getUsersById() {
         try {
 
-            const res = await fetch("https://be-psm-mini-library-system.herokuapp.com/users/profile/byid/"+getUserData().userId,
+            const res = await fetch(Url+"/users/profile/byid/"+getUserData().userId,
                 {method: "GET"})
             const data = await res.json();
             setStatusUserById(data.status)
@@ -112,7 +113,7 @@ export default function ChangeRole() {
                 username: dataUserById.username,
                 password: dataUserById.password
             })
-            const targetUrl = "https://be-psm-mini-library-system.herokuapp.com/auth/login"
+            const targetUrl = Url+"/auth/login"
             const method = "POST"
             const res = await fetch(targetUrl, {
                 method: method,
@@ -146,7 +147,7 @@ export default function ChangeRole() {
 
             if(statusCheckerName === false) {statusCheckerName = true}
             else {
-                const targetUrl = "https://be-psm-mini-library-system.herokuapp.com/role/update/" + params.roleId;
+                const targetUrl = Url+"/role/update/" + params.roleId;
                 const method = "PUT"
                 await fetch(targetUrl, {method: method, body: payload, headers: {'Content-Type': 'application/json'}})
                     .then((re) => re.json())
@@ -181,7 +182,7 @@ export default function ChangeRole() {
 
             if(statusCheckerName===false){statusCheckerName = true}
             else {
-                const targetUrl = "https://be-psm-mini-library-system.herokuapp.com/role/update/" + params.roleId;
+                const targetUrl = Url+"/role/update/" + params.roleId;
                 const method = "PUT"
                 await fetch(targetUrl, {method: method, body: payload, headers: {'Content-Type': 'application/json'}})
                     .then((re) => re.json())

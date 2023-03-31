@@ -1,6 +1,7 @@
 import {Link, useNavigate, useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
 import Spinner from "../../components/Spinner/Spinner.jsx";
+import {Url} from "../../partials/url-BE/Url.jsx";
 
 let responses = []
 export default function ChangeProfile() {
@@ -29,7 +30,7 @@ export default function ChangeProfile() {
 
     async function getRoleList() {
         try {
-            const res = await fetch("https://be-psm-mini-library-system.herokuapp.com/role/list-role",
+            const res = await fetch(Url+"/role/list-role",
                 {method: "GET"})
             const data = await res.json();
             setRoleList(data);
@@ -44,7 +45,7 @@ export default function ChangeProfile() {
     async function getUsers() {
         setIsLoading(true)
         try {
-            const res = await fetch("https://be-psm-mini-library-system.herokuapp.com/users/profile/" + params.username,
+            const res = await fetch(Url+"/users/profile/" + params.username,
                 {method: "GET"})
             const data = await res.json();
             setUser(data.data);
@@ -69,7 +70,7 @@ export default function ChangeProfile() {
     async function getUsersById() {
         try {
 
-            const res = await fetch("https://be-psm-mini-library-system.herokuapp.com/users/profile/byid/"+getUserData().userId,
+            const res = await fetch(Url+"/users/profile/byid/"+getUserData().userId,
                 {method: "GET"})
             const data = await res.json();
             setStatusUserById(data.status)
@@ -107,7 +108,7 @@ export default function ChangeProfile() {
                 username: dataUserById.username,
                 password: dataUserById.password
             })
-            const targetUrl = "https://be-psm-mini-library-system.herokuapp.com/auth/login"
+            const targetUrl = Url+"/auth/login"
             const method = "POST"
             const res = await fetch(targetUrl, {
                 method: method,
@@ -131,7 +132,7 @@ export default function ChangeProfile() {
         event.preventDefault()
         userDeleteScenario()
         const payload = JSON.stringify({...formInput, roleId: parseInt(formInput.roleId)})
-        const targetUrl = "https://be-psm-mini-library-system.herokuapp.com/users/update/" + params.userId;
+        const targetUrl = Url+"/users/update/" + params.userId;
         const method = "PUT"
         await fetch(targetUrl, {method: method, body: payload, headers: {'Content-Type': 'application/json'}})
             .then((re) => re.json()).then((d) => responses.push(d))
@@ -204,10 +205,6 @@ export default function ChangeProfile() {
     return <>
         <div className="card shadow mb-4">
             <div className="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                {/*<div className={"m-0 font-weight-bold text-primary fa fa-arrow-circle-left"} onClick={event => back(event)}>
-                    &nbsp;
-                    Back
-                </div>*/}
 
                 <h6 className="m-0 font-weight-bold text-primary">Form Change Profile</h6>
 

@@ -1,6 +1,7 @@
 import {useNavigate, useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
 import Spinner from "../../components/Spinner/Spinner.jsx";
+import {Url} from "../../partials/url-BE/Url.jsx";
 
 export default function DetailProfileUserBooks() {
     const [userBooks, setUserBooks] = useState([])
@@ -14,7 +15,7 @@ export default function DetailProfileUserBooks() {
 
     async function getUserBooks() {
         try {
-            const res = await fetch("https://be-psm-mini-library-system.herokuapp.com/userbook/list-userbook",
+            const res = await fetch(Url+"/userbook/list-userbook",
                 {method: "GET"})
             const data = await res.json();
             setUserBooks(data);
@@ -38,7 +39,7 @@ export default function DetailProfileUserBooks() {
     async function getUsersById() {
         try {
 
-            const res = await fetch("https://be-psm-mini-library-system.herokuapp.com/users/profile/byid/"+getUserData().userId,
+            const res = await fetch(Url+"/users/profile/byid/"+getUserData().userId,
                 {method: "GET"})
             const data = await res.json();
             setStatusUserById(data.status)
@@ -76,7 +77,7 @@ export default function DetailProfileUserBooks() {
                 username: dataUserById.username,
                 password: dataUserById.password
             })
-            const targetUrl = "https://be-psm-mini-library-system.herokuapp.com/auth/login"
+            const targetUrl = Url+"/auth/login"
             const method = "POST"
             const res = await fetch(targetUrl, {
                 method: method,

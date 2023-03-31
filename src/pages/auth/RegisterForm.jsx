@@ -1,6 +1,7 @@
 import {useNavigate} from "react-router-dom";
 import {useEffect, useState} from "react";
 import Spinner from "../../components/Spinner/Spinner"
+import {Url} from "../../partials/url-BE/Url.jsx";
 
 let responses = []
 
@@ -17,7 +18,7 @@ export default function RegisterForm() {
 
     async function getRoleList() {
         try {
-            const res = await fetch("https://be-psm-mini-library-system.herokuapp.com/role/list-role",
+            const res = await fetch(Url+"/role/list-role",
                 {method: "GET"})
             const data = await res.json();
             setRoleList(data);
@@ -42,7 +43,7 @@ export default function RegisterForm() {
             ...formInput,
             roleId: parseInt(formInput.roleId)
         })
-        const targetUrl = "https://be-psm-mini-library-system.herokuapp.com/auth/register"
+        const targetUrl = Url+"/auth/register"
         const method = "POST"
         await fetch(targetUrl, {
             method: method,

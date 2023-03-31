@@ -3,6 +3,7 @@ import {Link, useNavigate} from "react-router-dom";
 import axios from "axios";
 import {useDebounce} from "use-debounce";
 import Spinner from "../../components/Spinner/Spinner"
+import {Url} from "../../partials/url-BE/Url.jsx";
 
 let respStatusDelete = []
 let respRoleNameRest =[]
@@ -25,7 +26,7 @@ export default function RoleList() {
             ? '&q=' + searchKeyword
             : ''
         try {
-            const res = await fetch("https://be-psm-mini-library-system.herokuapp.com/role/list-role?_expand=role" + keyword,
+            const res = await fetch(Url+"/role/list-role?_expand=role" + keyword,
                 {method: "GET"})
             const data = await res.json();
             setRoles(data.sort((a,b)=>a.roleId-b.roleId));
@@ -49,7 +50,7 @@ export default function RoleList() {
     async function getUsersById() {
         try {
 
-            const res = await fetch("https://be-psm-mini-library-system.herokuapp.com/users/profile/byid/"+getUserData().userId,
+            const res = await fetch(Url+"/users/profile/byid/"+getUserData().userId,
                 {method: "GET"})
             const data = await res.json();
             setStatusUserById(data.status)
@@ -87,7 +88,7 @@ export default function RoleList() {
                 username: dataUserById.username,
                 password: dataUserById.password
             })
-            const targetUrl = "https://be-psm-mini-library-system.herokuapp.com/auth/login"
+            const targetUrl = Url+"/auth/login"
             const method = "POST"
             const res = await fetch(targetUrl, {
                 method: method,
@@ -110,7 +111,7 @@ export default function RoleList() {
     async function deleteRole(roleId) {
         setIsLoading(true)
         userDeleteScenario()
-        const res = await fetch("https://be-psm-mini-library-system.herokuapp.com/role/" + roleId, {method:"GET"})
+        const res = await fetch(Url+"/role/" + roleId, {method:"GET"})
         const resp = await res.json();
 
         respRoleNameRest.push(resp.data.roleName)
@@ -120,7 +121,7 @@ export default function RoleList() {
             getUsers()
         }else {
             try {
-                const res = await axios.delete("https://be-psm-mini-library-system.herokuapp.com/role/delete/" + roleId)
+                const res = await axios.delete(Url+"/role/delete/" + roleId)
                 const resp = await res.data
                 respStatusDelete.push(resp)
                 if(respStatusDelete[respStatusDelete.length - 1].status === false){

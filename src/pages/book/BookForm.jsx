@@ -1,16 +1,15 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import Spinner from "../../components/Spinner/Spinner";
+import {Url} from "../../partials/url-BE/Url.jsx";
 
 export default function BookForm() {
     const [statusUserById, setStatusUserById] = useState()
     const [dataUserById, setDataUserById] = useState([])
     const [userUpdated, setUserUpdated] = useState([])
-    const [statusUpdated, setStatusUpdated] = useState([])
+    const [setStatusUpdated] = useState([])
     const navigate = useNavigate();
     const params = useParams();
-    const [isLoading, setIsLoading] = useState(true)
 
     const isEditting = params.bookId;
 
@@ -34,28 +33,28 @@ export default function BookForm() {
 
     async function getAuthors() {
         const res = await axios.get(
-            "https://be-psm-mini-library-system.herokuapp.com/author/all"
+            Url+"/author/all"
         );
         setAuthors(res.data);
     }
 
     async function getCategorys() {
         const res = await axios.get(
-            "https://be-psm-mini-library-system.herokuapp.com/category/list"
+            Url+"/category/list"
         );
         setCategorys(res.data);
     }
 
     async function getPublishers() {
         const res = await axios.get(
-            "https://be-psm-mini-library-system.herokuapp.com/publisher/list"
+            Url+"/publisher/list"
         );
         setPublishers(res.data);
     }
 
     async function getFormInput() {
         const res = await axios.get(
-            "https://be-psm-mini-library-system.herokuapp.com/book/" +
+            Url+"/book/" +
             params.bookId
         );
         setFormInput(res.data.data);
@@ -73,7 +72,7 @@ export default function BookForm() {
     async function getUsersById() {
         try {
 
-            const res = await fetch("https://be-psm-mini-library-system.herokuapp.com/users/profile/byid/"+getUserData().userId,
+            const res = await fetch(Url+"/users/profile/byid/"+getUserData().userId,
                 {method: "GET"})
             const data = await res.json();
             setStatusUserById(data.status)
@@ -111,7 +110,7 @@ export default function BookForm() {
                 username: dataUserById.username,
                 password: dataUserById.password
             })
-            const targetUrl = "https://be-psm-mini-library-system.herokuapp.com/auth/login"
+            const targetUrl = Url+"/auth/login"
             const method = "POST"
             const res = await fetch(targetUrl, {
                 method: method,
@@ -135,13 +134,12 @@ export default function BookForm() {
         event.preventDefault();
         userDeleteScenario()
         if (isEditting) {
-            await axios.put(
-                "https://be-psm-mini-library-system.herokuapp.com/book/update/" + params.bookId,
+            await axios.put(Url+"/book/update/" + params.bookId,
                 formInput
             );
         } else {
             await axios.post(
-                "https://be-psm-mini-library-system.herokuapp.com/book/add-book",
+                Url+"/book/add-book",
                 {
                     bookTitle: formInput.bookTitle,
                     bookYear: parseInt(formInput.bookYear),

@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
+import {Url} from "../../partials/url-BE/Url.jsx";
 
 let responses = [];
 export default function PublisherForm() {
@@ -28,7 +29,7 @@ export default function PublisherForm() {
 
   async function getPublishers() {
     const res = await axios.get(
-        "https://be-psm-mini-library-system.herokuapp.com/publisher/list"
+        Url+"/publisher/list"
     );
 
     setPublishers(res.data);
@@ -36,7 +37,7 @@ export default function PublisherForm() {
 
   async function getFormInput() {
     const res = await axios.get(
-        "https://be-psm-mini-library-system.herokuapp.com/publisher/" +
+        Url+"/publisher/" +
         params.idPublisher
     );
 
@@ -67,7 +68,7 @@ export default function PublisherForm() {
   async function getUsersById() {
     try {
 
-      const res = await fetch("https://be-psm-mini-library-system.herokuapp.com/users/profile/byid/"+getUserData().userId,
+      const res = await fetch(Url+"/users/profile/byid/"+getUserData().userId,
           {method: "GET"})
       const data = await res.json();
       setStatusUserById(data.status)
@@ -105,7 +106,7 @@ export default function PublisherForm() {
         username: dataUserById.username,
         password: dataUserById.password
       })
-      const targetUrl = "https://be-psm-mini-library-system.herokuapp.com/auth/login"
+      const targetUrl = Url+"/auth/login"
       const method = "POST"
       const res = await fetch(targetUrl, {
         method: method,
@@ -147,7 +148,7 @@ export default function PublisherForm() {
           statusCheckerName = true;
         } else {
           const targetUrl =
-              "https://be-psm-mini-library-system.herokuapp.com/publisher/update/" +
+              Url+"/publisher/update/" +
               params.idPublisher;
           const method = "PUT";
           await fetch(targetUrl, {
@@ -202,7 +203,7 @@ export default function PublisherForm() {
           statusCheckerName = true;
         } else {
           const targetUrl =
-              "https://be-psm-mini-library-system.herokuapp.com/publisher/update/" +
+              Url+"/publisher/update/" +
               params.idPublisher;
           const method = "PUT";
           await fetch(targetUrl, {
@@ -251,7 +252,7 @@ export default function PublisherForm() {
           statusCheckerName = true;
         } else {
           const targetUrl =
-              "https://be-psm-mini-library-system.herokuapp.com/publisher/save";
+              Url+"/publisher/save";
           const method = "POST";
           await fetch(targetUrl, {
             method: method,
@@ -304,7 +305,7 @@ export default function PublisherForm() {
           statusCheckerName = true;
         } else {
           const targetUrl =
-              "https://be-psm-mini-library-system.herokuapp.com/publisher/save";
+              Url+"/publisher/save";
           const method = "POST";
           await fetch(targetUrl, {
             method: method,
@@ -335,35 +336,6 @@ export default function PublisherForm() {
       }
     }
   }
-
-  // async function handleSubmit(event) {
-  //   event.preventDefault();
-
-  //   let status = "";
-  //   let msg = "";
-
-  //   if (isEditing) {
-  //     const res = await axios.put(
-  //       "https://be-psm-mini-library-system.herokuapp.com/publisher/update/" +
-  //         params.idPublisher,
-  //       formInput
-  //     );
-  //     status = res.data.status;
-  //     msg = res.data.message;
-  //     status === true ? msg : alert("Error, Data was Exist");
-  //   } else {
-  //     const res = await axios.post(
-  //       "https://be-psm-mini-library-system.herokuapp.com/publisher/save",
-  //       formInput
-  //     );
-
-  //     status = res.data.status;
-  //     msg = res.data.message;
-  //     status === true ? msg : alert("Error, Data was Exist");
-  //   }
-
-  //   navigate("/publisher");
-  // }
 
   useEffect(() => {
     getPublishers();

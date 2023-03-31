@@ -1,5 +1,6 @@
 import {Link, useNavigate} from "react-router-dom";
 import {useEffect, useState} from "react";
+import {Url} from "../../partials/url-BE/Url.jsx";
 
 
 export default function LoginForm() {
@@ -77,7 +78,7 @@ export default function LoginForm() {
         const payload = JSON.stringify({
             ...formInput
         })
-        const targetUrl = "https://be-psm-mini-library-system.herokuapp.com/auth/login"
+        const targetUrl = Url+"/auth/login"
         const method = "POST"
         const res = await fetch(targetUrl, {
             method: method,
@@ -101,7 +102,7 @@ export default function LoginForm() {
         const payload = JSON.stringify({
             ...formInput
         })
-        const targetUrl = "https://be-psm-mini-library-system.herokuapp.com/auth/login"
+        const targetUrl = Url+"/auth/login"
         const method = "POST"
         const res = await fetch(targetUrl, {
             method: method,

@@ -12,7 +12,7 @@ import ChangeRole from "./pages/role/ChangeRole.jsx";
 import AddRole from "./pages/role/AddRole.jsx";
 import RegisterForm from "./pages/auth/RegisterForm.jsx";
 import UserDashboard from "./pages/dashbord/UserDashbord.jsx";
-import BookList2 from "./pages/book/BookList2.jsx";
+import BookList2 from "./pages/book/BookList.jsx";
 import BookForm from "./pages/book/BookForm.jsx";
 import UserBookList from "./pages/userbook/UserbookList.jsx";
 import UserBookForm from "./pages/userbook/UserbookForm.jsx";

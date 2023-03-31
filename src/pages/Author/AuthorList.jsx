@@ -5,6 +5,7 @@ import { useState } from "react";
 import {Link, useNavigate} from "react-router-dom";
 import { useDebounce } from "use-debounce";
 import Spinner from "../../components/Spinner/Spinner";
+import {Url} from "../../partials/url-BE/Url.jsx";
 
 export default function AuthorList() {
   const [authors, setAuthors] = useState([]);
@@ -22,7 +23,7 @@ export default function AuthorList() {
     try {
       const keyword = searchKeyword.length > 0 ? "&q=" + searchKeyword : "";
       const res = await fetch(
-          "https://be-psm-mini-library-system.herokuapp.com/author/all?_expand=author" +
+          Url+"/author/all?_expand=author" +
           keyword,
           { method: "GET" }
       );
@@ -35,18 +36,6 @@ export default function AuthorList() {
       setIsLoading(false);
     }
   }
-  // async function getAuthorList() {
-  //   try {
-  //     const response = await axios.get(
-  //       "https://be-psm-mini-library-system.herokuapp.com/author/all"
-  //     );
-
-  //     console.log(response.data);
-  //     setAuthors(response.data);
-  //   } catch (err) {
-  //     alert("Terjadi Masalah");
-  //   }
-  // }
 
   function getUserData() {
     const savedDataUser = localStorage.getItem("user")
@@ -60,7 +49,7 @@ export default function AuthorList() {
   async function getUsersById() {
     try {
 
-      const res = await fetch("https://be-psm-mini-library-system.herokuapp.com/users/profile/byid/"+getUserData().userId,
+      const res = await fetch(Url+"/users/profile/byid/"+getUserData().userId,
           {method: "GET"})
       const data = await res.json();
       setStatusUserById(data.status)
@@ -98,7 +87,7 @@ export default function AuthorList() {
         username: dataUserById.username,
         password: dataUserById.password
       })
-      const targetUrl = "https://be-psm-mini-library-system.herokuapp.com/auth/login"
+      const targetUrl = Url+"/auth/login"
       const method = "POST"
       const res = await fetch(targetUrl, {
         method: method,
@@ -123,7 +112,7 @@ export default function AuthorList() {
 
     axios
         .delete(
-            "https://be-psm-mini-library-system.herokuapp.com/author/delete/" + id
+            Url+"/author/delete/" + id
         )
         .then(() => {
           getAuthorList();

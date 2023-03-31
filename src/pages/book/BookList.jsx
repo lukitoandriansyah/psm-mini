@@ -4,8 +4,9 @@ import { useEffect, useState } from "react";
 import {Link, useNavigate} from "react-router-dom";
 import { useDebounce } from "use-debounce";
 import Spinner from "../../components/Spinner/Spinner";
+import {Url} from "../../partials/url-BE/Url.jsx";
 
-export default function BookList2() {
+export default function BookList() {
     const [books, setBooks] = useState([]);
     const [statusUserById, setStatusUserById] = useState()
     const [dataUserById, setDataUserById] = useState([])
@@ -18,17 +19,11 @@ export default function BookList2() {
     const navigate =  useNavigate()
 
     async function getBookList() {
-        // const keyword = searchKeyword.length > 0 ? "&q=" + searchKeyword : "";
-        // const res = await axios.get(
-        //     "https://be-psm-mini-library-system.herokuapp.com/book/books?_expand=book" + keyword,
-        // );
-        // setBooks(data.sort((a, b) => a.bookId - b.bookId));
-
         try {
             setIsLoading(true)
             const keyword = searchKeyword.length > 0 ? "&q=" + searchKeyword : "";
             const res = await axios.get(
-                "https://be-psm-mini-library-system.herokuapp.com/book/books?_expand=book" + keyword,
+                Url+"/book/books?_expand=book" + keyword,
             );
             setBooks(res.data.sort((a, b) => a.bookId - b.bookId));
         } catch (err) {
@@ -50,7 +45,7 @@ export default function BookList2() {
     async function getUsersById() {
         try {
 
-            const res = await fetch("https://be-psm-mini-library-system.herokuapp.com/users/profile/byid/"+getUserData().userId,
+            const res = await fetch(Url+"/users/profile/byid/"+getUserData().userId,
                 {method: "GET"})
             const data = await res.json();
             setStatusUserById(data.status)
@@ -88,7 +83,7 @@ export default function BookList2() {
                 username: dataUserById.username,
                 password: dataUserById.password
             })
-            const targetUrl = "https://be-psm-mini-library-system.herokuapp.com/auth/login"
+            const targetUrl = Url+"/auth/login"
             const method = "POST"
             const res = await fetch(targetUrl, {
                 method: method,
@@ -113,7 +108,7 @@ export default function BookList2() {
         setIsLoading(true)
         axios
             .delete(
-                "https://be-psm-mini-library-system.herokuapp.com/book/delete/" + id
+                Url+"/book/delete/" + id
             )
             .then(() => {
                 getBookList();

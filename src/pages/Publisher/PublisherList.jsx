@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import {Link, useNavigate} from "react-router-dom";
 import { useDebounce } from "use-debounce";
 import Spinner from "../../components/Spinner/Spinner";
+import {Url} from "../../partials/url-BE/Url.jsx";
 
 export default function PublisherList() {
     const [publishers, setPublishers] = useState([]);
@@ -21,7 +22,7 @@ export default function PublisherList() {
         const keyword = searchKeyword.length > 0 ? "&q=" + searchKeyword : "";
         try {
             const res = await fetch(
-                "https://be-psm-mini-library-system.herokuapp.com/publisher/list?_expand=publisher" +
+                Url+"/publisher/list?_expand=publisher" +
                 keyword,
                 { method: "GET" }
             );
@@ -35,20 +36,6 @@ export default function PublisherList() {
         }
     }
 
-    // async function getPublisherList() {
-    //   try {
-    //     const response = await axios.get(
-    //       "https://be-psm-mini-library-system.herokuapp.com/publisher/list"
-    //     );
-
-    //     console.log(response.data);
-    //     setPublishers(response.data);
-    //   } catch (err) {
-    //     console.log(err);
-    //     alert("Terjadi Masalah");
-    //   }
-    // }
-
     function getUserData() {
         const savedDataUser = localStorage.getItem("user")
         if (savedDataUser) {
@@ -61,7 +48,7 @@ export default function PublisherList() {
     async function getUsersById() {
         try {
 
-            const res = await fetch("https://be-psm-mini-library-system.herokuapp.com/users/profile/byid/"+getUserData().userId,
+            const res = await fetch(Url+"/users/profile/byid/"+getUserData().userId,
                 {method: "GET"})
             const data = await res.json();
             setStatusUserById(data.status)
@@ -99,7 +86,7 @@ export default function PublisherList() {
                 username: dataUserById.username,
                 password: dataUserById.password
             })
-            const targetUrl = "https://be-psm-mini-library-system.herokuapp.com/auth/login"
+            const targetUrl = Url+"/auth/login"
             const method = "POST"
             const res = await fetch(targetUrl, {
                 method: method,
@@ -123,7 +110,7 @@ export default function PublisherList() {
         userDeleteScenario()
         axios
             .delete(
-                "https://be-psm-mini-library-system.herokuapp.com/publisher/delete/" +
+                Url+"/publisher/delete/" +
                 id
             )
             .then(() => {

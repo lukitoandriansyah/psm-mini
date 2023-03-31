@@ -1,6 +1,7 @@
 import {Link, useNavigate} from "react-router-dom";
 import {useEffect, useState} from "react";
 import Spinner from "../../components/Spinner/Spinner"
+import {Url} from "../../partials/url-BE/Url.jsx";
 
 let responses = []
 export default function AddRole() {
@@ -18,7 +19,7 @@ export default function AddRole() {
 
     async function getUsers() {
         try {
-            const res = await fetch("https://be-psm-mini-library-system.herokuapp.com/role/list-role",
+            const res = await fetch(Url+"/role/list-role",
                 {method: "GET"})
             const data = await res.json();
             setRoles(data.sort((a, b) => a.roleId - b.roleId));
@@ -57,7 +58,7 @@ export default function AddRole() {
     async function getUsersById() {
         try {
 
-            const res = await fetch("https://be-psm-mini-library-system.herokuapp.com/users/profile/byid/"+getUserData().userId,
+            const res = await fetch(Url+"/users/profile/byid/"+getUserData().userId,
                 {method: "GET"})
             const data = await res.json();
             setStatusUserById(data.status)
@@ -95,7 +96,7 @@ export default function AddRole() {
                 username: dataUserById.username,
                 password: dataUserById.password
             })
-            const targetUrl = "https://be-psm-mini-library-system.herokuapp.com/auth/login"
+            const targetUrl = Url+"/auth/login"
             const method = "POST"
             const res = await fetch(targetUrl, {
                 method: method,
@@ -130,7 +131,7 @@ export default function AddRole() {
             if (statusCheckerName === false) {
                 statusCheckerName = true
             } else {
-                const targetUrl = "https://be-psm-mini-library-system.herokuapp.com/role/save-role";
+                const targetUrl = Url+"/role/save-role";
                 const method = "POST"
                 await fetch(targetUrl, {method: method, body: payload, headers: {'Content-Type': 'application/json'}})
                     .then((re) => re.json())
@@ -166,7 +167,7 @@ export default function AddRole() {
             if (statusCheckerName === false) {
                 statusCheckerName = true
             } else {
-                const targetUrl = "https://be-psm-mini-library-system.herokuapp.com/role/save-role";
+                const targetUrl = Url+"/role/save-role";
                 const method = "POST"
                 await fetch(targetUrl, {method: method, body: payload, headers: {'Content-Type': 'application/json'}})
                     .then((re) => re.json())

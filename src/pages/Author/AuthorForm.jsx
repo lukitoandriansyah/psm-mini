@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
+import {Url} from "../../partials/url-BE/Url.jsx";
 
 export default function AuthorForm() {
   const [statusUserById, setStatusUserById] = useState()
@@ -27,14 +28,14 @@ export default function AuthorForm() {
 
   async function getAuthors() {
     const res = await axios.get(
-        "https://be-psm-mini-library-system.herokuapp.com/author/all"
+        Url+"/author/all"
     );
     setAuthors(res.data);
   }
 
   async function getFormInput() {
     const res = await axios.get(
-        "https://be-psm-mini-library-system.herokuapp.com/author/" +
+        Url+"/author/" +
         params.authorId
     );
 
@@ -53,7 +54,7 @@ export default function AuthorForm() {
   async function getUsersById() {
     try {
 
-      const res = await fetch("https://be-psm-mini-library-system.herokuapp.com/users/profile/byid/"+getUserData().userId,
+      const res = await fetch(Url+"/users/profile/byid/"+getUserData().userId,
           {method: "GET"})
       const data = await res.json();
       setStatusUserById(data.status)
@@ -91,7 +92,7 @@ export default function AuthorForm() {
         username: dataUserById.username,
         password: dataUserById.password
       })
-      const targetUrl = "https://be-psm-mini-library-system.herokuapp.com/auth/login"
+      const targetUrl = Url+"/auth/login"
       const method = "POST"
       const res = await fetch(targetUrl, {
         method: method,
@@ -117,13 +118,13 @@ export default function AuthorForm() {
 
     if (isEditing) {
       await axios.put(
-          "https://be-psm-mini-library-system.herokuapp.com/author/update/" +
+          Url+"/author/update/" +
           params.authorId,
           formInput
       );
     } else {
       await axios.post(
-          "https://be-psm-mini-library-system.herokuapp.com/author/save",
+          Url+"/author/save",
           formInput
       );
     }

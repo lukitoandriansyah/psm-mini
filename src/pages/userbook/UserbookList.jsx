@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import {Link, useNavigate} from "react-router-dom";
 import { useDebounce } from "use-debounce";
 import Spinner from "../../components/Spinner/Spinner";
+import {Url} from "../../partials/url-BE/Url.jsx";
 
 export default function UserBookList() {
     const [userBooks, setUserBooks] = useState([]);
@@ -22,7 +23,7 @@ export default function UserBookList() {
         try {
             setIsLoading(true)
             const res = await axios.get(
-                "https://be-psm-mini-library-system.herokuapp.com/userbook/list-userbook?_expand=userbook" + keyword,
+                Url+"/userbook/list-userbook?_expand=userbook" + keyword,
             );
 
             // console.log(res.data);
@@ -47,7 +48,7 @@ export default function UserBookList() {
     async function getUsersById() {
         try {
 
-            const res = await fetch("https://be-psm-mini-library-system.herokuapp.com/users/profile/byid/"+getUserData().userId,
+            const res = await fetch(Url+"/users/profile/byid/"+getUserData().userId,
                 {method: "GET"})
             const data = await res.json();
             setStatusUserById(data.status)
@@ -85,7 +86,7 @@ export default function UserBookList() {
                 username: dataUserById.username,
                 password: dataUserById.password
             })
-            const targetUrl = "https://be-psm-mini-library-system.herokuapp.com/auth/login"
+            const targetUrl = Url+"/auth/login"
             const method = "POST"
             const res = await fetch(targetUrl, {
                 method: method,
@@ -115,7 +116,7 @@ export default function UserBookList() {
                 } else {
                     axios
                         .delete(
-                            "https://be-psm-mini-library-system.herokuapp.com/userbook/delete/" + userbookId
+                            Url+"/userbook/delete/" + userbookId
                         )
                         .then(() => {
                             getUserBookList();

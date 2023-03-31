@@ -1,6 +1,7 @@
 import {useEffect, useState} from "react";
 import {Link, Navigate, useNavigate, useParams} from "react-router-dom";
 import Spinner from "../../components/Spinner/Spinner.jsx";
+import {Url} from "../../partials/url-BE/Url.jsx";
 
 let firstName;
 let userArr = [];
@@ -45,7 +46,7 @@ export default function DetailsProfile() {
 
     async function getUsers() {
         try {
-            const res = await fetch("https://be-psm-mini-library-system.herokuapp.com/users/profile/" + params.username,
+            const res = await fetch(Url+"/users/profile/" + params.username,
                 {method: "GET"})
             const data = await res.json();
             handlingName(data)
@@ -61,7 +62,7 @@ export default function DetailsProfile() {
     async function getUserBooks() {
         setIsLoading(true)
         try {
-            const res = await fetch("https://be-psm-mini-library-system.herokuapp.com/userbook/list-userbook",
+            const res = await fetch(Url+"/userbook/list-userbook",
                 {method: "GET"})
             const data = await res.json();
             setUserBooks(data);
@@ -106,7 +107,7 @@ export default function DetailsProfile() {
     async function getUsersById() {
         try {
 
-            const res = await fetch("https://be-psm-mini-library-system.herokuapp.com/users/profile/byid/"+getUserData().userId,
+            const res = await fetch(Url+"/users/profile/byid/"+getUserData().userId,
                 {method: "GET"})
             const data = await res.json();
             setStatusUserById(data.status)
@@ -144,7 +145,7 @@ export default function DetailsProfile() {
                 username: dataUserById.username,
                 password: dataUserById.password
             })
-            const targetUrl = "https://be-psm-mini-library-system.herokuapp.com/auth/login"
+            const targetUrl = Url+"/auth/login"
             const method = "POST"
             const res = await fetch(targetUrl, {
                 method: method,
@@ -219,11 +220,6 @@ export default function DetailsProfile() {
         event.preventDefault()
         userDeleteScenario()
         history.go(-1)
-        /*if(getUserData().username===user.username){
-            history.go(-1)
-        }else {
-            <Navigate to={"/users"}/>
-        }*/
     }
 
     useEffect(() => {

@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, {useEffect, useState} from "react";
 import {Link, useNavigate, useParams} from "react-router-dom";
-import Spinner from "../../components/Spinner/Spinner";
+import {Url} from "../../partials/url-BE/Url.jsx";
 
 export default function UserBookForm() {
     const navigate = useNavigate();
@@ -36,27 +36,27 @@ export default function UserBookForm() {
 
     async function getBooks() {
         const res = await axios.get(
-            "https://be-psm-mini-library-system.herokuapp.com/book/books"
+            Url+"/book/books"
         );
         setBooks(res.data);
     }
 
     async function getUsers() {
         const res = await axios.get(
-            "https://be-psm-mini-library-system.herokuapp.com/users/list-user"
+            Url+"/users/list-user"
         );
         setUsers(res.data);
     }
 
     async function getUserBooks() {
-        const res = await fetch("https://be-psm-mini-library-system.herokuapp.com/userbook/list-userbook",
+        const res = await fetch(Url+"/userbook/list-userbook",
             {method: "GET"})
         const data = await res.json();
         setUserBooks(data);
     }
 
     async function getUserBookDetail() {
-        const res = await fetch("https://be-psm-mini-library-system.herokuapp.com/userbook/" + params.userbookId,
+        const res = await fetch(Url+"/userbook/" + params.userbookId,
             {method: "GET"})
         const data = await res.json();
         setUserBookDetail(data);
@@ -99,7 +99,7 @@ export default function UserBookForm() {
 
     async function getFormInput() {
         const res = await axios.get(
-            "https://be-psm-mini-library-system.herokuapp.com/userbook/" +
+            Url+"/userbook/" +
             params.userbookId
         );
         setFormInput(res.data.data);
@@ -117,7 +117,7 @@ export default function UserBookForm() {
     async function getUsersById() {
         try {
 
-            const res = await fetch("https://be-psm-mini-library-system.herokuapp.com/users/profile/byid/"+getUserData().userId,
+            const res = await fetch(Url+"/users/profile/byid/"+getUserData().userId,
                 {method: "GET"})
             const data = await res.json();
             setStatusUserById(data.status)
@@ -155,7 +155,7 @@ export default function UserBookForm() {
                 username: dataUserById.username,
                 password: dataUserById.password
             })
-            const targetUrl = "https://be-psm-mini-library-system.herokuapp.com/auth/login"
+            const targetUrl = Url+"/auth/login"
             const method = "POST"
             const res = await fetch(targetUrl, {
                 method: method,
@@ -189,13 +189,13 @@ export default function UserBookForm() {
             }
 
             const re = await axios.put(
-                "https://be-psm-mini-library-system.herokuapp.com/userbook/update-userbook/" +
+                Url+"/userbook/update-userbook/" +
                 params.userbookId,
                 payloadUpdateUserBook
             );
 
             const res = await axios.get(
-                "https://be-psm-mini-library-system.herokuapp.com/book/" +
+                Url+"/book/" +
                 payloadUpdateUserBook.bookId
             )
             setBookById(res.data.data)
@@ -210,7 +210,7 @@ export default function UserBookForm() {
                     categoryId:res.data.data.categoryId
                 }
                 await axios.put(
-                    "https://be-psm-mini-library-system.herokuapp.com/book/update/" + payloadUpdateUserBook.bookId,
+                    Url+"/book/update/" + payloadUpdateUserBook.bookId,
                     payloadUpdateBookStatus
                 );
             }
@@ -225,7 +225,7 @@ export default function UserBookForm() {
                     categoryId:res.data.data.categoryId
                 }
                 await axios.put(
-                    "https://be-psm-mini-library-system.herokuapp.com/book/update/" + payloadUpdateUserBook.bookId,
+                    Url+"/book/update/" + payloadUpdateUserBook.bookId,
                     payloadUpdateBookStatus
                 );
             }
@@ -240,12 +240,12 @@ export default function UserBookForm() {
             }
 
             await axios.post(
-                "https://be-psm-mini-library-system.herokuapp.com/userbook/add-userbook",
+                Url+"/userbook/add-userbook",
                 payload
             );
 
             const res = await axios.get(
-                "https://be-psm-mini-library-system.herokuapp.com/book/" +
+                Url+"/book/" +
                 payload.bookId
             )
             setBookById(res.data.data)
@@ -260,7 +260,7 @@ export default function UserBookForm() {
             }
 
             await axios.put(
-                "https://be-psm-mini-library-system.herokuapp.com/book/update/" + payload.bookId,
+                Url+"/book/update/" + payload.bookId,
                 payloadUpdateBookStatus
             );
         }

@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, {useEffect, useState} from "react";
 import {Link, useNavigate, useParams} from "react-router-dom";
+import {Url} from "../../partials/url-BE/Url.jsx";
 
 export default function CategoryForm() {
   const navigate = useNavigate();
@@ -21,7 +22,7 @@ export default function CategoryForm() {
 
   async function getCategories() {
     const res = await axios.get(
-        "https://be-psm-mini-library-system.herokuapp.com/category/list"
+        Url+"/category/list"
     );
 
     setCategories(res.data);
@@ -29,7 +30,7 @@ export default function CategoryForm() {
 
   async function getFormInput() {
     const res = await axios.get(
-        "https://be-psm-mini-library-system.herokuapp.com/category/list/" +
+        Url+"/category/list/" +
         params.categoryId
     );
 
@@ -41,13 +42,13 @@ export default function CategoryForm() {
 
     if (isEditing) {
       await axios.put(
-          "https://be-psm-mini-library-system.herokuapp.com/category/update/" +
+          Url+"/category/update/" +
           params.categoryId,
           formInput
       );
     } else {
       await axios.post(
-          "https://be-psm-mini-library-system.herokuapp.com/category/add",
+          Url+"/category/add",
           formInput
       );
     }
